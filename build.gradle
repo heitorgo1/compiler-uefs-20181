@@ -1,0 +1,53 @@
+
+// Apply the java plugin
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+version = '1.0'
+group 'br.uefs.compiler'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName = 'br.uefs.compiler.Main'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+    mavenLocal()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+        }
+    }
+}
+
+def junitVersion = '4.12'
+
+dependencies {
+    testCompile "junit:junit:${junitVersion}"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': "${mainClassName}"
+    }
+}
+
+run {
+    if (project.hasProperty('args')) {
+        args project.args.split('\\s');
+    }
+}
+
+
+
