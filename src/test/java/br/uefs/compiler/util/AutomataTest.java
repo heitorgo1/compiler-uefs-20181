@@ -172,6 +172,7 @@ public class AutomataTest {
         List<Pair<String, Boolean>> tests = Arrays.asList(
                 new Pair<>("/* sad\n bsad\n */", true), new Pair<>("/*hello*/", true),
                 new Pair<>("/******/", true), new Pair<>("/* // djash 2131 sa?!.\" // */", true),
+                new Pair<>("/**\"***/", true), new Pair<>("/* // \"djash sa?!<>\".\" // */", true),
                 new Pair<>("/abc", false), new Pair<>("/**\n", false),
                 new Pair<>("123", false), new Pair<>("+++", false),
                 new Pair<>("//", false), new Pair<>("---", false),
