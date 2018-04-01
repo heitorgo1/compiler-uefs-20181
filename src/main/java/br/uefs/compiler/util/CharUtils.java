@@ -28,9 +28,34 @@ public class CharUtils {
         return c -> c == expected;
     }
 
-    private static Function<Character,Boolean> whitespaceFunction() {
+    private static Function<Character, Boolean> whitespaceFunction() {
         return c -> isWhitespace(c);
     }
+
+    private static Function<Character, Boolean> exclamationFunction() {
+        return c -> c == '?';
+    }
+
+    private static Function<Character, Boolean> pipeFunction() {
+        return c -> c == '|';
+    }
+
+    private static Function<Character, Boolean> asteriscFunction() {
+        return c -> c == '*';
+    }
+
+    private static Function<Character, Boolean> openParenFunction() {
+        return c -> c == '(';
+    }
+
+    private static Function<Character, Boolean> closeParenFunction() {
+        return c -> c == ')';
+    }
+
+    private static Function<Character, Boolean> backslashFunction() {
+        return c -> c == '\\';
+    }
+
 
     public static Function<Character, Boolean> getSpecialCharacterFunction(String s) {
         switch (s) {
@@ -46,13 +71,26 @@ public class CharUtils {
                 return doubleQuotesFunction();
             case "\\s":
                 return whitespaceFunction();
+            case "\\?":
+                return exclamationFunction();
+            case "\\|":
+                return pipeFunction();
+            case "\\*":
+                return asteriscFunction();
+            case "\\(":
+                return openParenFunction();
+            case "\\)":
+                return closeParenFunction();
+            case "\\\\":
+                return backslashFunction();
         }
         return identity(s.charAt(0));
     }
 
-    public static boolean isEscaped (String s) {
+
+    public static boolean isEscaped(String s) {
         if (s.length() < 2) return false;
-        return s.charAt(0) == '\\';
+        return s.charAt(0) == '\\' && s.charAt(1) != '"';
     }
 
     public static boolean isDigit(char c) {

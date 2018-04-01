@@ -50,8 +50,12 @@ public class TransitionTable {
     }
 
     public Set<Integer> move(int stateId, String input) {
-        if (stateId < 0) return new HashSet<>();
-        Set<String> keys = table.get(stateId).keySet();
+        if (stateId == NFA.EMPTY_STATE) return new HashSet<>();
+        ArrayList<String> keys = new ArrayList<>();
+        keys.addAll(table.get(stateId).keySet());
+
+        // non-special characters first
+        Collections.sort(keys);
 
         if (CharUtils.isEscaped(input)) {
             if (table.get(stateId).get(input) == null) return new HashSet<>();

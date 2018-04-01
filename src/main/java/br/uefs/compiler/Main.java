@@ -26,8 +26,8 @@ public class Main {
 //        RegexTree tree = RegexTree.fromRegex("\"(\\l|\\d|\\y|\\\")*\"");
 //        RegexTree tree = RegexTree.fromRegex("(a|b)*abb");
 //        RegexTree tree = RegexTree.fromRegex("/\\*\\l*\\*/");
-//        RegexTree tree = RegexTree.fromRegex("const");
-        RegexTree tree = RegexTree.fromRegex("(-?\\s*\\d\\d*)(\\.\\d\\d*)?");
+        RegexTree tree = RegexTree.fromRegex("const");
+//        RegexTree tree = RegexTree.fromRegex("(-?\\s*\\d\\d*)(\\.\\d\\d*)?");
 //        RegexTree tree = RegexTree.fromRegex("(a|b)*a");
         tree.printInorder();
         for (Iterator<Node> it = tree.iteratorPostorder(); it.hasNext(); ) {
@@ -44,9 +44,9 @@ public class Main {
         TransitionTable dfaTransTable = nfaTransTable.subsetConstructionDFA();
         dfaTransTable.print();
 
-        Automata automata = Automata.fromRegex("(-?\\s*\\d\\d*)(\\.\\d\\d*)?");
+        Automata automata = Automata.fromRegex("const");
 
-        String s = new String("2341523.213");
+        String s = new String("consta");
         System.out.print(automata.getCurrentState() + " ");
         for (char c : s.toCharArray()) {
             automata.forward(Character.toString(c));

@@ -9,6 +9,7 @@ import java.util.concurrent.SynchronousQueue;
 
 public class NFA implements Cloneable {
     public static final String EPS = "EPS";
+    public static final int EMPTY_STATE = -1;
     private static int RUNNING_ID = 0;
 
     private State start;

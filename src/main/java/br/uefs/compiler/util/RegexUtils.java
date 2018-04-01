@@ -66,8 +66,17 @@ public class RegexUtils {
             char next = s.charAt(i + 1);
 
             if (c == '\\') {
-                sb.append(c);
-                escapedCharacter = true;
+                if (escapedCharacter) {
+                    if (!isOperator(next) || next == '(') {
+                        sb.append(c);
+                        sb.append('.');
+                    }
+                    escapedCharacter = false;
+                }
+                else {
+                    sb.append(c);
+                    escapedCharacter = true;
+                }
             } else if ((escapedCharacter || !isOperator(c)) && !isOperator(next)) {
                 sb.append(c);
                 sb.append('.');

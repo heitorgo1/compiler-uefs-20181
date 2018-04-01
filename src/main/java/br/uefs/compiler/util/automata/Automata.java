@@ -43,7 +43,7 @@ public class Automata {
             return true;
         }
         else {
-            visitedStates.add(-1);
+            visitedStates.add(NFA.EMPTY_STATE);
         }
         return false;
     }

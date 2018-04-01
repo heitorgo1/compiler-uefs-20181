@@ -31,7 +31,7 @@ public class RegexTree implements Iterable<Node> {
         for (int i = 0; i < regex.length(); i++) {
             char c = regex.charAt(i);
 
-            if (c == '\\') {
+            if (c == '\\' && !escapedLetter) {
                 escapedLetter = true;
                 continue;
             }
