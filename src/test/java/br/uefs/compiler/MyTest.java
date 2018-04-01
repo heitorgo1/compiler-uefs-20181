@@ -1,3 +1,5 @@
+package br.uefs.compiler;
+
 import org.junit.Assert;
 import org.junit.Test;
 
