@@ -43,6 +43,12 @@ public class NFA implements Cloneable {
         acceptingStates.add(st);
     }
 
+    public void setStateTag(StateTag tag) {
+        for (State st : acceptingStates) {
+            st.setStateTag(tag);
+        }
+    }
+
     public static NFA ofSingleValue(String input) {
         State start = new State(getNewId());
         State end = new State(getNewId(), true);
@@ -137,7 +143,7 @@ public class NFA implements Cloneable {
         return nfa;
     }
 
-    public static NFA fromRegexTree(RegexTree tree) throws Exception {
+    public static NFA fromRegexTree(RegexTree tree, StateTag tag) throws Exception {
         Iterator<Node> nodes = tree.iteratorPostorder();
         Stack<NFA> subexpressions = new Stack<>();
 
@@ -174,11 +180,15 @@ public class NFA implements Cloneable {
                 }
             }
         }
-        return subexpressions.peek();
+
+        NFA res = subexpressions.pop();
+        res.setStateTag(tag);
+        return res;
     }
 
     public TransitionTable asTransitionTable() {
         Map<Integer, Map<String, Set<Integer>>> map = new Hashtable<>();
+        Map<Integer, StateTag> tags = new Hashtable<>();
 
         ArrayList<State> q = new ArrayList<>();
         Set<Integer> visited = new HashSet<>();
@@ -187,6 +197,8 @@ public class NFA implements Cloneable {
 
         while (!q.isEmpty()) {
             State cur = q.remove(0);
+            if (cur.isFinal())
+                tags.put(cur.getId(), cur.getTag());
             visited.add(cur.getId());
 
             if (map.get(cur.getId()) == null) {
@@ -215,7 +227,7 @@ public class NFA implements Cloneable {
         }
 
 
-        return new TransitionTable(this.start.getId(), acceptIds, map);
+        return new TransitionTable(this.start.getId(), acceptIds, map, tags);
     }
 
     public void printNFA() {

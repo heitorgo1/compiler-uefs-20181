@@ -28,4 +28,7 @@ public class ReservedWords {
             "extends"
     );
 
+    public static boolean isReserved(String word) {
+        return WORDS.contains(word);
+    }
 }

@@ -66,6 +66,7 @@ public class RegexUtils {
             char next = s.charAt(i + 1);
 
             if (c == '\\') {
+                // special case for backslash character
                 if (escapedCharacter) {
                     if (!isOperator(next) || next == '(') {
                         sb.append(c);

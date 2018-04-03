@@ -1,19 +1,36 @@
 package br.uefs.compiler.lexer;
 
-public enum TokenClass {
-    IDENTIFIER(256, "\\w(\\w|\\d|_)*"),
-    NUMBER(257, "(-)?\\s*\\d\\d*(.\\d(\\d)*)?"),
-    RELATIONAL_OP(258, "!=|==|<|<=|>|>=|="),
-    ARITHMETIC_OP(259, "+|-|*|/|++|--"),
-    LOGIC_OP(260, "!|&&|||"),
-    STRING(261, "\"(\\w|\\d|\\a|\\\"\""),
-    DELIMITER(262, ";|,|(|)|[|]|{|}|.");
+import br.uefs.compiler.util.automata.StateTag;
 
-    public final int id;
-    public final String regx;
+public class TokenClass implements StateTag {
 
-    TokenClass(int id, String regx) {
+    private int id;
+    private String regex;
+    private String name;
+
+    public TokenClass(int id, String regex, String name) {
         this.id = id;
-        this.regx = regx;
+        this.regex = regex;
+        this.name = name;
+    }
+
+    public String getRegex() {
+        return regex;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int get() {
+        return id;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        TokenClass other = (TokenClass)o;
+        if (other.get() == this.get()) return 0;
+        return this.get() - other.get();
     }
 }

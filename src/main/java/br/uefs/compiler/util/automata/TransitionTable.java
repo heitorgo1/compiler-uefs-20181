@@ -9,11 +9,13 @@ public class TransitionTable {
     private Map<Integer, Map<String, Set<Integer>>> table;
     private int startId;
     private Set<Integer> acceptIds;
+    private Map<Integer, StateTag> tags;
 
-    public TransitionTable(int startId, Set<Integer> acceptIds, Map<Integer, Map<String, Set<Integer>>> table) {
+    public TransitionTable(int startId, Set<Integer> acceptIds, Map<Integer, Map<String, Set<Integer>>> table, Map<Integer, StateTag> tags) {
         this.table = table;
         this.startId = startId;
         this.acceptIds = acceptIds;
+        this.tags = tags;
     }
 
     public Set<Integer> eclosure(int stateId) {
@@ -45,6 +47,10 @@ public class TransitionTable {
         return eclosure;
     }
 
+    public StateTag getTag(int stateId) {
+        return this.tags.get(stateId);
+    }
+
     public int getStartId() {
         return startId;
     }
@@ -55,13 +61,19 @@ public class TransitionTable {
         keys.addAll(table.get(stateId).keySet());
 
         // non-special characters first
-        Collections.sort(keys);
+        Collections.sort(keys, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int r = Integer.compare(o1.length(), o2.length());
+                if (r == 0) return o1.compareTo(o2);
+                return r;
+            }
+        });
 
         if (CharUtils.isEscaped(input)) {
             if (table.get(stateId).get(input) == null) return new HashSet<>();
             return table.get(stateId).get(input);
-        }
-        else {
+        } else {
             for (String key : keys) {
                 char c = input.charAt(0);
                 if (CharUtils.getSpecialCharacterFunction(key).apply(c)) {
@@ -95,12 +107,29 @@ public class TransitionTable {
         return acceptIds.contains(stateId);
     }
 
+    public Map<Integer, StateTag> getTags() {
+        return this.tags;
+    }
+
     public boolean containsAcceptingState(Set<Integer> stateIds) {
 
         for (int acceptId : acceptIds) {
             if (stateIds.contains(acceptId)) return true;
         }
         return false;
+    }
+
+    public StateTag getAcceptingStateTag(Set<Integer> stateIds) {
+        List<StateTag> tags = new ArrayList<>();
+
+        for (int id : stateIds) {
+            if (this.tags.get(id) == null) continue;
+            tags.add(this.tags.get(id));
+        }
+
+        Collections.sort(tags);
+
+        return tags.get(0);
     }
 
     public void print() {
@@ -114,8 +143,8 @@ public class TransitionTable {
         while (!stack.isEmpty()) {
             int curId = stack.pop();
 
-
-            System.out.print(String.format("%d(%s) ", curId, acceptIds.contains(curId)));
+            int tag = getTag(curId) == null ? -1 : getTag(curId).get();
+            System.out.print(String.format("%d(%s)(%s) ", curId, acceptIds.contains(curId),tag));
             for (Map.Entry<String, Set<Integer>> entry : table.get(curId).entrySet()) {
                 System.out.print(String.format("--(%s)--> ", entry.getKey()));
 
@@ -147,6 +176,7 @@ public class TransitionTable {
         int startId = running_id;
 
         Map<Set<Integer>, Integer> idTable = new Hashtable<>();
+        Map<Integer, StateTag> tags = new Hashtable<>();
         Set<Integer> acceptIds = new HashSet<>();
 
         Map<Integer, Map<String, Set<Integer>>> map = new Hashtable<>();
@@ -161,7 +191,11 @@ public class TransitionTable {
             if (map.get(curId) == null)
                 map.put(curId, new Hashtable<>());
 
-            if (containsAcceptingState(T)) acceptIds.add(curId);
+            if (containsAcceptingState(T)) {
+                StateTag finalTag = getAcceptingStateTag(T);
+                acceptIds.add(curId);
+                tags.put(curId, finalTag);
+            }
 
             for (String input : allInputSymbols(T)) {
                 if (input == NFA.EPS) continue;
@@ -178,6 +212,6 @@ public class TransitionTable {
             }
         }
 
-        return new TransitionTable(startId, acceptIds, map);
+        return new TransitionTable(startId, acceptIds, map, tags);
     }
 }

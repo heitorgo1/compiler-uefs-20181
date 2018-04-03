@@ -3,17 +3,17 @@ package br.uefs.compiler.lexer;
 public class Token {
 
     private TokenClass tclass;
-    private String value;
+    private String lexeme;
 
-    public Token(TokenClass tclass, String value) {
+    public Token(TokenClass tclass, String lexeme) {
         this.tclass = tclass;
-        this.value = value;
+        this.lexeme = lexeme;
     }
 
     @Override
     public String toString() {
-        return String.format("<%s, %s>",
-                this.tclass.name(),
-                this.value);
+        return String.format("<%s, '%s'>",
+                this.tclass.getName(),
+                this.lexeme);
     }
 }

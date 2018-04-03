@@ -56,6 +56,9 @@ public class CharUtils {
         return c -> c == '\\';
     }
 
+    private static Function<Character,Boolean> newlineFunction() {
+        return c -> c == '\n';
+    }
 
     public static Function<Character, Boolean> getSpecialCharacterFunction(String s) {
         switch (s) {
@@ -83,10 +86,11 @@ public class CharUtils {
                 return closeParenFunction();
             case "\\\\":
                 return backslashFunction();
+            case "\\n":
+                return newlineFunction();
         }
         return identity(s.charAt(0));
     }
-
 
     public static boolean isEscaped(String s) {
         if (s.length() < 2) return false;

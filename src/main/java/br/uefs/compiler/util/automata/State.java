@@ -5,6 +5,7 @@ import java.util.*;
 public class State {
     private int id;
     private boolean isFinal;
+    private StateTag tag;
 
     private Map<String, List<State>> links;
 
@@ -44,6 +45,14 @@ public class State {
 
     public boolean isFinal() {
         return isFinal;
+    }
+
+    public StateTag getTag() {
+        return this.tag;
+    }
+
+    public void setStateTag(StateTag tag) {
+        this.tag = tag;
     }
 
     public void setNotFinal() {

@@ -26,16 +26,22 @@ public class AutomataTest {
         Automata ifAutomata = Automata.fromRegex(ifRegex);
         Automata returnAutomata = Automata.fromRegex(returnRegex);
 
-        String rightIf = "if", wrongIf1 = "pif", wrongIf2 = "i";
-        String rightReturn = "return", wrongReturn1 = "returne", wrongReturn2 = "eturn";
+        List<Pair<String, Boolean>> ifTests = Arrays.asList(
+                new Pair<>("if", true), new Pair<>("pif", false), new Pair<>("i", false)
+        );
 
-        Assert.assertTrue(automataCheck(ifAutomata, rightIf));
-        Assert.assertFalse(automataCheck(ifAutomata, wrongIf1));
-        Assert.assertFalse(automataCheck(ifAutomata, wrongIf2));
+        List<Pair<String, Boolean>> returnTests = Arrays.asList(
+                new Pair<>("return", true), new Pair<>("returne", false), new Pair<>("eturn", false)
+        );
 
-        Assert.assertTrue(automataCheck(returnAutomata, rightReturn));
-        Assert.assertFalse(automataCheck(returnAutomata, wrongReturn1));
-        Assert.assertFalse(automataCheck(returnAutomata, wrongReturn2));
+        for (Pair<String, Boolean> pair : ifTests) {
+            Assert.assertEquals(pair.getValue(), automataCheck(ifAutomata, pair.getKey()));
+        }
+
+        for (Pair<String, Boolean> pair : returnTests) {
+            Assert.assertEquals(pair.getValue(), automataCheck(returnAutomata, pair.getKey()));
+        }
+
     }
 
     @Test
@@ -44,18 +50,17 @@ public class AutomataTest {
 
         Automata automata = Automata.fromRegex(regex);
 
-        String id1 = "a", id2 = "abc", id3 = "abd2", id4 = "abc_def",
-                wid1 = "1sad", wid2 = "a_b?", wid3 = "a.&c", wid4 = " abcs";
+        List<Pair<String, Boolean>> tests = Arrays.asList(
+                new Pair<>("a", true), new Pair<>("abc", true),
+                new Pair<>("abd2", true), new Pair<>("abc_def", true),
+                new Pair<>("1sad", false), new Pair<>("a_b?", false),
+                new Pair<>("a.&c", false), new Pair<>(" abcs", false)
+                );
 
-        Assert.assertTrue(automataCheck(automata, id1));
-        Assert.assertTrue(automataCheck(automata, id2));
-        Assert.assertTrue(automataCheck(automata, id3));
-        Assert.assertTrue(automataCheck(automata, id4));
 
-        Assert.assertFalse(automataCheck(automata, wid1));
-        Assert.assertFalse(automataCheck(automata, wid2));
-        Assert.assertFalse(automataCheck(automata, wid3));
-        Assert.assertFalse(automataCheck(automata, wid4));
+        for (Pair<String, Boolean> pair : tests) {
+            Assert.assertEquals(pair.getValue(), automataCheck(automata, pair.getKey()));
+        }
     }
 
     @Test
