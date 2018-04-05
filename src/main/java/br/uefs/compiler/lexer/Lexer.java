@@ -75,14 +75,7 @@ public class Lexer {
     }
 
     public void scan() throws Exception {
-        String input = new String("using namespace std;\n" +
-                "\n" +
-                "int main () {\n" +
-                "        int a,b,c;\n" +
-                "        scanf (\"%d %d %d\",&a,&b,&c);\n" +
-                "        printf (\"%d %d %d hello\\n\",a,b,c);\n" +
-                "        return 0;\n" +
-                "}\n");
+        String input = new String("\"dsaddsa");
         DoubleBufferReader reader = new DoubleBufferReader(new StringReader(input));
         List<Token> tokens = new ArrayList<>();
         int line = 1;

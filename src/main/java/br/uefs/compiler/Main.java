@@ -6,6 +6,7 @@ import br.uefs.compiler.util.RegexTree;
 import br.uefs.compiler.util.automata.Automata;
 import br.uefs.compiler.util.automata.NFA;
 import br.uefs.compiler.util.automata.StateTag;
+import br.uefs.compiler.util.regex.Regex;
 
 import java.io.StringReader;
 import java.util.Arrays;
@@ -104,7 +105,10 @@ public class Main {
 //            System.out.format("%d %s\n",entry.getKey(), entry.getValue().get());
 //        }
 //
-        Lexer lexer = new Lexer();
-        lexer.scan();
+//        Lexer lexer = new Lexer();
+//        lexer.scan();
+
+        Regex rx = new Regex("\\\\\"");
+        rx.toPostfix();
     }
 }
