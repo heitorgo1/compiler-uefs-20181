@@ -1,17 +1,43 @@
 package br.uefs.compiler.util.regex;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class SpecialCharacter {
 
     public static Set<Character> SPECIAL_CHARACTERS = new HashSet<>(Arrays.asList(
-            'w', 'd', 's', 'y'
+            'l', 'd', 's', 'y'
     ));
 
     public static boolean check(Character input) {
         return SPECIAL_CHARACTERS.contains(input);
+    }
+
+    private static List<String> allLetters() {
+        List<String> list = new ArrayList<>();
+        IntStream range1 = IntStream.rangeClosed('a','z');
+        IntStream range2 = IntStream.rangeClosed('A','Z');
+        for (int i : IntStream.concat(range1, range2).toArray()) {
+            list.add(Character.toString((char)i));
+        }
+        return list;
+    }
+
+    private static List<String> allDigits() {
+        List<String> list = new ArrayList<>();
+        for (int i : IntStream.rangeClosed('0', '9').toArray()) {
+            list.add(Character.toString((char)i));
+        }
+        return list;
+    }
+
+    private static List<String> allSymbols() {
+        List<String> list = new ArrayList<>();
+        for (int i : IntStream.rangeClosed(32, 126).toArray()) {
+            if (i == 34) continue;
+            list.add(Character.toString((char)i));
+        }
+        return list;
     }
 
     public static String getExpression(Character input) throws Exception {
@@ -21,40 +47,23 @@ public class SpecialCharacter {
         sb.append("(");
 
         switch (input) {
-            case 'w':
-                for (char c = 'a'; c <= 'z'; c++) {
-                    sb.append(c);
-                    sb.append("|");
-                }
-                for (char c = 'A'; c < 'Z'; c++) {
-                    sb.append(c);
-                    sb.append('|');
-                }
-                sb.append('Z');
+            case 'l':
+                sb.append(String.join("|", allLetters()));
                 break;
             case 'd':
-                for (char c = '0'; c < '9'; c++) {
-                    sb.append(c);
-                    sb.append("|");
-                }
-                sb.append('9');
+                sb.append(String.join("|", allDigits()));
                 break;
             case 's':
-                sb.append((char) 9);
-                sb.append("|");
-                sb.append((char) 10);
-                sb.append("|");
-                sb.append((char) 13);
-                sb.append("|");
-                sb.append((char) 32);
+                sb.append(String.join("|",
+                        Character.toString((char)9),
+                        Character.toString((char)10),
+                        Character.toString((char)13),
+                        Character.toString((char)32)
+                        )
+                );
                 break;
             case 'y':
-                for (int c = 32; c < 126; c++) {
-                    if (c == 34) continue;
-                    sb.append((char) c);
-                    sb.append("|");
-                }
-                sb.append((char) 126);
+                sb.append(String.join("|", allSymbols()));
                 break;
             default:
                 throw new Exception(String.format("'%s' is not a special character.", input));

@@ -98,7 +98,7 @@ public class Lexer {
                     int tagId = automata.getCurrentStateTagId();
                     String lexeme = reader.getString();
                     TokenClass tokenClass = getTokenClass(tagId);
-                    Token token = new Token(tokenClass, lexeme);
+                    Token token = new Token(tokenClass, lexeme, line);
                     tokens.add(token);
                     System.out.format("%s %d line: %d\n",token, tagId, line);
                 }
@@ -123,7 +123,7 @@ public class Lexer {
             int tagId = automata.getCurrentStateTagId();
             String lexeme = reader.getString();
             TokenClass tokenClass = getTokenClass(tagId);
-            Token token = new Token(tokenClass, lexeme);
+            Token token = new Token(tokenClass, lexeme, line);
             tokens.add(token);
             System.out.format("%s %d line: %d\n",token, tagId, line);
         }

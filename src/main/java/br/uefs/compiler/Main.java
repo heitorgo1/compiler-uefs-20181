@@ -7,10 +7,14 @@ import br.uefs.compiler.util.automata.Automata;
 import br.uefs.compiler.util.automata.NFA;
 import br.uefs.compiler.util.automata.StateTag;
 import br.uefs.compiler.util.regex.Regex;
+import br.uefs.compiler.util.regex.SpecialCharacter;
 
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class Main {
 
@@ -110,5 +114,22 @@ public class Main {
 
         Regex rx = new Regex("\\\\\"");
         rx.toPostfix();
+
+        System.out.println(String.join("|", "a", "b", "c"));
+
+        for (int i : IntStream.rangeClosed('a', 'z').toArray()) {
+            System.out.println((char)i);
+        }
+
+        List<String> list = new ArrayList<>();
+        IntStream range1 = IntStream.rangeClosed('a','z');
+        IntStream range2 = IntStream.rangeClosed('A','Z');
+        for (int i : IntStream.concat(range1, range2).toArray()) {
+            list.add(Character.toString((char)i));
+        }
+
+        System.out.println(SpecialCharacter.getExpression('l'));
+        System.out.println(SpecialCharacter.getExpression('d'));
+        System.out.print(SpecialCharacter.getExpression('s'));
     }
 }
