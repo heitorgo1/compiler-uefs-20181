@@ -1,6 +1,6 @@
 package br.uefs.compiler.util.regex;
 
-public abstract class RegexElement {
+public interface RegexElement {
 
-    public abstract Character getValue();
+    Character getValue();
 }

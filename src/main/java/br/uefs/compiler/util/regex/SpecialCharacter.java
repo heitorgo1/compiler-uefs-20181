@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 public class SpecialCharacter {
 
     public static Set<Character> SPECIAL_CHARACTERS = new HashSet<>(Arrays.asList(
-            'l', 'd', 's', 'y'
+            'l', 'd', 's', 'y', 'N', 'a'
     ));
 
     public static boolean check(Character input) {
@@ -15,10 +15,10 @@ public class SpecialCharacter {
 
     private static List<String> allLetters() {
         List<String> list = new ArrayList<>();
-        IntStream range1 = IntStream.rangeClosed('a','z');
-        IntStream range2 = IntStream.rangeClosed('A','Z');
+        IntStream range1 = IntStream.rangeClosed('a', 'z');
+        IntStream range2 = IntStream.rangeClosed('A', 'Z');
         for (int i : IntStream.concat(range1, range2).toArray()) {
-            list.add(Character.toString((char)i));
+            list.add(Character.toString((char) i));
         }
         return list;
     }
@@ -26,7 +26,7 @@ public class SpecialCharacter {
     private static List<String> allDigits() {
         List<String> list = new ArrayList<>();
         for (int i : IntStream.rangeClosed('0', '9').toArray()) {
-            list.add(Character.toString((char)i));
+            list.add(Character.toString((char) i));
         }
         return list;
     }
@@ -35,7 +35,41 @@ public class SpecialCharacter {
         List<String> list = new ArrayList<>();
         for (int i : IntStream.rangeClosed(32, 126).toArray()) {
             if (i == 34) continue;
-            list.add(Character.toString((char)i));
+            if (Operator.check((char) i) || '\\' == (char) i) {
+                list.add("\\" + Character.toString((char) i));
+            } else {
+                list.add(Character.toString((char) i));
+
+            }
+        }
+        return list;
+    }
+
+    public static List<String> allNotDigitsNorLetterNorSpaceNorOperators() {
+        List<String> list = new ArrayList<>();
+        for (int i : IntStream.rangeClosed(34, 96).toArray()) {
+            if (Character.isLetterOrDigit(i)) continue;
+            if ((i >= 40 && i <= 47) || i == 91 || i == 93 || (i >= 59 && i <= 62) || i == 38) continue;
+            if (Operator.check((char) i) || '\\' == (char) i) {
+                list.add("\\" + Character.toString((char) i));
+            } else {
+                list.add(Character.toString((char) i));
+
+            }
+        }
+        return list;
+    }
+
+    public static List<String> allArithmeticOperatorsExceptDivision() {
+        List<String> list = new ArrayList<>();
+        for (int i : IntStream.rangeClosed(40, 45).toArray()) {
+            if (i == 44) continue;
+            if (Operator.check((char) i) || '\\' == (char) i) {
+                list.add("\\" + Character.toString((char) i));
+            } else {
+                list.add(Character.toString((char) i));
+
+            }
         }
         return list;
     }
@@ -55,15 +89,21 @@ public class SpecialCharacter {
                 break;
             case 's':
                 sb.append(String.join("|",
-                        Character.toString((char)9),
-                        Character.toString((char)10),
-                        Character.toString((char)13),
-                        Character.toString((char)32)
+                        Character.toString((char) 9),
+                        Character.toString((char) 10),
+                        Character.toString((char) 13),
+                        Character.toString((char) 32)
                         )
                 );
                 break;
             case 'y':
                 sb.append(String.join("|", allSymbols()));
+                break;
+            case 'N':
+                sb.append(String.join("|", allNotDigitsNorLetterNorSpaceNorOperators()));
+                break;
+            case 'a':
+                sb.append(String.join("|", allArithmeticOperatorsExceptDivision()));
                 break;
             default:
                 throw new Exception(String.format("'%s' is not a special character.", input));

@@ -1,6 +1,6 @@
 package br.uefs.compiler.util.regex;
 
-public class Operand extends RegexElement {
+public class Operand implements RegexElement {
 
     public Character value;
 

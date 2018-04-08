@@ -1,6 +1,7 @@
 package br.uefs.compiler.util;
 
 import br.uefs.compiler.util.automata.Automata;
+import br.uefs.compiler.util.automata.AutomataSimulator;
 import javafx.util.Pair;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,12 +11,12 @@ import java.util.List;
 
 public class AutomataTest {
 
-    private boolean automataCheck(Automata automata, String input) {
-        automata.reset();
-        for (char c : input.toCharArray()) {
-            automata.forward(Character.toString(c));
+    private boolean automataCheck(AutomataSimulator simulator, String input) throws Exception {
+        simulator.reset();
+        for (Character c : input.toCharArray()) {
+            simulator.next(c);
         }
-        return automata.isAccepting();
+        return simulator.isAccepting();
     }
 
     @Test
@@ -23,8 +24,8 @@ public class AutomataTest {
         String ifRegex = "if";
         String returnRegex = "return";
 
-        Automata ifAutomata = Automata.fromRegex(ifRegex);
-        Automata returnAutomata = Automata.fromRegex(returnRegex);
+        AutomataSimulator ifAutomata = new AutomataSimulator(Automata.buildDFAFromRegex(ifRegex));
+        AutomataSimulator returnAutomata = new AutomataSimulator(Automata.buildDFAFromRegex(returnRegex));
 
         List<Pair<String, Boolean>> ifTests = Arrays.asList(
                 new Pair<>("if", true), new Pair<>("pif", false), new Pair<>("i", false)
@@ -48,7 +49,7 @@ public class AutomataTest {
     public void identifierMatchTest() throws Exception {
         String regex = "\\l(\\l|\\d|_)*";
 
-        Automata automata = Automata.fromRegex(regex);
+        AutomataSimulator automata = new AutomataSimulator(Automata.buildDFAFromRegex(regex));
 
         List<Pair<String, Boolean>> tests = Arrays.asList(
                 new Pair<>("a", true), new Pair<>("abc", true),
@@ -67,7 +68,7 @@ public class AutomataTest {
     public void numberMatchTest() throws Exception {
         String regex = "(-)?\\s*\\d\\d*(\\.\\d(\\d)*)?";
 
-        Automata automata = Automata.fromRegex(regex);
+        AutomataSimulator automata = new AutomataSimulator(Automata.buildDFAFromRegex(regex));
 
         List<Pair<String, Boolean>> tests = Arrays.asList(
                 new Pair<>("-12312312", true), new Pair<>("-1", true),
@@ -90,7 +91,7 @@ public class AutomataTest {
     public void arithmeticMatchTest() throws Exception {
         String regex = "+|-|\\*|/|(++)|(--)";
 
-        Automata automata = Automata.fromRegex(regex);
+        AutomataSimulator automata = new AutomataSimulator(Automata.buildDFAFromRegex(regex));
 
         List<Pair<String, Boolean>> tests = Arrays.asList(
                 new Pair<>("+", true), new Pair<>("-", true),
@@ -111,7 +112,7 @@ public class AutomataTest {
     public void relationalMatchTest() throws Exception {
         String regex = "(!=)|(==)|<|(<=)|>|(>=)|=";
 
-        Automata automata = Automata.fromRegex(regex);
+        AutomataSimulator automata = new AutomataSimulator(Automata.buildDFAFromRegex(regex));
 
         List<Pair<String, Boolean>> tests = Arrays.asList(
                 new Pair<>("!=", true), new Pair<>("==", true),
@@ -132,7 +133,7 @@ public class AutomataTest {
     public void logicMatchTest() throws Exception {
         String regex = "!|(&&)|(\\|\\|)";
 
-        Automata automata = Automata.fromRegex(regex);
+        AutomataSimulator automata = new AutomataSimulator(Automata.buildDFAFromRegex(regex));
 
         List<Pair<String, Boolean>> tests = Arrays.asList(
                 new Pair<>("!", true), new Pair<>("&&", true),
@@ -152,7 +153,7 @@ public class AutomataTest {
     public void lineCommentMatchTest() throws Exception {
         String regex = "//(\\y|\\s)*\n";
 
-        Automata automata = Automata.fromRegex(regex);
+        AutomataSimulator automata = new AutomataSimulator(Automata.buildDFAFromRegex(regex));
 
         List<Pair<String, Boolean>> tests = Arrays.asList(
                 new Pair<>("//!\n", true), new Pair<>("//\n", true),
@@ -172,7 +173,7 @@ public class AutomataTest {
     public void blockCommentMatchTest() throws Exception {
         String regex = "/\\*(\\y|\\s|\"|\\*)*\\*/";
 
-        Automata automata = Automata.fromRegex(regex);
+        AutomataSimulator automata = new AutomataSimulator(Automata.buildDFAFromRegex(regex));
 
         List<Pair<String, Boolean>> tests = Arrays.asList(
                 new Pair<>("/* sad\n bsad\n */", true), new Pair<>("/*hello*/", true),
@@ -181,7 +182,8 @@ public class AutomataTest {
                 new Pair<>("/abc", false), new Pair<>("/**\n", false),
                 new Pair<>("123", false), new Pair<>("+++", false),
                 new Pair<>("//", false), new Pair<>("---", false),
-                new Pair<>("1+1", false), new Pair<>("2/3", false)
+                new Pair<>("1+1", false), new Pair<>("2/3", false),
+                new Pair<>("/*int abc = 2+2;\nstring */sa_sb != \"sdjasjdklsjad asj hsd\"\n", false)
         );
 
         for (Pair<String, Boolean> pair : tests) {
@@ -193,7 +195,7 @@ public class AutomataTest {
     public void delimiterMatchTest() throws Exception {
         String regex = ";|,|\\(|\\)|[|]|{|}|\\.";
 
-        Automata automata = Automata.fromRegex(regex);
+        AutomataSimulator automata = new AutomataSimulator(Automata.buildDFAFromRegex(regex));
 
         List<Pair<String, Boolean>> tests = Arrays.asList(
                 new Pair<>(";", true), new Pair<>(",", true),
@@ -216,7 +218,7 @@ public class AutomataTest {
     public void stringMatchTest() throws Exception {
         String regex = "\"(\\l|\\d|\\y|(\\\\\"))*\"";
 
-        Automata automata = Automata.fromRegex(regex);
+        AutomataSimulator automata = new AutomataSimulator(Automata.buildDFAFromRegex(regex));
 
         List<Pair<String, Boolean>> tests = Arrays.asList(
                 new Pair<>("\"blalba\"", true), new Pair<>("\" sa sajd ks\"", true),
@@ -227,7 +229,8 @@ public class AutomataTest {
                 new Pair<>("/abc", false), new Pair<>("/**\n", false),
                 new Pair<>("123", false), new Pair<>("+++", false),
                 new Pair<>("//", false), new Pair<>("---", false),
-                new Pair<>("1+1", false), new Pair<>("2/3", false)
+                new Pair<>("1+1", false), new Pair<>("2/3", false),
+                new Pair<>("\"\n\n\n\"", false)
         );
 
         for (Pair<String, Boolean> pair : tests) {

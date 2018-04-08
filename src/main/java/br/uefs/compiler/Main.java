@@ -1,20 +1,8 @@
 package br.uefs.compiler;
 
-import br.uefs.compiler.lexer.DoubleBufferReader;
 import br.uefs.compiler.lexer.Lexer;
-import br.uefs.compiler.util.RegexTree;
-import br.uefs.compiler.util.automata.Automata;
-import br.uefs.compiler.util.automata.NFA;
-import br.uefs.compiler.util.automata.StateTag;
-import br.uefs.compiler.util.regex.Regex;
-import br.uefs.compiler.util.regex.SpecialCharacter;
 
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.IntStream;
 
 public class Main {
 
@@ -112,24 +100,63 @@ public class Main {
 //        Lexer lexer = new Lexer();
 //        lexer.scan();
 
-        Regex rx = new Regex("\\\\\"");
-        rx.toPostfix();
+//        Regex rx = new Regex("\\\\\"");
+//        rx.toPostfix();
+//
+//        System.out.println(String.join("|", "a", "b", "c"));
+//
+//        for (int i : IntStream.rangeClosed('a', 'z').toArray()) {
+//            System.out.println((char)i);
+//        }
+//
+//        List<String> list = new ArrayList<>();
+//        IntStream range1 = IntStream.rangeClosed('a','z');
+//        IntStream range2 = IntStream.rangeClosed('A','Z');
+//        for (int i : IntStream.concat(range1, range2).toArray()) {
+//            list.add(Character.toString((char)i));
+//        }
+//
+//        System.out.println(SpecialCharacter.getExpression('l'));
+//        System.out.println(SpecialCharacter.getExpression('d'));
+//        System.out.print(SpecialCharacter.getExpression('s'));
+//
+//        Character c = new Character((char)127);
+//        System.out.println("("+Character.forDigit(9, 10)+")");
+//
+//        String expression = "(-)?\\s*\\d\\d*(\\.\\d(\\d)*)?";
+//
+//        Regex rx = new Regex(expression);
+//        System.out.println(expression);
+//        System.out.println(rx.expandConcat(expression));
+//        System.out.println(rx.expandSpecialCharacters(expression));
+//        NFA nfa = NFA.fromRegexExpression(expression, new Comparable() {
+//            @Override
+//            public int compareTo(Object o) {
+//                return 0;
+//            }
+//
+//            @Override
+//            public String toString() {
+//                return "";
+//            }
+//        });
+//
+//        System.out.print(nfa);
+//        System.out.print(nfa.toDFA());
+//        AutomataSimulator simulator = new AutomataSimulator(nfa.toDFA());
+//
+//        String input = "";
+//
+//        BufferedReader bf = new BufferedReader(new StringReader(input));
+//
+//        int i;
+//        while ((i = bf.read()) != -1) {
+//            Character c =(char)i;
+//            simulator.next(c);
+//        }
+//        System.out.println(simulator.isAccepting());
 
-        System.out.println(String.join("|", "a", "b", "c"));
-
-        for (int i : IntStream.rangeClosed('a', 'z').toArray()) {
-            System.out.println((char)i);
-        }
-
-        List<String> list = new ArrayList<>();
-        IntStream range1 = IntStream.rangeClosed('a','z');
-        IntStream range2 = IntStream.rangeClosed('A','Z');
-        for (int i : IntStream.concat(range1, range2).toArray()) {
-            list.add(Character.toString((char)i));
-        }
-
-        System.out.println(SpecialCharacter.getExpression('l'));
-        System.out.println(SpecialCharacter.getExpression('d'));
-        System.out.print(SpecialCharacter.getExpression('s'));
+        Lexer l = new Lexer(new StringReader("sdasd dae string;/*@#@%@@# @@dsakjaskj \t*/"));
+        l.scan();
     }
 }
