@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 public class SpecialCharacter {
 
     public static Set<Character> SPECIAL_CHARACTERS = new HashSet<>(Arrays.asList(
-            'l', 'd', 's', 'y', 'N', 'a'
+            'l', 'd', 's', 'y', 'N', 'b'
     ));
 
     public static boolean check(Character input) {
@@ -60,10 +60,10 @@ public class SpecialCharacter {
         return list;
     }
 
-    public static List<String> allArithmeticOperatorsExceptDivision() {
+    private static List<String> allBlockCommentSymbols() {
         List<String> list = new ArrayList<>();
-        for (int i : IntStream.rangeClosed(40, 45).toArray()) {
-            if (i == 44) continue;
+        for (int i : IntStream.rangeClosed(32, 126).toArray()) {
+            if (i == 34 || i == 47) continue;
             if (Operator.check((char) i) || '\\' == (char) i) {
                 list.add("\\" + Character.toString((char) i));
             } else {
@@ -102,8 +102,8 @@ public class SpecialCharacter {
             case 'N':
                 sb.append(String.join("|", allNotDigitsNorLetterNorSpaceNorOperators()));
                 break;
-            case 'a':
-                sb.append(String.join("|", allArithmeticOperatorsExceptDivision()));
+            case 'b':
+                sb.append(String.join("|", allBlockCommentSymbols()));
                 break;
             default:
                 throw new Exception(String.format("'%s' is not a special character.", input));

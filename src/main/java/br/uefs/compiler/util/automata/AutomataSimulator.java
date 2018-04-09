@@ -7,14 +7,12 @@ public class AutomataSimulator {
 
     private DFA automata;
     private State current;
-
-    private List<State> previousStates;
+    private State lastVisitedFinalState;
 
     public AutomataSimulator(Automata automata) throws Exception {
         if (NFA.class.isInstance(automata)) throw new Exception("NFA Simulation not implemented.");
         this.automata = DFA.class.cast(automata);
-        this.previousStates = new ArrayList<>();
-        this.current = automata.getStartState();
+        reset();
     }
 
     public State getCurreState() {
@@ -27,7 +25,7 @@ public class AutomataSimulator {
 
     public void reset() {
         setCurrentState(automata.getStartState());
-        this.previousStates = new ArrayList<>();
+        this.lastVisitedFinalState = current.isFinal() ? current : State.REJECT_STATE;
     }
 
     public boolean hasNext(Character input) throws Exception {
@@ -36,6 +34,15 @@ public class AutomataSimulator {
 
     public <T extends Comparable> T getTag(Class<T> type) {
         return current.getTag(type);
+
+    }
+
+    public <T extends Comparable> T getAcceptingTag(Class<T> type) {
+        return lastVisitedFinalState.getTag(type);
+    }
+
+    public boolean hasAcceptedInput() {
+        return !lastVisitedFinalState.equals(State.REJECT_STATE);
     }
 
     public boolean isAccepting() {
@@ -43,16 +50,10 @@ public class AutomataSimulator {
     }
 
     public boolean next(Character input) throws Exception {
-        previousStates.add(current);
         current = automata.move(current, input);
+        if (current.isFinal()) lastVisitedFinalState = current;
         if (current.equals(State.REJECT_STATE)) return false;
         return true;
     }
 
-    public boolean back() {
-        if (previousStates.isEmpty()) return false;
-        current = previousStates.get(previousStates.size() - 1);
-        previousStates.remove(previousStates.size() - 1);
-        return true;
-    }
 }

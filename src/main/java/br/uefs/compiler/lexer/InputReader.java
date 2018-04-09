@@ -12,16 +12,16 @@ public class InputReader extends BufferedReader {
 
     private Character[] buffer;
     private int lexemeBegin;
+    private int lexemeEnd;
     private int forward;
     private int currentLine;
-    private int lexemeLine;
 
     public InputReader(Reader in) throws IOException {
         super(in);
         lexemeBegin = 0;
         forward = 0;
+        lexemeEnd = 0;
         currentLine = 1;
-        lexemeLine = 1;
         buffer = readAllFile(in);
     }
 
@@ -35,54 +35,47 @@ public class InputReader extends BufferedReader {
         return list.toArray(new Character[list.size()]);
     }
 
-    public Character[] getBuffer(){
-        return buffer;
-    }
-
     public int getCurrentLine() {
         return currentLine;
     }
 
-    public int getLexemeLine() {
-        return lexemeLine;
+    public boolean isEof() {
+        return lexemeBegin >= buffer.length;
     }
 
-    public boolean isEof() {
-        return forward >= buffer.length;
+    public void mark() {
+        lexemeEnd = forward;
     }
 
     public Character readch() {
-        char c = buffer[forward];
+        if (forward >= buffer.length) return new Character((char)-1);
+        char c = buffer[forward++];
         return c;
     }
 
-    public void forward() {
-        forward++;
-    }
-
-    public boolean back() {
-        if (forward == lexemeBegin) return false;
-        forward--;
-        return true;
-    }
-
-    public void failLexeme() {
+    public void startFromNextChar() {
         lexemeBegin++;
-        while (forward != lexemeBegin) {
-            if (forward == '\n') currentLine--;
-            forward--;
-        }
+        lexemeEnd = lexemeBegin;
+        forward = lexemeBegin;
     }
 
-    public void updateBegin() {
-        lexemeBegin = forward;
+    public char getCurrentChar() {
+        return buffer[lexemeBegin];
     }
 
     public String getLexeme() {
         StringBuilder sb = new StringBuilder();
-        for (int i = lexemeBegin; i < forward; i++) {
+        for (int i = lexemeBegin; i < lexemeEnd; i++) {
             sb.append(buffer[i]);
         }
         return sb.toString();
+    }
+
+    public void updatePointers() {
+        while (lexemeBegin != lexemeEnd) {
+            if (buffer[lexemeBegin] == '\n') currentLine++;
+            lexemeBegin++;
+        }
+        forward = lexemeEnd;
     }
 }

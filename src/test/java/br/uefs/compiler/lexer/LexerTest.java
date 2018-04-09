@@ -19,8 +19,10 @@ public class LexerTest {
 
     public void runTokenCheck(String clazz, String value) throws Exception {
         Token token = lexer.nextToken();
-        Assert.assertTrue(String.format("Assert TokenClass for: %s", value), token.toString().contains(clazz));
-        Assert.assertTrue(String.format("Assert Token Value for: %s", value), token.toString().contains(value));
+        Assert.assertTrue(String.format("Assert TokenClass for: %s", value),
+                token.toString().contains(clazz));
+        Assert.assertTrue(String.format("Assert Token Value for: %s", value),
+                token.toString().contains(value.replace("\n","\\n")));
     }
 
     public void runTokenCheck(List<String> classes, List<String> values) throws Exception {
@@ -30,7 +32,7 @@ public class LexerTest {
             Assert.assertTrue(String.format("Assert TokenClass for: %s\npos: %d", values.get(i), i),
                     token.toString().contains(classes.get(i)));
             Assert.assertTrue(String.format("Assert Token Value for: %s\npos: %d", values.get(i), i),
-                    token.toString().contains(values.get(i)));
+                    token.toString().contains(values.get(i).replace("\n","\\n")));
         }
     }
 
@@ -143,10 +145,10 @@ public class LexerTest {
         lexer.withReader(new StringReader(code));
 
         List<String> classes = Arrays.asList(
-                "IDENTIFICADOR", "OPERADORARITMETICO", "NUMBERO"
+                "IDENTIFICADOR", "NUMERO"
         );
         List<String> values = Arrays.asList(
-                "a", "-", "2"
+                "a", "-2"
         );
 
         runTokenCheck(classes, values);

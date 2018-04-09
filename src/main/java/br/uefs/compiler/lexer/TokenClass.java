@@ -13,7 +13,7 @@ public class TokenClass implements Comparable {
         this.name = name;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
@@ -34,6 +34,6 @@ public class TokenClass implements Comparable {
 
     @Override
     public String toString() {
-        return String.format("TokenClass{%d, %s, %s}",id, regex,name);
+        return String.format("TokenClass{%d, %s, %s}", id, regex, name);
     }
 }

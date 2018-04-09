@@ -1,4 +1,4 @@
 package br.uefs.compiler.util;
 
-public class RegexTest {
+public class RegexTest{
 }

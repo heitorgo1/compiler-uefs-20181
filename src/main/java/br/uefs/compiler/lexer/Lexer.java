@@ -3,6 +3,7 @@ package br.uefs.compiler.lexer;
 import br.uefs.compiler.util.automata.AutomataSimulator;
 import br.uefs.compiler.util.automata.DFA;
 import br.uefs.compiler.util.automata.NFA;
+import br.uefs.compiler.util.exceptions.InvalidCharacterException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -12,7 +13,10 @@ import java.util.List;
 
 public class Lexer {
 
-    private static List<TokenClass> tokenClasses = Arrays.asList(
+    private static final TokenClass invalidCharacterClass =
+            new TokenClass(-1, "", "ERROR_CARACTEREINVALIDO");
+
+    private static final List<TokenClass> tokenClasses = Arrays.asList(
             new TokenClass(256, "const", "PALAVRARESERVADA"),
             new TokenClass(257, "var", "PALAVRARESERVADA"),
             new TokenClass(258, "struct", "PALAVRARESERVADA"),
@@ -50,8 +54,12 @@ public class Lexer {
             new TokenClass(289, "(-)?\\s*\\d\\d*\\.", "ERROR_NUMERODECIMALINCOMPLETO"),
             new TokenClass(290, "(-)?\\s*\\d\\d*\\N*\\d*(\\.\\d\\d*\\N*\\d*)?", "ERROR_NUMEROMALFORMADO"),
             new TokenClass(291, "\\N\\N*", "ERROR_VALORINESPERADO"),
-            new TokenClass(292, "/\\*(\\l|\\d|\\N|\\s|\\a)*", "ERROR_COMENTARIOBLOCOABERTO")
-            );
+            new TokenClass(292, "/\\*(\\b|\\s|\")*", "ERROR_COMENTARIOBLOCOABERTO")
+    );
+
+    private List<String> uselessClasses = Arrays.asList(
+            "ESPACO", "COMENTARIOLINHA", "COMENTARIOBLOCO"
+    );
 
     private AutomataSimulator simulator;
     private InputReader reader;
@@ -60,12 +68,14 @@ public class Lexer {
     public Lexer() throws Exception {
         DFA dfa = generateDFA();
         simulator = new AutomataSimulator(dfa);
+        errors = new ArrayList<>();
         reader = null;
     }
 
     public Lexer(Reader in) throws Exception {
         DFA dfa = generateDFA();
         simulator = new AutomataSimulator(dfa);
+        errors = new ArrayList<>();
         reader = new InputReader(in);
     }
 
@@ -80,8 +90,56 @@ public class Lexer {
         return NFA.merge(list, TokenClass.INVALID_CLASS).toDFA();
     }
 
+    public TokenClass getClassById(int id) {
+        for (TokenClass tclass : tokenClasses) {
+            if (tclass.getId() == id) return tclass;
+        }
+        return TokenClass.INVALID_CLASS;
+    }
+
     public void withReader(Reader in) throws IOException {
         reader = new InputReader(in);
+    }
+
+    private boolean isTokenUseless(Token token) {
+        return uselessClasses.contains(token.getTokenClass().getName());
+    }
+
+    private boolean isTokenError(Token token) {
+        return token.getTokenClass().getName().contains("ERROR");
+    }
+
+    private boolean hasProblem(Token previousToken, Token currentToken) {
+        return currentToken.getTokenClass().getName().equals("NUMERO") &&
+                currentToken.getLexeme().contains("-") &&
+                !previousToken.getLexeme().equals("(") &&
+                !previousToken.getLexeme().equals("=") &&
+                !"+-/*".contains(previousToken.getLexeme());
+    }
+
+    public List<Token> handleProblem(Token token) {
+        Token minusToken = new Token(getClassById(278), "-", reader.getCurrentLine());
+        String number = token.getLexeme().replace("-", "");
+        Token numToken = new Token(token.getTokenClass(), number, token.getLine());
+        return Arrays.asList(minusToken, numToken);
+    }
+
+    public List<Token> readAllTokens() throws Exception {
+        List<Token> tokens = new ArrayList<>();
+        for (Token token = nextToken(); token != null; token = nextToken()) {
+            if (isTokenError(token)) {
+                errors.add(token);
+            } else if (!tokens.isEmpty() && hasProblem(tokens.get(tokens.size() - 1), token)) {
+                tokens.addAll(handleProblem(token));
+            } else if (!isTokenUseless(token)) {
+                tokens.add(token);
+            }
+        }
+        return tokens;
+    }
+
+    public List<Token> getErrors() {
+        return errors;
     }
 
     public Token nextToken() throws Exception {
@@ -89,43 +147,38 @@ public class Lexer {
         while (!reader.isEof()) {
             Character c = reader.readch();
             boolean ok = simulator.next(c);
-            reader.forward();
+
+            if (simulator.isAccepting()) reader.mark();
 
             if (!ok) {
-                token = tryAccept();
+                try {
+                    token = tryAcceptLexeme();
+                    reader.updatePointers();
+                } catch (InvalidCharacterException e) {
+                    token = new Token(invalidCharacterClass,
+                            Character.toString(e.getInvalidCharacter()),
+                            reader.getCurrentLine());
+                    reader.startFromNextChar();
+                }
                 break;
             }
         }
-
-        if (token == null)
-            token = tryAccept();
 
         simulator.reset();
         return token;
     }
 
-    public Token tryAccept() {
-        Token token = null;
-        String failedLexeme = reader.getLexeme();
+    public Token tryAcceptLexeme() throws Exception {
+        String lexeme = reader.getLexeme();
 
-        while (!simulator.isAccepting()) {
-            boolean ok = simulator.back();
-            reader.back();
-            if (!ok) break;
-        }
-
-        if (simulator.isAccepting()) {
-            String lexeme = reader.getLexeme();
-            TokenClass type = simulator.getTag(TokenClass.class);
-            token = new Token(type, lexeme, 0);
-            reader.updateBegin();
-        } else {
-            System.out.format("ERROR: %s\n", failedLexeme);
-        }
-        return token;
+        if (simulator.hasAcceptedInput()) {
+            TokenClass type = simulator.getAcceptingTag(TokenClass.class);
+            return new Token(type, lexeme, reader.getCurrentLine());
+        } else
+            throw new InvalidCharacterException(reader.getCurrentChar());
     }
 
-    public void scan() throws Exception {
+    public void printTokens() throws Exception {
         Token token;
         while ((token = nextToken()) != null) {
             System.out.println(token);
