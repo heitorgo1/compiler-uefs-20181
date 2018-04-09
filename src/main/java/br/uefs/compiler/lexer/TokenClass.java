@@ -1,8 +1,7 @@
 package br.uefs.compiler.lexer;
 
-import br.uefs.compiler.util.automata.StateTag;
-
-public class TokenClass implements StateTag {
+public class TokenClass implements Comparable {
+    public static final TokenClass INVALID_CLASS = new TokenClass(Integer.MAX_VALUE, "", "CLASSEINVALIDA");
 
     private int id;
     private String regex;
@@ -14,6 +13,10 @@ public class TokenClass implements StateTag {
         this.name = name;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getRegex() {
         return regex;
     }
@@ -23,14 +26,14 @@ public class TokenClass implements StateTag {
     }
 
     @Override
-    public int get() {
-        return id;
+    public int compareTo(Object o) {
+        TokenClass other = (TokenClass) o;
+        if (other.id == this.id) return 0;
+        return this.id - other.id;
     }
 
     @Override
-    public int compareTo(Object o) {
-        TokenClass other = (TokenClass)o;
-        if (other.get() == this.get()) return 0;
-        return this.get() - other.get();
+    public String toString() {
+        return String.format("TokenClass{%d, %s, %s}", id, regex, name);
     }
 }

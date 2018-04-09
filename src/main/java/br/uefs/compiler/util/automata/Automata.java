@@ -1,96 +1,79 @@
 package br.uefs.compiler.util.automata;
 
-import br.uefs.compiler.util.RegexTree;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
 
 public class Automata {
 
-    private List<Integer> visitedStates;
-    private TransitionTable table;
+    protected State startState;
 
-    public Automata(TransitionTable table) {
-        this.table = table;
-        this.visitedStates = new ArrayList<>();
-        this.visitedStates.add(table.getStartId());
+    public Automata() {
     }
 
-    public int getCurrentState() {
-        if (visitedStates.isEmpty()) return NFA.EMPTY_STATE;
-        return visitedStates.get(visitedStates.size() - 1);
+    public Automata(State startState) {
+        this.startState = startState;
     }
 
-    public void reset() {
-        visitedStates = new ArrayList<>();
-        visitedStates.add(table.getStartId());
+    public State getStartState() {
+        return startState;
     }
 
-
-    public int getCurrentStateTagId() {
-        return table.getTag(getCurrentState()).get();
-    }
-
-    public boolean isAccepting() {
-        int curId = getCurrentState();
-        if (curId == NFA.EMPTY_STATE) return false;
-
-        return table.isAcceptingState(curId);
-    }
-
-    public boolean forward(String input) {
-        int curId = getCurrentState();
-        Set<Integer> nextStatesIds = table.move(curId, input);
-
-        if (nextStatesIds.iterator().hasNext()) {
-            // get only the first, works for DFA
-            int nextStateId = nextStatesIds.iterator().next();
-            visitedStates.add(nextStateId);
-            return true;
+    public StateSet getFinalStates() {
+        StateSet ss = new StateSet();
+        for (State st : getAllStates()) {
+            if (st.isFinal()) ss.add(st);
         }
-        else {
-            visitedStates.add(NFA.EMPTY_STATE);
-        }
-        return false;
+        return ss;
     }
 
-    public boolean back() {
-        if (visitedStates.isEmpty()) {
-            return false;
-        }
-        visitedStates.remove(visitedStates.size() - 1);
-        return true;
-    }
+    public StateSet getAllStates() {
+        StateSet allStates = StateSet.of(startState);
+        Stack<State> stack = new Stack<>();
+        stack.push(startState);
 
-    public static Automata fromRegex(String regex) throws Exception {
-        RegexTree rxTree = RegexTree.fromRegex(regex);
-        System.out.println("Regex Tree Complete.");
-        NFA nfa = NFA.fromRegexTree(rxTree, new StateTag() {
-            @Override
-            public int get() {
-                return 1;
+        while (!stack.isEmpty()) {
+            State u = stack.pop();
+
+            for (State v : u.nextStates()) {
+                if (!allStates.contains(v)) {
+                    allStates.add(v);
+                    stack.push(v);
+                }
             }
-
-            @Override
-            public int compareTo(Object o) {
-                return 0;
-            }
-        });
-        System.out.println("NFA Complete.");
-        TransitionTable transTable = nfa.asTransitionTable();
-        System.out.println("NFA Conversion to Transition Table Complete.");
-        TransitionTable dfaTable = transTable.subsetConstructionDFA();
-        for (Map.Entry<Integer, StateTag> entry : dfaTable.getTags().entrySet()) {
-            System.out.format("%d %s\n",entry.getKey(), entry.getValue().get());
         }
-        System.out.println("DFA Transition Table Complete.");
-        System.out.println("Automata ready.");
-        return new Automata(dfaTable);
+        return allStates;
     }
 
-    public void print(){
-        table.print();
+    public Set<Character> alphabet() {
+        Set<Character> alphabet = new HashSet<>();
+        Set<State> visited = new HashSet<>();
+        Stack<State> stack = new Stack<>();
+        stack.push(startState);
+        visited.add(startState);
+
+        while (!stack.isEmpty()) {
+            State u = stack.pop();
+
+            alphabet.addAll(u.possibleInputs());
+
+            for (State v : u.nextStates()) {
+                if (!visited.contains(v)) {
+                    stack.push(v);
+                    visited.add(v);
+                }
+            }
+        }
+        return alphabet;
+    }
+
+    public static DFA buildDFAFromRegex (String expression) throws Exception {
+        NFA nfa = NFA.fromRegexExpression(expression, o -> 0, o -> Integer.MAX_VALUE);
+        return nfa.toDFA();
+    }
+
+    public static DFA buildDFAFromRegex (String expression, Comparable tag, Comparable defaultTag) throws Exception {
+        NFA nfa = NFA.fromRegexExpression(expression, tag, defaultTag);
+        return nfa.toDFA();
     }
 }

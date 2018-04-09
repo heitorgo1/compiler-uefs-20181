@@ -1,260 +1,243 @@
 package br.uefs.compiler.util.automata;
 
-import br.uefs.compiler.util.Node;
-import br.uefs.compiler.util.RegexTree;
-import br.uefs.compiler.util.RegexUtils;
+import br.uefs.compiler.lexer.TokenClass;
+import br.uefs.compiler.util.regex.Operand;
+import br.uefs.compiler.util.regex.Operator;
+import br.uefs.compiler.util.regex.Regex;
+import br.uefs.compiler.util.regex.RegexElement;
 
 import java.util.*;
-import java.util.concurrent.SynchronousQueue;
 
-public class NFA implements Cloneable {
-    public static final String EPS = "EPS";
-    public static final int EMPTY_STATE = -1;
-    private static int RUNNING_ID = 0;
-
-    private State start;
-    private List<State> acceptingStates;
+public class NFA extends Automata {
+    public static final Character EPS = new Character((char) 127);
 
     public NFA() {
-        acceptingStates = new ArrayList<>();
+        super();
     }
 
-    public State getStart() {
-        return this.start;
+    public NFA(State startState) {
+        super(startState);
     }
 
-    public List<State> getAccpetingStates() {
-        return this.acceptingStates;
+    public NFA withStartState(State start) {
+        this.startState = start;
+        return this;
     }
 
-    private static int getNewId() {
-        return RUNNING_ID++;
+    public StateSet eclosure(State state) {
+        return eclosure(StateSet.of(state));
     }
 
-    public void setStart(State start) {
-        this.start = start;
-    }
+    public StateSet eclosure(StateSet states) {
+        StateSet eclouseSet = new StateSet(states);
+        Stack<State> stack = new Stack<>();
 
-    public void setAcceptingStates(List<State> acceptingStates) {
-        this.acceptingStates = acceptingStates;
-    }
+        for (State state : states) stack.push(state);
 
-    public void addAcceptingState(State st) {
-        acceptingStates.add(st);
-    }
+        while (!stack.isEmpty()) {
+            State u = stack.pop();
 
-    public void setStateTag(StateTag tag) {
-        for (State st : acceptingStates) {
-            st.setStateTag(tag);
-        }
-    }
-
-    public static NFA ofSingleValue(String input) {
-        State start = new State(getNewId());
-        State end = new State(getNewId(), true);
-
-        start.addLink(input, end);
-
-        NFA nfa = new NFA();
-        nfa.setStart(start);
-        nfa.addAcceptingState(end);
-
-        return nfa;
-    }
-
-    public static NFA ofStar(NFA target) {
-        State start = new State(getNewId());
-        State end = new State(getNewId(), true);
-
-        NFA nfa = new NFA();
-
-        start.addLink(EPS, target.getStart());
-        start.addLink(EPS, end);
-        nfa.setStart(start);
-        nfa.addAcceptingState(end);
-        target.getAccpetingStates().get(0).setNotFinal();
-        target.getAccpetingStates().get(0).addLink(EPS, end);
-        target.getAccpetingStates().get(0).addLink(EPS, target.getStart());
-
-        return nfa;
-    }
-
-    public static NFA ofUnion(NFA target1, NFA target2) {
-        State start = new State(getNewId());
-        State end = new State(getNewId(), true);
-
-        NFA nfa = new NFA();
-
-        nfa.setStart(start);
-        nfa.addAcceptingState(end);
-
-        start.addLink(EPS, target1.getStart());
-        start.addLink(EPS, target2.getStart());
-        target1.getAccpetingStates().get(0).setNotFinal();
-        target2.getAccpetingStates().get(0).setNotFinal();
-        target1.getAccpetingStates().get(0).addLink(EPS, end);
-        target2.getAccpetingStates().get(0).addLink(EPS, end);
-
-        return nfa;
-    }
-
-    public static NFA ofConcat(NFA target1, NFA target2) {
-
-        NFA nfa = new NFA();
-
-        nfa.setStart(target1.getStart());
-        nfa.addAcceptingState(target2.getAccpetingStates().get(0));
-
-        target1.getAccpetingStates().get(0).setNotFinal();
-        target1.getAccpetingStates().get(0).setLinks(target2.getStart().getLinks());
-
-        return nfa;
-    }
-
-    public static NFA ofExclamation(NFA target) {
-        State start = new State(getNewId());
-        State end = new State(getNewId(), true);
-
-        NFA nfa = new NFA();
-
-        start.addLink(EPS, target.getStart());
-        start.addLink(EPS, end);
-        nfa.setStart(start);
-        nfa.addAcceptingState(end);
-        target.getAccpetingStates().get(0).setNotFinal();
-        target.getAccpetingStates().get(0).addLink(EPS, end);
-
-        return nfa;
-    }
-
-    public static NFA mergeNFAs(List<NFA> nfaList) {
-        State start = new State(getNewId());
-
-        NFA nfa = new NFA();
-        nfa.setStart(start);
-
-        for (NFA n : nfaList) {
-            start.addLink(EPS, n.getStart());
-
-            for (State acSt : n.getAccpetingStates()) {
-                nfa.addAcceptingState(acSt);
+            for (State v : u.move(EPS)) {
+                if (!v.equals(State.REJECT_STATE) && !eclouseSet.contains(v)) {
+                    eclouseSet.add(v);
+                    stack.push(v);
+                }
             }
         }
-        return nfa;
+        return eclouseSet;
     }
 
-    public static NFA fromRegexTree(RegexTree tree, StateTag tag) throws Exception {
-        Iterator<Node> nodes = tree.iteratorPostorder();
-        Stack<NFA> subexpressions = new Stack<>();
+    public StateSet move(StateSet states, Character input) {
+        return states.move(input);
+    }
 
-        System.out.format("Building NFA from Regex Tree...\n");
+    public StateSet move(State state, Character input) {
+        return state.move(input);
+    }
 
-        while (nodes.hasNext()) {
-            String value = nodes.next().getValue();
+    public DFA toDFA() throws Exception {
+        Set<StateSet> Dstates = new HashSet<>();
+        Map<StateSet, State> stateMap = new Hashtable<>();
+        List<StateSet> unmarked = new ArrayList<>();
+        StateSet start = eclosure(startState);
 
-            if (!RegexUtils.isOperator(value)) {
-                NFA nfa = NFA.ofSingleValue(value);
-                subexpressions.push(nfa);
-            } else {
-                switch (value) {
-                    case "*":
-                        NFA targetStar = subexpressions.pop();
-                        subexpressions.push(NFA.ofStar(targetStar));
+        stateMap.put(start, start.collapse());
+
+        Dstates.add(start);
+        unmarked.add(start);
+
+        while (!unmarked.isEmpty()) {
+            StateSet T = unmarked.remove(0);
+
+            for (Character input : T.possibleInputs()) {
+                if (input.equals(EPS)) continue;
+                StateSet U = eclosure(T.move(input));
+
+                if (!Dstates.contains(U)) {
+                    Dstates.add(U);
+                    unmarked.add(U);
+                }
+
+                stateMap.putIfAbsent(U, U.collapse());
+                stateMap.get(T).addTransaction(input, stateMap.get(U));
+            }
+        }
+
+        return new DFA(stateMap.get(start));
+    }
+
+    /*
+            q0 ----input----> q1*
+     */
+    public static NFA ofSingleInput(Character input, Comparable tag, Comparable defaultTag) {
+        State end = new State(tag, true);
+        State start = new State(defaultTag)
+                .addTransaction(input, end);
+
+        return new NFA(start);
+    }
+
+    /*        ____________________________EPS_____________________
+            /                                                     \
+          ->q0 ----EPS----> (target.q0 ---> target.q1)----EPS------> q1*
+          \___________________EPS__________________/
+     */
+    public static NFA ofStar(NFA target, Comparable tag, Comparable defaultTag) throws Exception {
+        State end = new State(tag, true);
+        State start = new State(defaultTag)
+                .addTransaction(EPS, target.getStartState())
+                .addTransaction(EPS, end);
+
+        StateSet targetFinalStates = target.getFinalStates();
+        // target must have only one final state
+        State targetFinalState = targetFinalStates.getOnlyState();
+        targetFinalState
+                .setIsFinal(false)
+                .setTag(defaultTag)
+                .addTransaction(EPS, end)
+                .addTransaction(EPS, start);
+
+        return new NFA(start);
+    }
+
+    /*    ____________________________EPS_____________________
+         /                                                    \
+      ->q0 ----EPS----> (target.q0 ---> target.q1)----EPS------> q1*
+    */
+    public static NFA ofQuestion(NFA target, Comparable tag, Comparable defaultTag) throws Exception {
+        State end = new State(tag, true);
+        State start = new State(defaultTag)
+                .addTransaction(EPS, target.getStartState())
+                .addTransaction(EPS, end);
+
+        // target must have only one final state
+        target
+                .getFinalStates()
+                .getOnlyState()
+                .setTag(defaultTag)
+                .setIsFinal(false)
+                .addTransaction(EPS, end);
+
+        return new NFA(start);
+    }
+
+    /*        ______EPS____> (target1.q0 ---> target1.q1) ___EPS____
+            /                                                       \
+           q0                                                        --> q1*
+           \                                                        /
+            ------EPS------> (target2.q0 ---> target2.q1) ---EPS---
+     */
+    public static NFA ofUnion(NFA target1, NFA target2, Comparable tag, Comparable defaultTag) throws Exception {
+        State end = new State(tag, true);
+        State start = new State(defaultTag)
+                .addTransaction(EPS, target1.getStartState())
+                .addTransaction(EPS, target2.getStartState());
+
+        // targets must have only one final state
+        State target1FinalState = target1.getFinalStates().getOnlyState()
+                .setIsFinal(false)
+                .setTag(defaultTag);
+        State target2FinalState = target2.getFinalStates().getOnlyState()
+                .setIsFinal(false)
+                .setTag(defaultTag);
+
+        target1FinalState.addTransaction(EPS, end);
+        target2FinalState.addTransaction(EPS, end);
+
+        return new NFA(start);
+    }
+
+    /*
+       target1.q0 ---> (target1.q1 & target2.q0) ---> target2.q1*
+    */
+    public static NFA ofConcat(NFA target1, NFA target2, Comparable defaultTag) throws Exception {
+        // targets must have only one final state
+        target1.getFinalStates().getOnlyState()
+                .setIsFinal(false)
+                .setTag(defaultTag)
+                .addAllTransactions(target2.getStartState().getTransitions());
+
+        return new NFA(target1.getStartState());
+    }
+
+    public static NFA merge(List<NFA> nfas, TokenClass defaultTag) {
+        State start = new State(defaultTag);
+
+        for (NFA nfa : nfas) {
+            start.addTransaction(EPS, nfa.getStartState());
+        }
+
+        return new NFA(start);
+    }
+
+    public static NFA fromRegexExpression(String expression, Comparable tag, Comparable defaultTag) throws Exception {
+        Regex regex = new Regex(expression);
+        List<RegexElement> postfix = regex.toPostfix();
+
+        Stack<NFA> subnfas = new Stack<>();
+
+        for (RegexElement el : postfix) {
+            if (Operand.class.isInstance(el)) {
+                subnfas.push(NFA.ofSingleInput(el.getValue(), tag, defaultTag));
+            } else if (Operator.class.isInstance(el)) {
+                switch (el.getValue()) {
+                    case '*':
+                        NFA targetStar = subnfas.pop();
+                        subnfas.push(NFA.ofStar(targetStar, tag, defaultTag));
                         break;
-                    case "?":
-                        NFA targetExp = subexpressions.pop();
-                        subexpressions.push(NFA.ofExclamation(targetExp));
+                    case '?':
+                        NFA targetQuestion = subnfas.pop();
+                        subnfas.push(NFA.ofQuestion(targetQuestion, tag, defaultTag));
                         break;
-                    case "|":
-                        NFA targetUnion2 = subexpressions.pop();
-                        NFA targetUnion1 = subexpressions.pop();
-                        subexpressions.push(NFA.ofUnion(targetUnion1, targetUnion2));
+                    case '|':
+                        NFA targetUnion2 = subnfas.pop();
+                        NFA targetUnion1 = subnfas.pop();
+                        subnfas.push(NFA.ofUnion(targetUnion1, targetUnion2, tag, defaultTag));
                         break;
-                    case ".":
-                        NFA targetConcat2 = subexpressions.pop();
-                        NFA targetConcat1 = subexpressions.pop();
-                        subexpressions.push(NFA.ofConcat(targetConcat1, targetConcat2));
+                    case '.':
+                        NFA targetConcat2 = subnfas.pop();
+                        NFA targetConcat1 = subnfas.pop();
+                        subnfas.push(NFA.ofConcat(targetConcat1, targetConcat2, defaultTag));
                         break;
                     default:
-                        throw new Exception(String.format("Unknown operator '%s'", value));
+                        throw new Exception("Can't convert this operator to NFA: " + el.getValue());
                 }
-            }
+            } else throw new Exception("Unrecognized RegexElement: " + el.getValue());
         }
 
-        NFA res = subexpressions.pop();
-        res.setStateTag(tag);
-        return res;
+        return subnfas.pop();
     }
 
-    public TransitionTable asTransitionTable() {
-        Map<Integer, Map<String, Set<Integer>>> map = new Hashtable<>();
-        Map<Integer, StateTag> tags = new Hashtable<>();
-
-        ArrayList<State> q = new ArrayList<>();
-        Set<Integer> visited = new HashSet<>();
-
-        q.add(this.start);
-
-        while (!q.isEmpty()) {
-            State cur = q.remove(0);
-            if (cur.isFinal())
-                tags.put(cur.getId(), cur.getTag());
-            visited.add(cur.getId());
-
-            if (map.get(cur.getId()) == null) {
-                map.put(cur.getId(), new Hashtable<>());
-            }
-
-            for (Map.Entry<String, List<State>> v : cur.getLinks().entrySet()) {
-
-                if (map.get(cur.getId()).get(v.getKey()) == null) {
-                    map.get(cur.getId()).put(v.getKey(), new HashSet<>());
-                }
-
-                for (State st : v.getValue()) {
-                    map.get(cur.getId()).get(v.getKey()).add(st.getId());
-                    if (!visited.contains(st.getId())) {
-                        q.add(st);
-                    }
-                }
-            }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("NFA{\n");
+        for (State st : getAllStates()) {
+            if (st.equals(startState)) sb.append("*");
+            sb.append(st.toString());
+            sb.append("\n");
         }
-
-        Set<Integer> acceptIds = new HashSet<>();
-
-        for (State st : acceptingStates) {
-            acceptIds.add(st.getId());
-        }
-
-
-        return new TransitionTable(this.start.getId(), acceptIds, map, tags);
-    }
-
-    public void printNFA() {
-
-        Set<Integer> visited = new HashSet<>();
-        ArrayList<State> q = new ArrayList<>();
-
-        q.add(this.start);
-
-        System.out.println(this.start.getId() + " " + this.getAccpetingStates().get(0).getId());
-        while (!q.isEmpty()) {
-            State cur = q.remove(0);
-            visited.add(cur.getId());
-
-            System.out.print(String.format("%d(%s) ", cur.getId(), cur.isFinal()));
-            for (Map.Entry<String, List<State>> v : cur.getLinks().entrySet()) {
-                System.out.print(String.format("--[%s]-->", v.getKey()));
-
-                for (State st : v.getValue()) {
-                    System.out.print(st.getId() + " ");
-                    if (!visited.contains(st.getId()))
-                        q.add(st);
-                }
-                System.out.println();
-            }
-
-        }
-
+        sb.append("}\n");
+        return sb.toString();
     }
 }
