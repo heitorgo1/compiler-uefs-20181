@@ -7,13 +7,17 @@ public class TokenMistakeHandler {
 
     /*
     * Negative numbers should only be considered a NUMBER token if
-    * the previous token is (, =, !=, <=, >= +, -, / or *
+    * the previous token is (, =, ==, <, >, !=, <=, >= +, -, / or *
+    * Otherwise they should be broken down into an OPERATOR and a NUMBER.
     * */
     private static boolean isNumberMistake(Token previous, Token current) {
         return current.getTokenClass().getName().equals("NUMERO") &&
                 current.getLexeme().contains("-") &&
                 !previous.getLexeme().equals("(") &&
                 !previous.getLexeme().equals("=") &&
+                !previous.getLexeme().equals("==") &&
+                !previous.getLexeme().equals("<") &&
+                !previous.getLexeme().equals(">") &&
                 !previous.getLexeme().equals("<=") &&
                 !previous.getLexeme().equals(">=") &&
                 !previous.getLexeme().equals("!=") &&

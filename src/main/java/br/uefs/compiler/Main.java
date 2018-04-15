@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Reader in = new StringReader("11.11@+AB+5.0.10");
+        Reader in = new StringReader("-2 != -3");
 //        Reader in = new FileReader("entrada/entrada_exemplo_teste_lexico.txt");
         Lexer lexer;
         DFA dfa;
@@ -43,8 +43,6 @@ public class Main {
 
         System.out.println(tokens);
         System.out.println(errors);
-
-        System.out.println(new Regex("(a|(bc)*)").toPostfix());
 
     }
 }
