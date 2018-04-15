@@ -7,7 +7,7 @@ public class TokenMistakeHandler {
 
     /*
     * Negative numbers should only be considered a NUMBER token if
-    * the previous token is (, =, <=, >= +, -, / or *
+    * the previous token is (, =, !=, <=, >= +, -, / or *
     * */
     private static boolean isNumberMistake(Token previous, Token current) {
         return current.getTokenClass().getName().equals("NUMERO") &&
@@ -16,6 +16,7 @@ public class TokenMistakeHandler {
                 !previous.getLexeme().equals("=") &&
                 !previous.getLexeme().equals("<=") &&
                 !previous.getLexeme().equals(">=") &&
+                !previous.getLexeme().equals("!=") &&
                 !previous.getLexeme().equals("+") &&
                 !previous.getLexeme().equals("-") &&
                 !previous.getLexeme().equals("/") &&
