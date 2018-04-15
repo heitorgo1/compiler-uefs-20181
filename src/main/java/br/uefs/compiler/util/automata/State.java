@@ -1,19 +1,36 @@
 package br.uefs.compiler.util.automata;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class State implements Comparable {
+/**
+ * A state for Automata implementations.
+ */
+public class State implements Comparable, Serializable {
+    /**
+     * Global id counter to make each State unique
+     */
     public static long RUNNING_ID = 0;
+    /**
+     * Special rejection State
+     */
     public static final State REJECT_STATE = new State(-1);
 
     private long id;
     private boolean isFinal;
+    /**
+     * transitions possible by this state to (possibly) multiple states with a Character input
+     */
     private Map<Character, StateSet> transitions;
 
+    /**
+     * Comparable tag to determine from which automata came the each State
+     * when merging automatas.
+     */
     private Comparable tag;
 
     public State() {
@@ -44,18 +61,11 @@ public class State implements Comparable {
         tag = comp -> 0;
     }
 
-    public State(int id, boolean isFinal) {
-        this.id = id;
-        this.isFinal = isFinal;
-        transitions = new Hashtable<>();
-        tag = comp -> 0;
-    }
-
     public <T extends Comparable> T getTag(Class<T> type) {
         return type.cast(tag);
     }
 
-    public Comparable getTag(){
+    public Comparable getTag() {
         return tag;
     }
 
@@ -114,6 +124,13 @@ public class State implements Comparable {
         return this;
     }
 
+    /**
+     * Given an input, return to what States it can go.
+     * Return rejection State in case there is not transaction for this input.
+     *
+     * @param input Character for transaction
+     * @return set of states that can be reached by input
+     */
     public StateSet move(Character input) {
         if (!transitions.containsKey(input)) return StateSet.of(REJECT_STATE);
         return transitions.get(input);

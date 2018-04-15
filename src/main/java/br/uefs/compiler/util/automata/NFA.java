@@ -1,6 +1,6 @@
 package br.uefs.compiler.util.automata;
 
-import br.uefs.compiler.lexer.TokenClass;
+import br.uefs.compiler.lexer.token.TokenClass;
 import br.uefs.compiler.util.regex.Operand;
 import br.uefs.compiler.util.regex.Operator;
 import br.uefs.compiler.util.regex.Regex;
@@ -8,7 +8,13 @@ import br.uefs.compiler.util.regex.RegexElement;
 
 import java.util.*;
 
+/**
+ * Non-deterministic Finite Automata implementation
+ */
 public class NFA extends Automata {
+    /**
+     * Character that represents an epsilon input
+     */
     public static final Character EPS = new Character((char) 127);
 
     public NFA() {
@@ -24,10 +30,24 @@ public class NFA extends Automata {
         return this;
     }
 
+    /**
+     * Get all States reachable from a given State
+     * using only epsilon (EPS) transitions.
+     *
+     * @param state input State
+     * @return e-closure StateSet
+     */
     public StateSet eclosure(State state) {
         return eclosure(StateSet.of(state));
     }
 
+    /**
+     * Get all States reachable from a given set of States
+     * using only epsilon (EPS) transitions.
+     *
+     * @param states input StateSet
+     * @return e-closure StateSet
+     */
     public StateSet eclosure(StateSet states) {
         StateSet eclouseSet = new StateSet(states);
         Stack<State> stack = new Stack<>();
@@ -55,6 +75,13 @@ public class NFA extends Automata {
         return state.move(input);
     }
 
+    /**
+     * Converts this NFA to DFA using the Subset Construction Algorithm.
+     *
+     * @return DFA corresponding to the NFA
+     * @throws Exception
+     * @see <a href="http://www.cs.nuim.ie/~jpower/Courses/Previous/parsing/node9.html">Subset Construction Algorithm</a>
+     */
     public DFA toDFA() throws Exception {
         Set<StateSet> Dstates = new HashSet<>();
         Map<StateSet, State> stateMap = new Hashtable<>();
@@ -86,8 +113,14 @@ public class NFA extends Automata {
         return new DFA(stateMap.get(start));
     }
 
-    /*
-            q0 ----input----> q1*
+    /**
+     * Instantiates a NFA for a Regex Operand
+     * <p>
+     * q0 ----input----> q1*
+     *
+     * @param input Input that will make the transition from a start State to the Final State of this NFA
+     * @param tag   Tag of the new final state
+     * @return new NFA
      */
     public static NFA ofSingleInput(Character input, Comparable tag, Comparable defaultTag) {
         State end = new State(tag, true);
@@ -97,10 +130,17 @@ public class NFA extends Automata {
         return new NFA(start);
     }
 
-    /*        ____________________________EPS_____________________
-            /                                                     \
-          ->q0 ----EPS----> (target.q0 ---> target.q1)----EPS------> q1*
-          \___________________EPS__________________/
+    /**
+     * Instantiates a NFA for a Regex Start (*) Operator
+     * ____________________________EPS_____________________
+     * /                                                     \
+     * ->q0 ----EPS----> (target.q0 ---> target.q1)----EPS------> q1*
+     * \___________________EPS__________________/
+     *
+     * @param target     NFA corresponding to the * operator
+     * @param tag        Tag of the new final state
+     * @param defaultTag Tag that will replace the tag of old final states
+     * @return new NFA
      */
     public static NFA ofStar(NFA target, Comparable tag, Comparable defaultTag) throws Exception {
         State end = new State(tag, true);
@@ -120,10 +160,18 @@ public class NFA extends Automata {
         return new NFA(start);
     }
 
-    /*    ____________________________EPS_____________________
-         /                                                    \
-      ->q0 ----EPS----> (target.q0 ---> target.q1)----EPS------> q1*
-    */
+    /**
+     * Instantiates a NFA for a Regex Question (?) Operator
+     * <p>
+     * ____________________________EPS_____________________
+     * /                                                    \
+     * ->q0 ----EPS----> (target.q0 ---> target.q1)----EPS------> q1*
+     *
+     * @param target     NFA corresponding to the ? operator
+     * @param tag        Tag of the new final state
+     * @param defaultTag Tag that will replace the tag of old final states
+     * @return new NFA
+     */
     public static NFA ofQuestion(NFA target, Comparable tag, Comparable defaultTag) throws Exception {
         State end = new State(tag, true);
         State start = new State(defaultTag)
@@ -141,11 +189,20 @@ public class NFA extends Automata {
         return new NFA(start);
     }
 
-    /*        ______EPS____> (target1.q0 ---> target1.q1) ___EPS____
-            /                                                       \
-           q0                                                        --> q1*
-           \                                                        /
-            ------EPS------> (target2.q0 ---> target2.q1) ---EPS---
+    /**
+     * Instantiates a NFA for a Regex Union (|) Operator
+     * <p>
+     * ______EPS____> (target1.q0 ---> target1.q1) ___EPS____
+     * /                                                       \
+     * q0                                                        --> q1*
+     * \                                                        /
+     * ------EPS------> (target2.q0 ---> target2.q1) ---EPS---
+     *
+     * @param target1    NFA to be united
+     * @param target2    NFA to be united
+     * @param tag        Tag of the new final state
+     * @param defaultTag Tag that will replace the tag of old final states
+     * @return new NFA
      */
     public static NFA ofUnion(NFA target1, NFA target2, Comparable tag, Comparable defaultTag) throws Exception {
         State end = new State(tag, true);
@@ -167,9 +224,16 @@ public class NFA extends Automata {
         return new NFA(start);
     }
 
-    /*
-       target1.q0 ---> (target1.q1 & target2.q0) ---> target2.q1*
-    */
+    /**
+     * Instantiates a NFA for a Regex Concat (.) Operator
+     * <p>
+     * target1.q0 ---> (target1.q1 & target2.q0) ---> target2.q1*
+     *
+     * @param target1    NFA that comes first in the concatenation
+     * @param target2    NFA that comes later in the concatenation
+     * @param defaultTag Tag that will replace the tag of old final states
+     * @return new NFA
+     */
     public static NFA ofConcat(NFA target1, NFA target2, Comparable defaultTag) throws Exception {
         // targets must have only one final state
         target1.getFinalStates().getOnlyState()
@@ -180,6 +244,14 @@ public class NFA extends Automata {
         return new NFA(target1.getStartState());
     }
 
+    /**
+     * Group many NFAs into a single one by creating a new start State
+     * and making an epsilon transition from it to every other start State.
+     *
+     * @param nfas       NFAs to be merged
+     * @param defaultTag Tag of the new start State
+     * @return new NFA
+     */
     public static NFA merge(List<NFA> nfas, TokenClass defaultTag) {
         State start = new State(defaultTag);
 
@@ -190,6 +262,15 @@ public class NFA extends Automata {
         return new NFA(start);
     }
 
+    /**
+     * Converts a Regular Expression to an NFA and tag it.
+     *
+     * @param expression Regular Expression as String
+     * @param tag        Tag of the new NFA final State
+     * @param defaultTag Tag for other States that are not final
+     * @return new NFA that recognizes the input expression
+     * @throws Exception in case the expression can't be converted
+     */
     public static NFA fromRegexExpression(String expression, Comparable tag, Comparable defaultTag) throws Exception {
         Regex regex = new Regex(expression);
         List<RegexElement> postfix = regex.toPostfix();

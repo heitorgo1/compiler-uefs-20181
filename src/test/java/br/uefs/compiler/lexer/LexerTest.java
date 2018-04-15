@@ -1,5 +1,10 @@
 package br.uefs.compiler.lexer;
 
+import br.uefs.compiler.lexer.token.ReservedWords;
+import br.uefs.compiler.lexer.token.Token;
+import br.uefs.compiler.lexer.token.TokenClass;
+import br.uefs.compiler.lexer.token.TokenRecognizerAutomataFactory;
+import br.uefs.compiler.util.automata.DFA;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,7 +19,9 @@ public class LexerTest {
 
     @BeforeClass
     public static void before() throws Exception {
+        DFA dfa = TokenRecognizerAutomataFactory.getDFAFromClassList(TokenClass.CLASSES);
         lexer = new Lexer();
+        lexer.withAutomata(dfa);
     }
 
     public void runTokenCheck(String clazz, String value) throws Exception {
@@ -86,7 +93,7 @@ public class LexerTest {
 
     @Test
     public void lineCommentTest() throws Exception {
-        List<String> lines = Arrays.asList("//skadjaksldj\n", "//\n", "//21312\n", "//??<><>{~p\n", "//   \n");
+        List<String> lines = Arrays.asList("//skadjaksldj", "//", "//21312", "//??<><>{~p", "//   ");
 
         for (String line : lines) {
             lexer.withReader(new StringReader(line));
@@ -166,6 +173,58 @@ public class LexerTest {
         );
         List<String> values = Arrays.asList(
                 "/* my comment's\t*/", " ", "string", " ", "ss"
+        );
+
+        runTokenCheck(classes, values);
+
+        Assert.assertNull(lexer.nextToken());
+    }
+
+    @Test
+    public void codeBlock5Test() throws Exception {
+        String code = "11.11@+AB+5.0.10";
+        lexer.withReader(new StringReader(code));
+
+        List<String> classes = Arrays.asList(
+                "ERROR_NUMEROMALFORMADO", "OPERADORARITMETICO", "IDENTIFICADOR", "OPERADORARITMETICO",
+                "ERROR_NUMEROMALFORMADO"
+        );
+        List<String> values = Arrays.asList(
+                "11.11@", "+", "AB", "+", "5.0.10"
+        );
+
+        runTokenCheck(classes, values);
+
+        Assert.assertNull(lexer.nextToken());
+    }
+
+    @Test
+    public void codeBlock6Test() throws Exception {
+        String code = "A-- - -2";
+        lexer.withReader(new StringReader(code));
+
+        List<String> classes = Arrays.asList(
+                "IDENTIFICADOR", "OPERADORARITMETICO", "ESPACO","OPERADORARITMETICO", "ESPACO", "NUMERO"
+        );
+        List<String> values = Arrays.asList(
+                "A", "--", " ", "-", " ", "-2"
+        );
+
+        runTokenCheck(classes, values);
+
+        Assert.assertNull(lexer.nextToken());
+    }
+
+    @Test
+    public void codeBlock7Test() throws Exception {
+        String code = "(f<=-10)";
+        lexer.withReader(new StringReader(code));
+
+        List<String> classes = Arrays.asList(
+                "DELIMITADOR", "IDENTIFICADOR", "OPERADORRELACIONAL","NUMERO", "DELIMITADOR"
+        );
+        List<String> values = Arrays.asList(
+                "(", "f", "<=", "-10", ")"
         );
 
         runTokenCheck(classes, values);

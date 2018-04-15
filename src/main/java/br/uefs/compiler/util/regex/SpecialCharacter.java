@@ -3,6 +3,17 @@ package br.uefs.compiler.util.regex;
 import java.util.*;
 import java.util.stream.IntStream;
 
+/**
+ * Characters with special meaning for Regular Expressions
+ * <p>
+ * Supported special characters:
+ * * l - Letter - [a-z] | [A-Z]
+ * * d - Digit - [0-9]
+ * * s - Whitespace - ASCII 9 | ASCII 10 | ASCII 13 | ASCII 32
+ * * y - Symbols - ASCII from 32 to 126 (except 34)
+ * * N - Special Symbols - "|#|$|%|'|:|?|@|\|^|_|`
+ * * b - Symbols Without Slash - ASCII from 32 to 126 (except 34 and 47)
+ */
 public class SpecialCharacter {
 
     public static Set<Character> SPECIAL_CHARACTERS = new HashSet<>(Arrays.asList(
@@ -45,7 +56,7 @@ public class SpecialCharacter {
         return list;
     }
 
-    public static List<String> allNotDigitsNorLetterNorSpaceNorOperators() {
+    private static List<String> allNotDigitsNorLetterNorSpaceNorOperators() {
         List<String> list = new ArrayList<>();
         for (int i : IntStream.rangeClosed(34, 96).toArray()) {
             if (Character.isLetterOrDigit(i)) continue;
@@ -74,6 +85,15 @@ public class SpecialCharacter {
         return list;
     }
 
+    /**
+     * Given a special character, return the regular expression that
+     * it represents.
+     *
+     * e.g.: for input = d, return = "(0|1|2|3|4|5|6|7|8|9)"
+     *
+     * @param input Special Character
+     * @return String regular expression
+     */
     public static String getExpression(Character input) throws Exception {
 
         StringBuilder sb = new StringBuilder();

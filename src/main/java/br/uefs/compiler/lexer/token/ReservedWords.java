@@ -1,4 +1,4 @@
-package br.uefs.compiler.lexer;
+package br.uefs.compiler.lexer.token;
 
 import java.util.Arrays;
 import java.util.List;

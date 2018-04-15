@@ -1,16 +1,34 @@
 package br.uefs.compiler.util.regex;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
+/**
+ * Representation of a Regular Expression.
+ */
 public class Regex {
 
-
+    /**
+     * Regular Expression as String
+     */
     private final String expression;
 
     public Regex(String expression) {
         this.expression = expression;
     }
 
+    /**
+     * Get all escaped special characters (see {@link SpecialCharacter} class) in the expression
+     * and expand them to their regex correspondents.
+     *
+     * e.g.:
+     *      expression = \d*, return = (0|1|2|3|4|5|6|7|8|9)*
+     *
+     * @param expression the regex expression that is going to be expanded.
+     * @return expanded expression
+     * @throws Exception in case of trying to get an expression for a character that is not special
+     */
     public String expandSpecialCharacters(String expression) throws Exception {
         if (expression.length() == 1) return expression;
 
@@ -23,7 +41,7 @@ public class Regex {
             char c = expression.charAt(i);
 
             if (previous == '\\' && SpecialCharacter.check(c)) {
-                sb.deleteCharAt(sb.length()-1);
+                sb.deleteCharAt(sb.length() - 1);
                 sb.append(SpecialCharacter.getExpression(c));
             } else
                 sb.append(c);
@@ -32,16 +50,23 @@ public class Regex {
         return sb.toString();
     }
 
-    /*
-    Add concat operator ('.') in the following situations:
-     a . b
-     a . (
-     ) . a
+    /**
+     * Add concat operator ('.') in the following situations:
+     * a . b
+     * a . (
+     * ) . a
      * . a
      * . (
-     ) . (
-     ? . a
-     ? . (
+     * ) . (
+     * ? . a
+     * ? . (
+     *
+     * e.g.:
+     *      expression = ab|c, return = a.b|c
+     *      expression = (\\.abc), return = (\\..a.b.c)
+     *
+     * @param expression the regex expression that is going to be expanded.
+     * @return expanded expression
      */
     public String expandConcat(String expression) {
         if (expression.length() == 1) return expression;
@@ -64,7 +89,7 @@ public class Regex {
                     sb.append(c);
                     escapedCharacter = true;
                 }
-            } else if ((escapedCharacter || !Operator.check(c)) && (!Operator.check(next) || next == '(' ) ) {
+            } else if ((escapedCharacter || !Operator.check(c)) && (!Operator.check(next) || next == '(')) {
                 sb.append(c);
                 sb.append('.');
                 escapedCharacter = false;
@@ -81,6 +106,16 @@ public class Regex {
         return sb.toString();
     }
 
+    /**
+     * Converts the expression in infix notation to postfix.
+     * <p>
+     * e.g.:
+     * expression = (a|(b.c)*), return = [a, b, c, ., *, |]
+     * expression = a|b, return = [a, b, |]
+     *
+     * @return List of Operands and Operators (RegexElement) ordered in postfix notation.
+     * @throws Exception in case of malformed expression that can't be converted.
+     */
     public List<RegexElement> toPostfix() throws Exception {
         final String expandedExpression = expandSpecialCharacters(expandConcat(this.expression));
 

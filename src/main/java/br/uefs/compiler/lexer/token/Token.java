@@ -1,4 +1,4 @@
-package br.uefs.compiler.lexer;
+package br.uefs.compiler.lexer.token;
 
 public class Token {
 

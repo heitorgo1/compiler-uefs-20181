@@ -1,7 +1,5 @@
 package br.uefs.compiler.lexer;
 
-import javafx.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -48,12 +46,13 @@ public class InputReader extends BufferedReader {
     }
 
     public Character readch() {
-        if (forward >= buffer.length) return new Character((char)-1);
+        if (forward >= buffer.length) return new Character((char) -1);
         char c = buffer[forward++];
         return c;
     }
 
     public void startFromNextChar() {
+        if (lexemeBegin == '\n') currentLine++;
         lexemeBegin++;
         lexemeEnd = lexemeBegin;
         forward = lexemeBegin;

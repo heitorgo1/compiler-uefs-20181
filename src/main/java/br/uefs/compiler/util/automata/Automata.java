@@ -1,11 +1,18 @@
 package br.uefs.compiler.util.automata;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-public class Automata {
+/**
+ * Automata abstraction for NFAs and DFAs
+ */
+public class Automata implements Serializable{
 
+    /**
+     * Start State of the Automata
+     */
     protected State startState;
 
     public Automata() {
@@ -67,13 +74,16 @@ public class Automata {
         return alphabet;
     }
 
+    /**
+     * Build DFA directly from Regular Expression.
+     *
+     * @param expression
+     * @return new DFA
+     * @throws Exception
+     */
     public static DFA buildDFAFromRegex (String expression) throws Exception {
         NFA nfa = NFA.fromRegexExpression(expression, o -> 0, o -> Integer.MAX_VALUE);
         return nfa.toDFA();
     }
 
-    public static DFA buildDFAFromRegex (String expression, Comparable tag, Comparable defaultTag) throws Exception {
-        NFA nfa = NFA.fromRegexExpression(expression, tag, defaultTag);
-        return nfa.toDFA();
-    }
 }
