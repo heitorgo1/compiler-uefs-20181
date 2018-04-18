@@ -43,10 +43,10 @@ public class TokenClass implements Comparable, Serializable {
             new TokenClass(285, ";|,|\\(|\\)|[|]|{|}|\\.", "DELIMITADOR"),
             new TokenClass(286, "\"(\\y|(\\\\\")|(\\\\n))*\"", "CADEIACARECTERES"),
             // Errors
-            new TokenClass(287, "\\l(\\l|\\d|\\N)*", "ERROR_IDENTIFICADORMALFORMADO"),
+//            new TokenClass(287, "\\l(\\l|\\d|\\N)*", "ERROR_IDENTIFICADORMALFORMADO"),
             new TokenClass(288, "\"(\\y|(\\\\\")|(\\\\n))*", "ERROR_CADEIAABERTA"),
-            new TokenClass(289, "(-)?\\s*\\d\\d*\\.", "ERROR_NUMERODECIMALINCOMPLETO"),
-            new TokenClass(290, "(-)?\\s*\\d\\d*(\\l|\\N)*\\d*(\\.\\d\\d*(\\l|\\N|\\.)*\\d*)?", "ERROR_NUMEROMALFORMADO"),
+//            new TokenClass(289, "(-)?\\s*\\d\\d*\\.", "ERROR_NUMERODECIMALINCOMPLETO"),
+//            new TokenClass(290, "(-)?\\s*\\d\\d*(\\l|\\N)*\\d*(\\.\\d\\d*(\\l|\\N|\\.)*\\d*)?", "ERROR_NUMEROMALFORMADO"),
             new TokenClass(291, "\\N\\N*", "ERROR_VALORINESPERADO"),
             new TokenClass(292, "/\\*(\\b|\\s|\")*", "ERROR_COMENTARIOBLOCOABERTO")
     );

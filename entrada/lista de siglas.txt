@@ -1,7 +1,0 @@
-PRE palavra reservada
-IDE identificador
-NRO numero
-DEL delimitador 
-REL operador relacional
-LOG operador logico
-ART operador aritmetico

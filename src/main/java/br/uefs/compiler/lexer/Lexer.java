@@ -5,6 +5,7 @@ import br.uefs.compiler.lexer.token.TokenClass;
 import br.uefs.compiler.lexer.token.TokenMistakeHandler;
 import br.uefs.compiler.util.automata.Automata;
 import br.uefs.compiler.util.automata.AutomataSimulator;
+import br.uefs.compiler.util.automata.DFA;
 import br.uefs.compiler.util.exceptions.InvalidCharacterException;
 
 import java.io.IOException;
@@ -37,6 +38,12 @@ public class Lexer {
         simulator = new AutomataSimulator(auto);
         errors = new ArrayList<>();
         reader = new InputReader(in);
+    }
+
+    public Lexer(Automata auto) throws Exception {
+        simulator = new AutomataSimulator(auto);
+        errors = new ArrayList<>();
+        reader = null;
     }
 
     public void withReader(Reader in) throws IOException {
