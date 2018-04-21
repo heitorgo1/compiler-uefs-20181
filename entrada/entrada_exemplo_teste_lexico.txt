@@ -2,11 +2,11 @@ exemplo teste;
 
 float f = 3a+;
 
-string msg = "teste
+string msg = "teste"
 
 if ( f >= -10) && (f < ) 
-	print("mensagem );
-	
+	print("mensagem ");
+
 // exemplo de teste do lexico
 
-/* exa869 mi processadores de linguagem de programacao
+/* exa869 mi processadores de linguagem de programacao*/

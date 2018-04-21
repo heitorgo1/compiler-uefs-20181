@@ -186,11 +186,11 @@ public class LexerTest {
         lexer.withReader(new StringReader(code));
 
         List<String> classes = Arrays.asList(
-                "ERROR_NUMEROMALFORMADO", "OPERADORARITMETICO", "IDENTIFICADOR", "OPERADORARITMETICO",
-                "ERROR_NUMEROMALFORMADO"
+                "NUMERO", "ERROR_VALORINESPERADO", "OPERADORARITMETICO", "IDENTIFICADOR", "OPERADORARITMETICO",
+                "NUMERO", "DELIMITADOR", "NUMERO"
         );
         List<String> values = Arrays.asList(
-                "11.11@", "+", "AB", "+", "5.0.10"
+                "11.11", "@", "+", "AB", "+", "5.0", ".", "10"
         );
 
         runTokenCheck(classes, values);

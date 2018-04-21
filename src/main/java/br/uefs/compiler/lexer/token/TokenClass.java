@@ -4,12 +4,19 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Representation of Token Class. A class can be parsed into an automata based on
+ * its regex expression, that way it can be recognized using an AutomataSimulator.
+ */
 public class TokenClass implements Comparable, Serializable {
     public static final TokenClass INVALID_CLASS = new TokenClass(Integer.MAX_VALUE, "", "CLASSEINVALIDA");
 
     public static final TokenClass INVALID_CHARACTER_CLASS =
             new TokenClass(-1, "", "ERROR_CARACTEREINVALIDO");
 
+    /**
+     * Predefined classes
+     */
     public static final List<TokenClass> CLASSES = Arrays.asList(
             new TokenClass(256, "const", "PALAVRARESERVADA"),
             new TokenClass(257, "var", "PALAVRARESERVADA"),

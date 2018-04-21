@@ -1,5 +1,9 @@
 package br.uefs.compiler.lexer.token;
 
+/**
+ * Representation of Token. Every token has a class, a lexeme and
+ * line number associated with it.
+ */
 public class Token {
 
     private TokenClass tclass;
@@ -29,7 +33,7 @@ public class Token {
         return String.format("<%s, %s, %d>",
                 this.tclass.getName(),
                 this.lexeme
-                        .replace("\n","\\n")
+                        .replace("\n", "\\n")
                         .replace("\r", "\\r"),
                 this.line);
     }

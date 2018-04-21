@@ -5,7 +5,7 @@ Compiler Front-end for EXA869 MI Processadores de Linguagem de Programação, UE
 
 Problems to be solved and their deadlines.
 
-1. [ ] Lexical Analyzer - 22/04/2018
+1. [x] Lexical Analyzer - 22/04/2018
 2. [ ] Context Free Grammar - unknown
 3. [ ] Syntax Analyzer - unknown
 4. [ ] Semantic Analyzer - unknown
@@ -33,4 +33,32 @@ Problem 1 - Table 1
 | whitespace           | ASCII 9 \| ASCII 10 \| ASCII 13 \| ASCII 32                                                                                                             |
 
 
+### Testing
 
+For linux, go to the command line and type these commands:
+```
+sudo chmod +x gradlew
+./gradlew test
+```
+
+For windows, go to cmd and type this command:
+```
+gradlew.bat test
+```
+
+### Running
+
+Before running, place your input files inside the folder `./entrada`.
+
+For linux, go to the command line and type these commands:
+```
+sudo chmod +x gradlew
+./gradlew run
+```
+
+For windows, go to cmd and type this command:
+```
+gradlew.bat run
+```
+
+The output for each input file can be found in folder `./saida`.

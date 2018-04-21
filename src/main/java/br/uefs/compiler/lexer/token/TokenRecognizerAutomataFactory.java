@@ -6,6 +6,9 @@ import br.uefs.compiler.util.automata.NFA;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Factory for instantiating an Automata from token classes.
+ */
 public class TokenRecognizerAutomataFactory {
 
     public static DFA getDFAFromClassList(List<TokenClass> tclasses) throws Exception {

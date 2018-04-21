@@ -11,6 +11,7 @@
 <PALAVRARESERVADA, string, 5>
 <IDENTIFICADOR, msg, 5>
 <OPERADORRELACIONAL, =, 5>
+<CADEIACARECTERES, "teste", 5>
 <PALAVRARESERVADA, if, 7>
 <DELIMITADOR, (, 7>
 <IDENTIFICADOR, f, 7>
@@ -24,7 +25,8 @@
 <DELIMITADOR, ), 7>
 <PALAVRARESERVADA, print, 8>
 <DELIMITADOR, (, 8>
+<CADEIACARECTERES, "mensagem ", 8>
+<DELIMITADOR, ), 8>
+<DELIMITADOR, ;, 8>
 
-<ERROR_CADEIAABERTA, "teste, 5>
-<ERROR_CADEIAABERTA, "mensagem );, 8>
-<ERROR_COMENTARIOBLOCOABERTO, /* exa869 mi processadores de linguagem de programacao, 12>
+Sucesso!

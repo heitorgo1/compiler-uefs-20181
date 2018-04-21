@@ -2,10 +2,10 @@ package br.uefs.compiler.lexer;
 
 import br.uefs.compiler.lexer.token.Token;
 import br.uefs.compiler.lexer.token.TokenClass;
+import br.uefs.compiler.lexer.token.TokenError;
 import br.uefs.compiler.lexer.token.TokenMistakeHandler;
 import br.uefs.compiler.util.automata.Automata;
 import br.uefs.compiler.util.automata.AutomataSimulator;
-import br.uefs.compiler.util.automata.DFA;
 import br.uefs.compiler.util.exceptions.InvalidCharacterException;
 
 import java.io.IOException;
@@ -15,29 +15,26 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class responsible for generating tokens given an input Reader and
+ * Class responsible for generating tokens given an input Reader and an Automata, and
  * storing errors if they occur.
  */
 public class Lexer {
 
+    /**
+     * Tokens that won't be passed to syntactic analyser
+     */
     private List<String> uselessClasses = Arrays.asList(
             "ESPACO", "COMENTARIOLINHA", "COMENTARIOBLOCO"
     );
 
     private AutomataSimulator simulator;
     private InputReader reader;
-    private List<Token> errors;
+    private List<TokenError> errors;
 
     public Lexer() {
         simulator = null;
         errors = new ArrayList<>();
         reader = null;
-    }
-
-    public Lexer(Reader in, Automata auto) throws Exception {
-        simulator = new AutomataSimulator(auto);
-        errors = new ArrayList<>();
-        reader = new InputReader(in);
     }
 
     public Lexer(Automata auto) throws Exception {
@@ -54,7 +51,7 @@ public class Lexer {
         simulator = new AutomataSimulator(auto);
     }
 
-    public List<Token> getErrors() {
+    public List<TokenError> getErrors() {
         return errors;
     }
 
@@ -66,11 +63,21 @@ public class Lexer {
         return token.getTokenClass().getName().contains("ERROR");
     }
 
+    /**
+     * Parse reader content into a list of Tokens.
+     * <p>
+     * Errors and useless tokens won't be in the list.
+     * <p>
+     * Mistakes encountered by the TokenMistakeHandler are resolved here.
+     *
+     * @return list of Tokens
+     * @throws Exception
+     */
     public List<Token> readAllTokens() throws Exception {
         List<Token> tokens = new ArrayList<>();
         for (Token token = nextToken(); token != null; token = nextToken()) {
             if (isTokenError(token)) {
-                errors.add(token);
+                errors.add(TokenError.of(token));
             } else if (!tokens.isEmpty() && TokenMistakeHandler.isMistake(tokens.get(tokens.size() - 1), token)) {
                 tokens.addAll(TokenMistakeHandler.solveMistake(tokens.get(tokens.size() - 1), token));
             } else if (!isTokenUseless(token)) {
@@ -80,6 +87,18 @@ public class Lexer {
         return tokens;
     }
 
+    /**
+     * Get next token from reader. Useful for streaming tokens.
+     * <p>
+     * A token is encountered if the Automata Simulator
+     * accepts the current input at any moment.
+     * <p>
+     * If the Simulator doesn't accept the input,
+     * an Invalid Character token is returned.
+     *
+     * @return next Token encountered in the reader
+     * @throws Exception
+     */
     public Token nextToken() throws Exception {
         Token token = null;
         while (!reader.isEof()) {
@@ -106,7 +125,14 @@ public class Lexer {
         return token;
     }
 
-    public Token tryAcceptLexeme() throws Exception {
+    /**
+     * Helper method for creating a token from the current
+     * accepted lexeme.
+     *
+     * @return accepted token
+     * @throws Exception if token was not accepted
+     */
+    private Token tryAcceptLexeme() throws Exception {
         String lexeme = reader.getLexeme();
 
         if (simulator.hasAcceptedInput()) {
