@@ -1,11 +1,47 @@
-exemplo teste;
 
-float f = 3a+;
+const {
+    int a = 1, b = 2, c = 3;
+}
+var {
+    float f = 3.0;
+    int abc = 542;
+    string e = "asdwqe";
+}
 
-string msg = "teste"
+typedef struct ss {
+    bool adf = true;
+} s;
 
-if ( f >= -10) && (f < ) 
-	print("mensagem ");
+function int abc[] (int a, int b, string c) {
+    return "blabla";
+}
+
+procedure abc (int a, int b, string c) {
+    var {
+        int e = 2;
+        bool t = false;
+    }
+
+    print (e, t);
+}
+
+
+start () {
+    var {
+        int f = 2;
+    }
+    if f >= -10 && f == true then {
+        print ("hello");
+    }
+    else {
+        scan (a);
+    }
+    var {
+        s p;
+    }
+
+    print (p.adf);
+}
 
 // exemplo de teste do lexico
 

@@ -9,6 +9,8 @@ import br.uefs.compiler.util.automata.DFA;
 import br.uefs.compiler.util.cache.CacheHandler;
 import br.uefs.compiler.util.errors.ErrorFormatter;
 import br.uefs.compiler.util.errors.GalvaoPhraseGenerator;
+import br.uefs.compiler.util.parser.Grammar;
+import br.uefs.compiler.util.parser.PredictiveParser;
 
 import java.io.File;
 import java.io.FileReader;
@@ -18,7 +20,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -69,7 +74,8 @@ public class Main {
         }
     }
 
-    private static void readAndStoreTokensFromEachInputFile(Lexer lexer) {
+    private static List<Token> readAndStoreTokensFromEachInputFile(Lexer lexer) {
+        final List<Token> tokens = new ArrayList<>();
         try (Stream<Path> paths = Files.walk(Paths.get(INPUT_FOLDER))) {
             paths.filter(Files::isRegularFile).forEach((Path path) -> {
                 try {
@@ -79,7 +85,7 @@ public class Main {
                     return;
                 }
                 try {
-                    List<Token> tokens = lexer.readAllTokens();
+                    tokens.addAll(lexer.readAllTokens());
                     List<TokenError> errors = lexer.getErrors();
 
                     String outputFileName = String.format("saida_%s", path.getFileName());
@@ -95,6 +101,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return tokens;
     }
 
     public static void main(String[] args) throws Exception {
@@ -104,6 +111,35 @@ public class Main {
 
         lexer = new Lexer(dfa);
 
-        readAndStoreTokensFromEachInputFile(lexer);
+        List<Token> tokens = readAndStoreTokensFromEachInputFile(lexer);
+
+        Map<String, Set<String>> first = Grammar.firstMap();
+
+        for (Map.Entry<String, Set<String>> entry : first.entrySet()){
+            System.out.println(entry.getKey()+" -> "+entry.getValue());
+        }
+
+        Map<String, Set<String>> follow = Grammar.followMap();
+        System.out.println();
+        for (Map.Entry<String, Set<String>> entry : follow.entrySet()){
+            System.out.println(entry.getKey()+" -> "+entry.getValue());
+        }
+
+        PredictiveParser p = new PredictiveParser();
+        p.buildTable(first, follow);
+        System.out.println();
+        for (Map.Entry<String, Map<String, List<List<String>>>> entry : p.getTable().entrySet()){
+            System.out.println(entry.getKey()+" -> "+entry.getValue());
+        }
+
+        tokens.add(new Token(new TokenClass(-1,"", "END"), "$", -1));
+
+        System.out.println();
+        System.out.println(tokens);
+        System.out.println();
+
+        p.parse(tokens);
+
+//        Grammar.print();
     }
 }

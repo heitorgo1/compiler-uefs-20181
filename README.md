@@ -6,7 +6,7 @@ Compiler Front-end for EXA869 MI Processadores de Linguagem de Programação, UE
 Problems to be solved and their deadlines.
 
 1. [x] Lexical Analyzer - 22/04/2018
-2. [ ] Context Free Grammar - unknown
+2. [x] [Context Free Grammar](https://docs.google.com/document/d/1bHU1Tl3i42zqa6bDExDx2aRCMPcjzEm15IVa4rdEDZg/edit) - 20/05/2018
 3. [ ] Syntax Analyzer - unknown
 4. [ ] Semantic Analyzer - unknown
 
@@ -32,6 +32,9 @@ Problem 1 - Table 1
 | symbol               | ASCII from 32 to 126 (except ASCII 34)                                                                                                               |
 | whitespace           | ASCII 9 \| ASCII 10 \| ASCII 13 \| ASCII 32                                                                                                             |
 
+### Context Free Grammar
+
+See `grammar.txt`
 
 ### Testing
 
