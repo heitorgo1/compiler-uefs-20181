@@ -1,4 +1,4 @@
-package br.uefs.compiler.util.parser;
+package br.uefs.compiler.parser;
 
 import java.util.List;
 import java.util.Objects;

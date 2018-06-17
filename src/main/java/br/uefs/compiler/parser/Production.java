@@ -1,7 +1,5 @@
-package br.uefs.compiler.util.parser;
+package br.uefs.compiler.parser;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class Production {

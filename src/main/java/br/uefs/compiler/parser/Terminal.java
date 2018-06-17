@@ -1,4 +1,4 @@
-package br.uefs.compiler.util.parser;
+package br.uefs.compiler.parser;
 
 public class Terminal implements GrammarSymbol{
 

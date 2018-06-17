@@ -1,12 +1,39 @@
-package br.uefs.compiler.util.parser;
+package br.uefs.compiler.parser;
 
 import java.util.*;
 
-public class Grammar {
+public class Grammar extends Hashtable<String, RuleArray> {
+
+    private Symbol startSymbol;
+    private Map<SymbolArray, TerminalSet> firstMap;
+    private Map<Symbol, TerminalSet> followMap;
+
+    public Grammar() {
+        super();
+
+        startSymbol = null;
+        firstMap = new Hashtable<>();
+        followMap = new Hashtable<>();
+    }
+
+    public void setStartSymbol (Symbol startSymbol) {
+        this.startSymbol = startSymbol;
+    }
+
+    public Symbol getStartSymbol () {
+        return this.startSymbol;
+    }
+
+    public Grammar addRule(Rule rule) {
+        this.putIfAbsent(rule.getNonTerminal(), new RuleArray());
+
+        this.get(rule.getNonTerminal()).add(rule);
+        return this;
+    }
 
     public static List<Production> PRODUCTIONS = Arrays.asList(
             new Production("<S>", Arrays.asList(
-                    Arrays.asList("<Global Declaration>", "<S 1>")
+                    new SymbolArray("<Global Declaration>", "<S 1>")
             )
             ),
             new Production("<S 1>", Arrays.asList(
@@ -387,6 +414,40 @@ public class Grammar {
 
     public static boolean isTerminal(String s) {
         return !isNonTerminal(s);
+    }
+
+    public static void printr () {
+        String template = "grammar.addRule(new Rule(\"%s\", new SymbolArray(%s)));";
+        for (Production p : PRODUCTIONS) {
+            for (List<String> arr : p.getProductions()) {
+                StringBuilder sb = new StringBuilder();
+                boolean first = true;
+                for (String s : arr) {
+                    if (first) first = false;
+                    else sb.append(", ");
+                    sb.append("\""+s+"\"");
+                }
+                System.out.println(String.format(template, p.getName(), sb.toString()));
+            }
+        }
+    }
+
+    public TerminalSet first1 (Symbol symbol) {
+        return first1(new SymbolArray(symbol));
+    }
+
+    public TerminalSet first1 (SymbolArray symbols) {
+        if (firstMap.containsKey(symbols)) return firstMap.get(symbols);
+
+
+        if (symbols.hasSingleValue() && symbols.getSingleValue().isTerminal()) {
+            firstMap.putIfAbsent(symbols, TerminalSet.ofSingleTerminal(symbols.getSingleValue().getName()));
+        }
+
+
+        for (Symbol sy : symbols) {
+
+        }
     }
 
     public static Map<String, List<List<String>>> asMap() {

@@ -9,14 +9,13 @@ import br.uefs.compiler.util.automata.DFA;
 import br.uefs.compiler.util.cache.CacheHandler;
 import br.uefs.compiler.util.errors.ErrorFormatter;
 import br.uefs.compiler.util.errors.GalvaoPhraseGenerator;
-import br.uefs.compiler.util.parser.Grammar;
-import br.uefs.compiler.util.parser.PredictiveParser;
+import br.uefs.compiler.parser.Grammar;
+import br.uefs.compiler.parser.PredictiveParser;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -113,6 +112,8 @@ public class Main {
 
         List<Token> tokens = readAndStoreTokensFromEachInputFile(lexer);
 
+        Grammar.printr();
+        /*
         Map<String, Set<String>> first = Grammar.firstMap();
 
         for (Map.Entry<String, Set<String>> entry : first.entrySet()){
@@ -139,6 +140,7 @@ public class Main {
         System.out.println();
 
         p.parse(tokens);
+        */
 
 //        Grammar.print();
     }
