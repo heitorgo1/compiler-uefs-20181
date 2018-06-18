@@ -18,10 +18,16 @@ public class Rule {
 
     private Symbol nonTerminal;
     private Symbol.Array symbols;
+    private boolean syncRule;
+
+    public Rule(boolean syncRule) {
+        this.syncRule = syncRule;
+    }
 
     public Rule(String nonTerminal, Symbol.Array symbols) {
         this.nonTerminal = new Symbol(nonTerminal);
         this.symbols = symbols;
+        syncRule = false;
     }
 
     public Symbol getNonTerminal() {
@@ -32,8 +38,13 @@ public class Rule {
         return symbols;
     }
 
+    public boolean isSyncRule() {
+        return syncRule;
+    }
+
     @Override
     public String toString() {
+        if (isSyncRule()) return "Sync";
         return String.format("%s ::= %s", nonTerminal, symbols);
     }
 }

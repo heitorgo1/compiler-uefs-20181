@@ -1,6 +1,7 @@
 
 const {
     int a = 1, b = 2, c = 3;
+    int d = 4;
 }
 var {
     float f = 3.0;
@@ -40,7 +41,7 @@ start () {
         s p;
     }
 
-    print (p.adf);
+    print (p, adf);
 }
 
 // exemplo de teste do lexico

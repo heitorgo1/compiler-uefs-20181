@@ -34,11 +34,14 @@ public class PredictiveParser {
                 }
 
                 if (grammar.first(rule.getSymbols()).containsEmptyString()) {
-
                     for (Symbol terminal : grammar.follow(X)) {
                         table.get(X).putIfAbsent(terminal, rule);
                     }
                 }
+            }
+
+            for (Symbol terminal : grammar.follow(X)) {
+                table.get(X).putIfAbsent(terminal, new Rule(true));
             }
         }
     }
@@ -68,12 +71,23 @@ public class PredictiveParser {
                 s.pop();
                 ip++;
             } else if (s.peek().isTerminal()) {
-                throw new Exception(String.format("%s unrecognized terminal", tokens.get(ip)));
+                // pop stack peek
+                System.out.println(String.format("MATCH ERROR: line=%d input=%s peek=%s", tokens.get(ip).getLine(), cur, s.peek()));
+                s.pop();
+                //throw new Exception(String.format("%s unrecognized terminal", tokens.get(ip)));
             } else if (table.get(s.peek()).get(cur) == null) {
-                throw new Exception("Invalid transition on " + tokens.get(ip));
-            } else {
+                // if table miss, read next token
+                System.out.println(String.format("MISS ERROR: line=%d input=%s peek=%s", tokens.get(ip).getLine(), cur, s.peek()));
+                ip++;
+                continue;
+                //throw new Exception("Invalid transition on " + tokens.get(ip));
+            } else if (table.get(s.peek()).get(cur).isSyncRule()) {
+                // if table sync hit, pop non terminal
+                System.out.println(String.format("SYNC ERROR: line=%d input=%s peek=%s", tokens.get(ip).getLine(), cur, s.peek()));
+                s.pop();
+            }  else {
                 Rule rule = table.get(s.peek()).get(cur);
-                System.out.println(s.peek() + " -> " + rule);
+                System.out.println(s.peek() + " --"+cur+"("+tokens.get(ip).getLine()+")"+"--> " + rule);
 
                 s.pop();
 
@@ -81,6 +95,8 @@ public class PredictiveParser {
                     if (!rule.getSymbols().get(i).isEmptyString())
                         s.push(rule.getSymbols().get(i));
                 }
+
+                System.out.println("Top Now: "+s.peek());
             }
         }
     }
