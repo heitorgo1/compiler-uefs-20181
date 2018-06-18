@@ -1,8 +1,77 @@
 package br.uefs.compiler.parser;
 
-import java.util.Objects;
+import java.util.*;
 
 public class Symbol {
+
+    public static Symbol EMPTY_STRING = new Symbol("");
+    public static Symbol INPUT_END = new Symbol("$");
+
+    static class Set extends HashSet<Symbol> {
+
+        public boolean hasOnlyTerminals() {
+            for (Symbol sy : this) {
+                if (!sy.isTerminal()) return false;
+            }
+            return true;
+        }
+
+        public static Set fromSingleSymbol(Symbol symbol) {
+            Set set = new Set();
+            set.add(symbol);
+            return set;
+        }
+
+        public boolean containsEmptyString() {
+            return this.contains(EMPTY_STRING);
+        }
+
+        public void removeEmptyString() {
+            this.remove(EMPTY_STRING);
+        }
+    }
+
+    static class Array extends ArrayList<Symbol> {
+
+        public Array() {
+            super();
+        }
+
+        public Array(List<Symbol> symbols) {
+            super (symbols);
+        }
+
+        public Array(String... symbolNames) {
+            super();
+
+            for (String symbolName : symbolNames) {
+                this.add(new Symbol(symbolName));
+            }
+        }
+
+        public boolean hasSingleSymbol() {
+            return this.size() == 1;
+        }
+
+        public Symbol getSingleSymbol() {
+            assert hasSingleSymbol();
+
+            return this.get(0);
+        }
+
+        public static Array fromSingleSymbol(Symbol symbol) {
+            Array arr = new Array();
+            arr.add(symbol);
+            return arr;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            for (Symbol s : this) sb.append(s+" ");
+            return sb.toString();
+        }
+    }
 
     private String name;
 
@@ -12,6 +81,10 @@ public class Symbol {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isEmptyString() {
+        return name.equals("");
     }
 
     public boolean isNonTerminal() {

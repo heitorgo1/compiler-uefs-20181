@@ -5,6 +5,7 @@ import br.uefs.compiler.lexer.token.Token;
 import br.uefs.compiler.lexer.token.TokenClass;
 import br.uefs.compiler.lexer.token.TokenError;
 import br.uefs.compiler.lexer.token.TokenRecognizerAutomataFactory;
+import br.uefs.compiler.parser.GrammarBuilder;
 import br.uefs.compiler.util.automata.DFA;
 import br.uefs.compiler.util.cache.CacheHandler;
 import br.uefs.compiler.util.errors.ErrorFormatter;
@@ -112,8 +113,30 @@ public class Main {
 
         List<Token> tokens = readAndStoreTokensFromEachInputFile(lexer);
 
-        Grammar.printr();
+        Grammar grammar = GrammarBuilder.build();
+
+        grammar.print();
+
+        System.out.println();
+
+        grammar.printFirst();
+
+        System.out.println();
+
+        grammar.printFollow();
+
+        System.out.println();
+
+        PredictiveParser parser = new PredictiveParser(grammar);
+
+        parser.printTable();
+
+        tokens.add(new Token(new TokenClass(-1,"", "END"), "$", -1));
+
+        parser.parse(tokens);
         /*
+        Grammar.printr();
+
         Map<String, Set<String>> first = Grammar.firstMap();
 
         for (Map.Entry<String, Set<String>> entry : first.entrySet()){
@@ -141,6 +164,7 @@ public class Main {
 
         p.parse(tokens);
         */
+
 
 //        Grammar.print();
     }
