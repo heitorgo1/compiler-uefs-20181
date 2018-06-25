@@ -1,5 +1,8 @@
 package br.uefs.compiler.parser;
 
+/**
+ * Encapsulates grammar definition
+ */
 public class GrammarBuilder {
 
     public static Grammar build() {
@@ -78,8 +81,9 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Expr>", new Symbol.Array("<Assign Expr>", "<Expr 1>")));
         grammar.addRule(new Rule("<Expr 1>", new Symbol.Array("','", "<Assign Expr>", "<Expr 1>")));
         grammar.addRule(new Rule("<Expr 1>", new Symbol.Array("")));
-        grammar.addRule(new Rule("<Assign Expr>", new Symbol.Array("<Cond Expr>")));
-        grammar.addRule(new Rule("<Assign Expr>", new Symbol.Array("<Postfix Expr>", "'='", "<Assign Expr>")));
+        grammar.addRule(new Rule("<Assign Expr>", new Symbol.Array("<Cond Expr>", "<Assign Expr 1>")));
+        grammar.addRule(new Rule("<Assign Expr 1>", new Symbol.Array("'='", "<Cond Expr>", "<Assign Expr 1>")));
+        grammar.addRule(new Rule("<Assign Expr 1>", new Symbol.Array("")));
         grammar.addRule(new Rule("<Cond Expr>", new Symbol.Array("<Logical Or Expr>")));
         grammar.addRule(new Rule("<Logical Or Expr>", new Symbol.Array("<Logical And Expr>", "<Logical Or Expr 1>")));
         grammar.addRule(new Rule("<Logical Or Expr 1>", new Symbol.Array("'||'", "<Logical And Expr>", "<Logical Or Expr 1>")));
@@ -99,14 +103,14 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Mult Expr>", new Symbol.Array("<Unary Expr>", "<Mult Expr 1>")));
         grammar.addRule(new Rule("<Mult Expr 1>", new Symbol.Array("<Mult Op>", "<Unary Expr>", "<Mult Expr 1>")));
         grammar.addRule(new Rule("<Mult Expr 1>", new Symbol.Array("")));
-        grammar.addRule(new Rule("<Unary Expr>", new Symbol.Array("<Unary Op>", "<Unary Expr>")));
         grammar.addRule(new Rule("<Unary Expr>", new Symbol.Array("<Postfix Expr>")));
+        grammar.addRule(new Rule("<Unary Expr>", new Symbol.Array("<Unary Op>", "<Unary Expr>")));
         grammar.addRule(new Rule("<Postfix Expr>", new Symbol.Array("<Primary Expr>", "<Postfix Expr 1>")));
         grammar.addRule(new Rule("<Postfix Expr 1>", new Symbol.Array("<Postfix Op>", "<Postfix Expr 1>")));
         grammar.addRule(new Rule("<Postfix Expr 1>", new Symbol.Array("")));
         grammar.addRule(new Rule("<Primary Expr>", new Symbol.Array("IDENTIFICADOR")));
         grammar.addRule(new Rule("<Primary Expr>", new Symbol.Array("NUMERO")));
-        grammar.addRule(new Rule("<Primary Expr>", new Symbol.Array("CADEIACARECTERES")));
+        grammar.addRule(new Rule("<Primary Expr>", new Symbol.Array("CADEIACARACTERES")));
         grammar.addRule(new Rule("<Primary Expr>", new Symbol.Array("'true'")));
         grammar.addRule(new Rule("<Primary Expr>", new Symbol.Array("'false'")));
         grammar.addRule(new Rule("<Primary Expr>", new Symbol.Array("'('", "<Expr>", "')'")));
@@ -141,6 +145,7 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Type>", new Symbol.Array("IDENTIFICADOR")));
 
         grammar.setStartSymbol(new Symbol("<S>"));
+
         return grammar;
     }
 }

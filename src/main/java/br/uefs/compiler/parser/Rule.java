@@ -2,6 +2,10 @@ package br.uefs.compiler.parser;
 
 import java.util.ArrayList;
 
+/**
+ * Rule applied to a non terminal symbol of a grammar.
+ * May be seen as a production.
+ * */
 public class Rule {
 
     static class Array extends ArrayList<Rule> {
@@ -10,7 +14,7 @@ public class Rule {
         public String toString() {
             StringBuilder sb = new StringBuilder();
             for (Rule r : this) {
-                sb.append(r+"\n");
+                sb.append(r + "\n");
             }
             return sb.toString();
         }

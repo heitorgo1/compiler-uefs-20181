@@ -6,8 +6,10 @@ import br.uefs.compiler.lexer.token.TokenClass;
 import br.uefs.compiler.lexer.token.TokenError;
 import br.uefs.compiler.lexer.token.TokenRecognizerAutomataFactory;
 import br.uefs.compiler.parser.GrammarBuilder;
+import br.uefs.compiler.parser.SyntacticError;
 import br.uefs.compiler.util.automata.DFA;
 import br.uefs.compiler.util.cache.CacheHandler;
+import br.uefs.compiler.util.errors.CompilerError;
 import br.uefs.compiler.util.errors.ErrorFormatter;
 import br.uefs.compiler.util.errors.GalvaoPhraseGenerator;
 import br.uefs.compiler.parser.Grammar;
@@ -33,7 +35,7 @@ public class Main {
 
     private static DFA dfa;
     private static ErrorFormatter errorFormatter = new ErrorFormatter(
-            "Erro na linha {{line}}: {{errorMessage}} {{phrase}}",
+            "Erro na linha {{line}}: {{errorMessage}}",
             new GalvaoPhraseGenerator());
 
     private static void makeSureInputAndOutputFoldersExist() {
@@ -56,7 +58,7 @@ public class Main {
         System.out.println("Done.");
     }
 
-    private static void writeTokensAndErrorsToFile(List<Token> tokens, List<TokenError> errors, File outputFile) {
+    private static void writeTokensAndErrorsToFile(List<Token> tokens, List<CompilerError> errors, File outputFile) {
         try (FileWriter fw = new FileWriter(outputFile)) {
             fw.write(String.join("\n", tokens
                     .stream()
@@ -74,7 +76,7 @@ public class Main {
         }
     }
 
-    private static List<Token> readAndStoreTokensFromEachInputFile(Lexer lexer) {
+    private static List<Token> readAndParseForEachInputFile(Lexer lexer, PredictiveParser parser) {
         final List<Token> tokens = new ArrayList<>();
         try (Stream<Path> paths = Files.walk(Paths.get(INPUT_FOLDER))) {
             paths.filter(Files::isRegularFile).forEach((Path path) -> {
@@ -86,7 +88,11 @@ public class Main {
                 }
                 try {
                     tokens.addAll(lexer.readAllTokens());
-                    List<TokenError> errors = lexer.getErrors();
+                    parser.parse(tokens);
+
+                    List<CompilerError> errors = new ArrayList<>();
+                    errors.addAll(lexer.getErrors());
+                    errors.addAll(parser.getErrors());
 
                     String outputFileName = String.format("saida_%s", path.getFileName());
                     File outputFile = Paths.get(OUTPUT_FOLDER).resolve(outputFileName).toFile();
@@ -106,34 +112,42 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Lexer lexer;
+        PredictiveParser parser;
         makeSureInputAndOutputFoldersExist();
         tryToLoadAutomataFromCache();
 
         lexer = new Lexer(dfa);
-
-        List<Token> tokens = readAndStoreTokensFromEachInputFile(lexer);
-
         Grammar grammar = GrammarBuilder.build();
+        parser = new PredictiveParser(grammar);
 
-        grammar.print();
+        readAndParseForEachInputFile(lexer, parser);
 
-        System.out.println();
 
-        grammar.printFirst();
-
-        System.out.println();
-
-        grammar.printFollow();
-
-        System.out.println();
-
-        PredictiveParser parser = new PredictiveParser(grammar);
-
-        parser.printTable();
-
-        tokens.add(new Token(new TokenClass(-1,"", "END"), "$", -1));
-
-        parser.parse(tokens);
+//        grammar.print();
+//
+//        System.out.println();
+//
+//        grammar.printFirst();
+//
+//        System.out.println();
+//
+//        grammar.printFollow();
+//
+//        System.out.println();
+//
+//        PredictiveParser parser = new PredictiveParser(grammar);
+//
+//        parser.printTable();
+//
+//        grammar.printSync();
+//
+//        parser.parse(tokens);
+//
+//        List<SyntacticError> errors = parser.getErrors();
+//
+//        for (SyntacticError error : errors) {
+//            System.out.println(errorFormatter.format(error));
+//        }
         /*
         Grammar.printr();
 

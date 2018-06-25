@@ -48,7 +48,7 @@ public class TokenClass implements Comparable, Serializable {
             new TokenClass(283, "//(\\y|\t|\r)*", "COMENTARIOLINHA"),
             new TokenClass(284, "/\\*(\\y|\\s|\")*\\*/", "COMENTARIOBLOCO"),
             new TokenClass(285, ";|,|\\(|\\)|[|]|{|}|\\.", "DELIMITADOR"),
-            new TokenClass(286, "\"(\\y|(\\\\\")|(\\\\n))*\"", "CADEIACARECTERES"),
+            new TokenClass(286, "\"(\\y|(\\\\\")|(\\\\n))*\"", "CADEIACARACTERES"),
             // Errors
 //            new TokenClass(287, "\\l(\\l|\\d|\\N)*", "ERROR_IDENTIFICADORMALFORMADO"),
             new TokenClass(288, "\"(\\y|(\\\\\")|(\\\\n))*", "ERROR_CADEIAABERTA"),

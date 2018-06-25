@@ -1,17 +1,25 @@
 package br.uefs.compiler.parser;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * Grammar abstraction as Map and it's related functions (FIRST and FOLLOW)
+ * */
 public class Grammar extends Hashtable<Symbol, Rule.Array> {
 
     private Symbol startSymbol;
     private Map<Symbol, Symbol.Set> followMap;
+    private Map<Symbol, Symbol.Set> syncMap;
 
     public Grammar() {
         super();
 
         startSymbol = null;
         followMap = new Hashtable<>();
+        syncMap = new Hashtable<>();
     }
 
     public void setStartSymbol(Symbol startSymbol) {
@@ -29,26 +37,30 @@ public class Grammar extends Hashtable<Symbol, Rule.Array> {
         return this;
     }
 
- /*   public static List<Production> PRODUCTIONS = Arrays.asList(
-            new Production("<E>", Arrays.asList(
-                    Arrays.asList("<T>", "<E'>")
-            )),
-            new Production("<E'>", Arrays.asList(
-                    Arrays.asList("'+'", "<T>", "<E'>"),
-                    Arrays.asList("")
-            )),
-            new Production("<T>", Arrays.asList(
-                    Arrays.asList("<F>", "<T'>")
-            )),
-            new Production("<T'>", Arrays.asList(
-                    Arrays.asList("'*'", "<F>", "<T'>"),
-                    Arrays.asList("")
-            )),
-            new Production("<F>", Arrays.asList(
-                    Arrays.asList("'('", "<E>","')'"),
-                    Arrays.asList("ID")
-            ))
-    );*/
+    public Symbol.Set getSynchronizingSet(Symbol s) {
+        try {
+            if (!syncMap.containsKey(s)) syncMap = buildSyncMap();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return syncMap.get(s);
+    }
+
+    public Symbol.Set getTerminalSet() {
+
+        Symbol.Set set = new Symbol.Set();
+
+        for (Map.Entry<Symbol, Rule.Array> entry : this.entrySet()) {
+            for (Rule rule : entry.getValue()) {
+                for (Symbol s : rule.getSymbols()) {
+                    if (s.isTerminal()) {
+                        set.add(s);
+                    }
+                }
+            }
+        }
+        return set;
+    }
 
     public Symbol.Set first(Symbol symbol) {
         return first(Symbol.Array.fromSingleSymbol(symbol));
@@ -141,10 +153,63 @@ public class Grammar extends Hashtable<Symbol, Rule.Array> {
                 map.get(target).removeEmptyString();
                 if (map.get(target).size() > prevSize) changed = true;
             }
-        } while(changed);
+        } while (changed);
 
 
         return map;
+    }
+
+    public Map<Symbol, Symbol.Set> buildSyncMap() throws InterruptedException {
+        Map<Symbol, Symbol.Set> map = new Hashtable<>();
+        Symbol start = getStartSymbol();
+        LinkedBlockingQueue<Symbol> q = new LinkedBlockingQueue<>();
+        map.putIfAbsent(start, new Symbol.Set());
+
+        for (Symbol startChild : getChildNonTerminals(start)) {
+            q.put(startChild);
+            map.putIfAbsent(startChild, new Symbol.Set());
+        }
+
+        while (!q.isEmpty()) {
+            Symbol cur = q.poll();
+
+            for (Symbol child : getChildNonTerminals(cur)) {
+                if (!map.containsKey(child)) {
+                    map.putIfAbsent(child, first(cur));
+                    map.get(child).addAll(follow(child));
+                    map.get(child).addAll(map.get(cur));
+                    // Delimiters and keywords
+                    map.get(child).addAll(Arrays.asList(
+                            new Symbol("'{'"), new Symbol("'if'"),
+                            new Symbol("'}'"), new Symbol("'while'"),
+                            new Symbol("'['"), new Symbol("'return'"),
+                            new Symbol("']'"), new Symbol("'int'"),
+                            new Symbol("'('"), new Symbol("'float'"),
+                            new Symbol("')'"), new Symbol("'string'"),
+                            new Symbol("';'"), new Symbol("'bool'"),
+                            new Symbol("','"), new Symbol("IDENTIFICADOR")
+                    ));
+                    q.put(child);
+                }
+            }
+        }
+
+        return map;
+    }
+
+    public Symbol.Set getChildNonTerminals(Symbol s) {
+        assert this.get(s) != null;
+
+        Symbol.Set set = new Symbol.Set();
+
+        for (Rule rule : this.get(s)) {
+            for (Symbol child : rule.getSymbols()) {
+                if (child.isNonTerminal()) {
+                    set.add(child);
+                }
+            }
+        }
+        return set;
     }
 
     public void print() {
@@ -155,16 +220,33 @@ public class Grammar extends Hashtable<Symbol, Rule.Array> {
     }
 
     public void printFirst() {
+        System.out.println("FIRST TOKENS");
         for (Map.Entry<Symbol, Rule.Array> entry : this.entrySet()) {
             Symbol sy = entry.getKey();
-            System.out.println(sy+" -> "+first(sy));
+            System.out.println(sy + " -> " + first(sy));
         }
     }
 
     public void printFollow() {
+        System.out.println("FOLLOW TOKENS");
         for (Map.Entry<Symbol, Rule.Array> entry : this.entrySet()) {
             Symbol sy = entry.getKey();
-            System.out.println(sy+" -> "+follow(sy));
+            System.out.println(sy + " -> " + follow(sy));
+        }
+    }
+
+    public void printSync() {
+        System.out.println("SYNC TOKENS");
+        for (Map.Entry<Symbol, Rule.Array> entry : this.entrySet()) {
+            Symbol sy = entry.getKey();
+            System.out.println(sy + " -> " + getSynchronizingSet(sy));
+        }
+    }
+
+    public void printNonTerminals() {
+        for (Map.Entry<Symbol, Rule.Array> entry : this.entrySet()) {
+            Symbol sy = entry.getKey();
+            System.out.println(sy);
         }
     }
 }

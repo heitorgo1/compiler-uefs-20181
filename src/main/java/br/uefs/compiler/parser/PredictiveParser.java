@@ -1,19 +1,22 @@
 package br.uefs.compiler.parser;
 
 import br.uefs.compiler.lexer.token.Token;
+import br.uefs.compiler.lexer.token.TokenClass;
 
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
+/**
+ * Parser responsible for deciding if source code is syntactically valid
+ */
 public class PredictiveParser {
 
     private Map<Symbol, Map<Symbol, Rule>> table;
     private Grammar grammar;
+    private List<SyntacticError> errors;
 
     public PredictiveParser(Grammar grammar) {
         this.grammar = grammar;
+        this.errors = new ArrayList<>();
         buildTable(grammar);
     }
 
@@ -40,7 +43,8 @@ public class PredictiveParser {
                 }
             }
 
-            for (Symbol terminal : grammar.follow(X)) {
+
+            for (Symbol terminal : grammar.getSynchronizingSet(X)) {
                 table.get(X).putIfAbsent(terminal, new Rule(true));
             }
         }
@@ -63,31 +67,46 @@ public class PredictiveParser {
         s.push(Symbol.INPUT_END);
         s.push(grammar.getStartSymbol());
 
+        long lastLine = tokens.get(tokens.size() - 1).getLine();
+        // Insert input end symbol
+        tokens.add(new Token(new TokenClass(-1, "", "END"), Symbol.INPUT_END.getName(), lastLine));
+
         int ip = 0;
         while (!s.peek().equals(Symbol.INPUT_END)) {
-            Symbol cur = tokenToSymbol(tokens.get(ip));
-//            System.out.println(cur +": " +s);
+            Token token = tokens.get(ip);
+            Symbol cur = tokenToSymbol(token);
+
             if (cur.equals(s.peek())) {
                 s.pop();
                 ip++;
             } else if (s.peek().isTerminal()) {
                 // pop stack peek
-                System.out.println(String.format("MATCH ERROR: line=%d input=%s peek=%s", tokens.get(ip).getLine(), cur, s.peek()));
+                String foundStr = token.getLexeme().equals("$") ? "fim de arquivo" : "'" + token.getLexeme() + "'";
+                String message = String.format("Erro sintático. Esperava %s mas encontrou %s.", s.peek(), foundStr);
+                errors.add(new SyntacticError(message, token.getLine()));
                 s.pop();
-                //throw new Exception(String.format("%s unrecognized terminal", tokens.get(ip)));
             } else if (table.get(s.peek()).get(cur) == null) {
                 // if table miss, read next token
-                System.out.println(String.format("MISS ERROR: line=%d input=%s peek=%s", tokens.get(ip).getLine(), cur, s.peek()));
+                String foundStr = token.getLexeme().equals("$") ? "fim de arquivo" : "'" + token.getLexeme() + "'";
+                String message = String.format("Erro sintático. Token inesperado: %s.", foundStr);
+                errors.add(new SyntacticError(message, token.getLine()));
                 ip++;
-                continue;
-                //throw new Exception("Invalid transition on " + tokens.get(ip));
             } else if (table.get(s.peek()).get(cur).isSyncRule()) {
                 // if table sync hit, pop non terminal
-                System.out.println(String.format("SYNC ERROR: line=%d input=%s peek=%s", tokens.get(ip).getLine(), cur, s.peek()));
-                s.pop();
-            }  else {
+                String message;
+                if (token.getLexeme().equals("$")) {
+                    message = "Erro sintático próximo ao fim do arquivo.";
+                } else {
+                    message = String.format("Erro sintático próximo ao token '%s'.", token.getLexeme());
+                }
+                errors.add(new SyntacticError(message, token.getLine()));
+                while (!s.empty()
+                        && s.peek().isNonTerminal()
+                        && table.get(s.peek()).get(cur) != null
+                        && table.get(s.peek()).get(cur).isSyncRule())
+                    s.pop();
+            } else {
                 Rule rule = table.get(s.peek()).get(cur);
-                System.out.println(s.peek() + " --"+cur+"("+tokens.get(ip).getLine()+")"+"--> " + rule);
 
                 s.pop();
 
@@ -95,10 +114,12 @@ public class PredictiveParser {
                     if (!rule.getSymbols().get(i).isEmptyString())
                         s.push(rule.getSymbols().get(i));
                 }
-
-                System.out.println("Top Now: "+s.peek());
             }
         }
+    }
+
+    public List<SyntacticError> getErrors() {
+        return errors;
     }
 
     public Map<Symbol, Map<Symbol, Rule>> getTable() {

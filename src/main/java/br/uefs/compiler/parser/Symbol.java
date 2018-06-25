@@ -1,7 +1,14 @@
 package br.uefs.compiler.parser;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 
+/**
+ * A grammar symbol and it's data structures.
+ * Can be non terminal (between < and >) or a terminal.
+ * */
 public class Symbol {
 
     public static Symbol EMPTY_STRING = new Symbol("");
@@ -38,7 +45,7 @@ public class Symbol {
         }
 
         public Array(List<Symbol> symbols) {
-            super (symbols);
+            super(symbols);
         }
 
         public Array(String... symbolNames) {
@@ -68,14 +75,14 @@ public class Symbol {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            for (Symbol s : this) sb.append(s+" ");
+            for (Symbol s : this) sb.append(s + " ");
             return sb.toString();
         }
     }
 
     private String name;
 
-    public Symbol (String name) {
+    public Symbol(String name) {
         this.name = name;
     }
 
