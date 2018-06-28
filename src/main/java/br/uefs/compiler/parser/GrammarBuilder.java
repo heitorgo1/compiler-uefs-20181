@@ -17,8 +17,12 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("<Function Def>")));
         grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("<Procedure Def>")));
         grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("<Typedef Def>")));
-        grammar.addRule(new Rule("<Function Def>", new Symbol.Array("'function'", "<Type>", "<Declarator>", "'('", "<Parameter List>", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
-        grammar.addRule(new Rule("<Procedure Def>", new Symbol.Array("'procedure'", "IDENTIFICADOR", "'('", "<Parameter List>", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
+        grammar.addRule(new Rule("<Function Def>", new Symbol.Array("'function'", "<Type>", "<Declarator>", "'('", "<Function Def lf>")));
+        grammar.addRule(new Rule("<Function Def lf>", new Symbol.Array("<Parameter List>", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
+        grammar.addRule(new Rule("<Function Def lf>", new Symbol.Array("')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
+        grammar.addRule(new Rule("<Procedure Def>", new Symbol.Array("'procedure'", "IDENTIFICADOR", "'('", "<Procedure Def lf>" )));
+        grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("<Parameter List>", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
+        grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
         grammar.addRule(new Rule("<Typedef Def>", new Symbol.Array("'typedef'", "<Typedef Def lf>")));
         grammar.addRule(new Rule("<Typedef Def lf>", new Symbol.Array("<Type>", "IDENTIFICADOR", "';'")));
         grammar.addRule(new Rule("<Typedef Def lf>", new Symbol.Array("<Struct Def>", "IDENTIFICADOR", "';'")));
