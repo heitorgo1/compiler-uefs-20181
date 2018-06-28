@@ -1,0 +1,196 @@
+"Start Symbol" = <S>
+
+<S> ::= <Global Declaration> <S 1>
+    
+<S 1> ::= <Global Declaration> <S 1>
+       |
+
+<Global Declaration> ::= <Start Def>
+                      | <Var Def>
+                      | <Const Def>
+                      | <Struct Def>
+                      | <Function Def>
+                      | <Procedure Def>
+                      | <Typedef Def>
+
+<Function Def> ::= 'function' <Type> <Declarator> '(' <Parameter List> ')' '{' <Stmt Or Declaration List> '}' 
+
+<Procedure Def> ::= 'procedure' IDENTIFICADOR '(' <Parameter List> ')' '{' <Stmt Or Declaration List> '}' 
+
+<Typedef Def> ::= 'typedef' <Typedef Def lf>
+              
+<Typedef Def lf> ::= <Type> IDENTIFICADOR ';'
+                 | <Struct Def> IDENTIFICADOR ';'
+
+<Var Def> ::= 'var' '{' <Declaration List> '}'
+
+<Const Def> ::= 'const' '{' <Declaration List> '}'
+
+<Struct Def> ::= 'struct' IDENTIFICADOR <Struct Def lf>
+              
+<Struct Def lf> ::= '{' <Declaration List> '}'
+                 | 'extends' IDENTIFICADOR '{' <Declaration List> '}'
+
+<Parameter List> ::= <Parameter Declaration> <Parameter List 1>
+            
+<Parameter List 1> ::= ',' <Parameter Declaration> <Parameter List 1> 
+                    |
+
+<Parameter Declaration> ::= <Type> <Declarator>
+
+<Declaration List> ::= <Declaration> <Declaration List 1>
+                    
+<Declaration List 1> ::= <Declaration> <Declaration List 1> 
+                      |
+
+<Declaration> ::= <Type> <Init Declarator List> ';'
+
+<Init Declarator List> ::= <Init Declarator> <Init Declarator List 1>
+                        
+<Init Declarator List 1> ::= ',' <Init Declarator> <Init Declarator List 1> 
+                          |
+
+<Init Declarator> ::= <Declarator> <Init Declarator lf>
+                   
+<Init Declarator lf> ::= '=' <Initializer>
+                      |
+                   
+<Initializer> ::= <Assign Expr>
+               | '{' <Initializer List> <Initializer lf>
+
+<Initializer lf> ::= '}'
+        | ',' '}'
+               
+<Initializer List> ::= <Initializer> <Initializer List 1>
+                    
+<Initializer List 1> ::= ',' <Initializer> <Initializer List 1> 
+                      |
+
+<Declarator> ::= IDENTIFICADOR <Declarator 1>
+            
+<Declarator 1> ::= '[' <Declarator 1 lf>
+                |
+                
+<Declarator 1 lf> ::= <Cond Expr> ']' <Declarator 1>
+                   | ']' <Declarator 1>
+
+<Stmt> ::= <Iteration Stmt>
+          | <Expr Stmt>
+          | <Compound Stmt>
+          | <Print Stmt>
+          | <Scan Stmt>
+          | <If Stmt>
+          | <Return Stmt>
+
+<Stmt List> ::= <Stmt> <Stmt List 1>
+         
+<Stmt List 1> ::= <Stmt> <Stmt List 1> 
+               |
+
+! usar <Declaration> ou <Var Def> ?
+<Stmt Or Declaration List> ::= <Stmt> <Stmt Or Declaration List 1>
+                    | <Declaration> <Stmt Or Declaration List 1>
+                    
+<Stmt Or Declaration List 1> ::= <Stmt> <Stmt Or Declaration List 1>
+                              | <Declaration> <Stmt Or Declaration List 1>
+                              | 
+
+<Start Def> ::= 'start' '(' ')' '{' <Stmt Or Declaration List> '}'
+
+<Print Stmt> ::= 'print' '(' <Argument List> ')' ';'
+              
+<Scan Stmt> ::= 'scan' '(' <Argument List> ')' ';'
+
+<Iteration Stmt> ::= 'while' '(' <Expr> ')' <Stmt>
+
+<If Stmt> ::= 'if' <Expr> 'then' <Stmt> <If Stmt lf> 
+        
+<If Stmt lf> ::= 'else' <Stmt>
+              | 
+        
+<Return Stmt> ::= 'return' <Expr> ';'
+
+<Compound Stmt> ::= '{' <Compound Stmt lf>
+               
+<Compound Stmt lf> ::= '}'
+                    | <Stmt Or Declaration List> '}'
+
+<Expr Stmt> ::= ';' 
+             | <Expr> ';'
+
+<Expr> ::= <Assign Expr> <Expr 1>
+        
+<Expr 1> ::= ',' <Assign Expr> <Expr 1>
+          |
+        
+<Assign Expr> ::= <Cond Expr> 
+               | <Postfix Expr> '=' <Assign Expr>
+                              
+<Cond Expr> ::= <Logical Or Expr>
+             
+<Logical Or Expr> ::= <Logical And Expr> <Logical Or Expr 1>
+           
+<Logical Or Expr 1> ::= '||' <Logical And Expr> <Logical Or Expr 1>
+                     |
+           
+<Logical And Expr> ::= <Equal Expr> <Logical And Expr 1>
+            
+<Logical And Expr 1> ::= '&&' <Equal Expr> <Logical And Expr 1>
+                      |
+            
+<Equal Expr> ::= <Relational Expr> <Equal Expr 1>
+           
+<Equal Expr 1> ::= <Equal Op> <Relational Expr> <Equal Expr 1>
+                |
+           
+<Relational Expr> ::= <Additive Expr> <Relational Expr 1>
+            
+<Relational Expr 1> ::= <Relational Op> <Additive Expr> <Relational Expr 1>
+                     |
+            
+<Additive Expr> ::= <Mult Expr> <Additive Expr 1>
+            
+<Additive Expr 1> ::= <Additive Op> <Mult Expr> <Additive Expr 1>
+                   |
+
+<Mult Expr> ::= <Unary Expr> <Mult Expr 1>
+            
+<Mult Expr 1> ::= <Mult Op> <Unary Expr> <Mult Expr 1>
+               |
+            
+<Unary Expr> ::= <Unary Op> <Unary Expr> 
+              | <Postfix Expr>
+              
+<Postfix Expr> ::= <Primary Expr> <Postfix Expr 1>
+                
+<Postfix Expr 1> ::= <Postfix Op> <Postfix Expr 1>
+                  |
+
+<Primary Expr> ::= IDENTIFICADOR 
+          | NUMERO
+          | CADEIACARECTERES
+          | 'true'
+          | 'false'
+          | '(' <Expr> ')' 
+
+<Equal Op> ::= '==' | '!='
+
+<Relational Op> ::= '<' | '>' | '<=' | '>='       
+
+<Additive Op> ::= '+' | '-'
+      
+<Mult Op> ::= '*' | '/'
+          
+<Unary Op> ::= '++' | '--' | '!'
+
+<Postfix Op> ::= '++' | '--' | '[' <Expr> ']' | '(' <Postfix Op lf> | '.' IDENTIFICADOR
+              
+<Postfix Op lf> ::= ')'
+                 | <Argument List> ')'
+
+<Argument List> ::= <Assign Expr> <Argument List 1>
+            
+<Argument List 1> ::= ',' <Assign Expr> <Argument List 1>
+                   |
+
+<Type> ::=  'int' | 'string' | 'float' | 'bool'  | IDENTIFICADOR
