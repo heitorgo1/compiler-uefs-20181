@@ -41,7 +41,7 @@ start () {
         print ("hello");
 
         while (t > 1) {
-            print (b);
+            print ("h");
         }
     }
     else {

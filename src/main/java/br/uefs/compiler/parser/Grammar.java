@@ -106,7 +106,7 @@ public class Grammar extends Hashtable<Symbol, Rule.Array> {
         return followMap.get(target);
     }
 
-    public Map<Symbol, Symbol.Set> buildFollowMap() {
+    private Map<Symbol, Symbol.Set> buildFollowMap() {
 
         Map<Symbol, Symbol.Set> map = new Hashtable<>();
 
@@ -159,7 +159,11 @@ public class Grammar extends Hashtable<Symbol, Rule.Array> {
         return map;
     }
 
-    public Map<Symbol, Symbol.Set> buildSyncMap() throws InterruptedException {
+    /**
+     * For each non terminal, add the FIRST and synchronizing sets of
+     * parent to it's own synchronizing set beside it's FOLLOW set.
+     * */
+    private Map<Symbol, Symbol.Set> buildSyncMap() throws InterruptedException {
         Map<Symbol, Symbol.Set> map = new Hashtable<>();
         Symbol start = getStartSymbol();
         LinkedBlockingQueue<Symbol> q = new LinkedBlockingQueue<>();

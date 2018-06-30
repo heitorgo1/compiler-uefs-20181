@@ -87,6 +87,7 @@ public class Main {
                     return;
                 }
                 try {
+                    tokens.clear();
                     tokens.addAll(lexer.readAllTokens());
                     parser.parse(tokens);
 
@@ -121,65 +122,5 @@ public class Main {
         parser = new PredictiveParser(grammar);
 
         readAndParseForEachInputFile(lexer, parser);
-
-
-//        grammar.print();
-//
-//        System.out.println();
-//
-//        grammar.printFirst();
-//
-//        System.out.println();
-//
-//        grammar.printFollow();
-//
-//        System.out.println();
-//
-//        PredictiveParser parser = new PredictiveParser(grammar);
-//
-//        parser.printTable();
-//
-//        grammar.printSync();
-//
-//        parser.parse(tokens);
-//
-//        List<SyntacticError> errors = parser.getErrors();
-//
-//        for (SyntacticError error : errors) {
-//            System.out.println(errorFormatter.format(error));
-//        }
-        /*
-        Grammar.printr();
-
-        Map<String, Set<String>> first = Grammar.firstMap();
-
-        for (Map.Entry<String, Set<String>> entry : first.entrySet()){
-            System.out.println(entry.getKey()+" -> "+entry.getValue());
-        }
-
-        Map<String, Set<String>> follow = Grammar.followMap();
-        System.out.println();
-        for (Map.Entry<String, Set<String>> entry : follow.entrySet()){
-            System.out.println(entry.getKey()+" -> "+entry.getValue());
-        }
-
-        PredictiveParser p = new PredictiveParser();
-        p.buildTable(first, follow);
-        System.out.println();
-        for (Map.Entry<String, Map<String, List<List<String>>>> entry : p.getTable().entrySet()){
-            System.out.println(entry.getKey()+" -> "+entry.getValue());
-        }
-
-        tokens.add(new Token(new TokenClass(-1,"", "END"), "$", -1));
-
-        System.out.println();
-        System.out.println(tokens);
-        System.out.println();
-
-        p.parse(tokens);
-        */
-
-
-//        Grammar.print();
     }
 }

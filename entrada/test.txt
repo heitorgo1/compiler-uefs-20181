@@ -1,0 +1,14 @@
+
+start() {
+
+    var {
+        int a = 2; float abc, def, sdw = 2.523;
+        string ss[52];
+    }
+
+    while (true != false) {
+        print ("Hello\n");
+    }
+
+    ss[4] = 2 + 4 * 145.0;
+}

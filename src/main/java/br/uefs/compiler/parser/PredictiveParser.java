@@ -20,6 +20,9 @@ public class PredictiveParser {
         buildTable(grammar);
     }
 
+    /**
+     * Build Predictive Parsing Table based on a grammar
+     * */
     public void buildTable(Grammar grammar) {
         table = new Hashtable<>();
 
@@ -62,6 +65,10 @@ public class PredictiveParser {
         else return new Symbol(token.getTokenClass().getName());
     }
 
+    /**
+     * Do parsing of token list based on the grammar.
+     * Errors are stored in the errors array.
+     * */
     public void parse(List<Token> tokens) throws Exception {
         Stack<Symbol> s = new Stack<>();
         s.push(Symbol.INPUT_END);
