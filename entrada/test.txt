@@ -1,14 +1,17 @@
 
+// á ã õ ó à é è í
+
 start() {
 
     var {
         int a = 2; float abc, def, sdw = 2.523;
-        string ss[52];
+        int c[] = {1,2,3};
+        string ss[52] = "ab";
     }
 
     while (true != false) {
         print ("Hello\n");
     }
 
-    ss[4] = 2 + 4 * 145.0;
+    ss[4] = a+b;
 }

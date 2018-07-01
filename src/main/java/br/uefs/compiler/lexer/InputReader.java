@@ -41,7 +41,8 @@ public class InputReader extends BufferedReader {
         List<Character> list = new ArrayList<>();
         int c;
         while ((c = in.read()) != -1) {
-            list.add((char) c);
+            if (c <= 128)
+                list.add((char) c);
         }
         close();
         return list.toArray(new Character[list.size()]);
