@@ -200,7 +200,7 @@ start() {
 
    while (a+b) { }  // não deveria permitir!!!
 
-   a = !10;  // aqui considerei sintaticamente correto. o erro  semntico (tipos incompatíveis)
+   a = !10;  // aqui considerei sintaticamente correto. o erro  semântico (tipos incompatíveis)
 
    a = 10 && 10; // aqui considerei sintaticamente correto. o erro  semântico (tipos incompatveis)
 

@@ -13,11 +13,12 @@ import java.util.stream.IntStream;
  * * y - Symbols - ASCII from 32 to 126 (except 34)
  * * N - Special Symbols - "|#|$|%|'|:|?|@|\|^|_|`
  * * b - Symbols Without Slash - ASCII from 32 to 126 (except 34 and 47)
+ * * i - Same as \y but with additional invalid symbols
  */
 public class SpecialCharacter {
 
     public static Set<Character> SPECIAL_CHARACTERS = new HashSet<>(Arrays.asList(
-            'l', 'd', 's', 'y', 'N', 'b'
+            'l', 'd', 's', 'y', 'N', 'b', 'i'
     ));
 
     public static boolean check(Character input) {
@@ -46,6 +47,20 @@ public class SpecialCharacter {
         List<String> list = new ArrayList<>();
         for (int i : IntStream.rangeClosed(32, 126).toArray()) {
             if (i == 34) continue;
+            if (Operator.check((char) i) || '\\' == (char) i) {
+                list.add("\\" + Character.toString((char) i));
+            } else {
+                list.add(Character.toString((char) i));
+
+            }
+        }
+        return list;
+    }
+
+    private static List<String> validAndInvalidSymbols() {
+        List<String> list = new ArrayList<>();
+        for (int i : IntStream.rangeClosed(32, 255).toArray()) {
+            if (i == 34 || i == 127) continue;
             if (Operator.check((char) i) || '\\' == (char) i) {
                 list.add("\\" + Character.toString((char) i));
             } else {
@@ -118,6 +133,9 @@ public class SpecialCharacter {
                 break;
             case 'y':
                 sb.append(String.join("|", allSymbols()));
+                break;
+            case 'i':
+                sb.append(String.join("|", validAndInvalidSymbols()));
                 break;
             case 'N':
                 sb.append(String.join("|", allNotDigitsNorLetterNorSpaceNorOperators()));

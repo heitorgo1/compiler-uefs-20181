@@ -44,6 +44,10 @@ public class Lexer {
         reader = null;
     }
 
+    public void clearErrors() {
+        errors.clear();
+    }
+
     public void withReader(Reader in) throws IOException {
         reader = new InputReader(in);
     }

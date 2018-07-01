@@ -81,6 +81,7 @@ public class Main {
         try (Stream<Path> paths = Files.walk(Paths.get(INPUT_FOLDER))) {
             paths.filter(Files::isRegularFile).forEach((Path path) -> {
                 try {
+                    lexer.clearErrors();
                     lexer.withReader(new FileReader(path.toFile()));
                 } catch (IOException e) {
                     System.err.format("File not found or unavailable: %s\n", path.toString());
