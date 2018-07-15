@@ -67,6 +67,7 @@ public class Grammar extends Hashtable<Symbol, Rule.Array> {
     }
 
     public Symbol.Set first(Symbol.Array symbols) {
+        symbols = symbols.getSymbolsWithoutActions();
 
         Symbol.Set temp = new Symbol.Set();
 
@@ -75,7 +76,7 @@ public class Grammar extends Hashtable<Symbol, Rule.Array> {
             if (sy.isTerminal()) return Symbol.Set.fromSingleSymbol(sy);
             else {
                 for (Rule rule : this.get(sy)) {
-                    temp.addAll(first(rule.getSymbols()));
+                    temp.addAll(first(rule.getSymbols().getSymbolsWithoutActions()));
                 }
             }
         } else {
@@ -129,16 +130,16 @@ public class Grammar extends Hashtable<Symbol, Rule.Array> {
                     Rule.Array ruleArr = tmpEntry.getValue();
 
                     for (Rule r : ruleArr) {
-
-                        for (int i = 0; i < r.getSymbols().size(); i++) {
-                            Symbol sy = r.getSymbols().get(i);
+                        Symbol.Array symbols = r.getSymbols().getSymbolsWithoutActions();
+                        for (int i = 0; i < symbols.size(); i++) {
+                            Symbol sy = symbols.get(i);
 
                             if (sy.equals(target)) {
 
-                                if (i == r.getSymbols().size() - 1) {
+                                if (i == symbols.size() - 1) {
                                     map.get(target).addAll(map.get(tmpEntry.getKey()));
                                 } else {
-                                    Symbol.Array nextSymbols = new Symbol.Array(r.getSymbols().subList(i + 1, r.getSymbols().size()));
+                                    Symbol.Array nextSymbols = new Symbol.Array(symbols.subList(i + 1, symbols.size()));
 
                                     map.get(target).addAll(first(nextSymbols));
 

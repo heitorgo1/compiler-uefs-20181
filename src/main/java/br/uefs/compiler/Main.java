@@ -7,6 +7,7 @@ import br.uefs.compiler.lexer.token.TokenError;
 import br.uefs.compiler.lexer.token.TokenRecognizerAutomataFactory;
 import br.uefs.compiler.parser.GrammarBuilder;
 import br.uefs.compiler.parser.SyntacticError;
+import br.uefs.compiler.parser.semantic.SemanticAnalyser;
 import br.uefs.compiler.util.automata.DFA;
 import br.uefs.compiler.util.cache.CacheHandler;
 import br.uefs.compiler.util.errors.CompilerError;
@@ -80,21 +81,25 @@ public class Main {
         final List<Token> tokens = new ArrayList<>();
         try (Stream<Path> paths = Files.walk(Paths.get(INPUT_FOLDER))) {
             paths.filter(Files::isRegularFile).forEach((Path path) -> {
+                lexer.clearErrors();
+                parser.clearErrors();
+                tokens.clear();
+                SemanticAnalyser.reset();
+
                 try {
-                    lexer.clearErrors();
                     lexer.withReader(new FileReader(path.toFile()));
                 } catch (IOException e) {
                     System.err.format("File not found or unavailable: %s\n", path.toString());
                     return;
                 }
                 try {
-                    tokens.clear();
                     tokens.addAll(lexer.readAllTokens());
                     parser.parse(tokens);
 
                     List<CompilerError> errors = new ArrayList<>();
                     errors.addAll(lexer.getErrors());
                     errors.addAll(parser.getErrors());
+                    errors.addAll(SemanticAnalyser.ERRORS);
 
                     String outputFileName = String.format("saida_%s", path.getFileName());
                     File outputFile = Paths.get(OUTPUT_FOLDER).resolve(outputFileName).toFile();

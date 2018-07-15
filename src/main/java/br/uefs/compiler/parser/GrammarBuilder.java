@@ -7,10 +7,10 @@ public class GrammarBuilder {
 
     public static Grammar build() {
         Grammar grammar = new Grammar();
-        grammar.addRule(new Rule("<S>", new Symbol.Array("<Global Declaration>", "<S 1>")));
+        grammar.addRule(new Rule("<S>", new Symbol.Array("<Global Declaration>", "<S 1>", "{hasOneStart()}")));
         grammar.addRule(new Rule("<S 1>", new Symbol.Array("<Global Declaration>", "<S 1>")));
         grammar.addRule(new Rule("<S 1>", new Symbol.Array("")));
-        grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("<Start Def>")));
+        grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("{incStart()}", "<Start Def>")));
         grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("<Var Def>")));
         grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("<Const Def>")));
         grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("<Struct Def>")));
@@ -20,7 +20,7 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Function Def>", new Symbol.Array("'function'", "<Type>", "<Declarator>", "'('", "<Function Def lf>")));
         grammar.addRule(new Rule("<Function Def lf>", new Symbol.Array("<Parameter List>", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
         grammar.addRule(new Rule("<Function Def lf>", new Symbol.Array("')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
-        grammar.addRule(new Rule("<Procedure Def>", new Symbol.Array("'procedure'", "IDENTIFICADOR", "'('", "<Procedure Def lf>" )));
+        grammar.addRule(new Rule("<Procedure Def>", new Symbol.Array("'procedure'", "IDENTIFICADOR", "'('", "<Procedure Def lf>")));
         grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("<Parameter List>", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
         grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
         grammar.addRule(new Rule("<Typedef Def>", new Symbol.Array("'typedef'", "<Typedef Def lf>")));

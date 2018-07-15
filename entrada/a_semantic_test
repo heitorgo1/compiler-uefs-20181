@@ -1,0 +1,10 @@
+
+start() {
+    var {
+        int a,b;
+    }
+}
+
+start() {
+    a = 1 + 1;
+}

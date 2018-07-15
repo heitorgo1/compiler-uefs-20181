@@ -45,7 +45,7 @@ public class LexerTest {
 
     @Test
     public void reservedWordsTest() throws Exception {
-        for (String word : ReservedWords.WORDS) {
+        for (String word : ReservedWords.RESERVED_WORDS) {
             lexer.withReader(new StringReader(word));
             runTokenCheck("PALAVRARESERVADA", word);
         }

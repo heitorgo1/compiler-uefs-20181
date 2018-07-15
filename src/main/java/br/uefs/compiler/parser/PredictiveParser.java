@@ -2,6 +2,10 @@ package br.uefs.compiler.parser;
 
 import br.uefs.compiler.lexer.token.Token;
 import br.uefs.compiler.lexer.token.TokenClass;
+import br.uefs.compiler.parser.semantic.Action;
+import br.uefs.compiler.parser.semantic.Parameter;
+import br.uefs.compiler.parser.semantic.SemanticAnalyser;
+import br.uefs.compiler.parser.semantic.VariableParam;
 
 import java.util.*;
 
@@ -22,7 +26,7 @@ public class PredictiveParser {
 
     /**
      * Build Predictive Parsing Table based on a grammar
-     * */
+     */
     public void buildTable(Grammar grammar) {
         table = new Hashtable<>();
 
@@ -68,9 +72,10 @@ public class PredictiveParser {
     /**
      * Do parsing of token list based on the grammar.
      * Errors are stored in the errors array.
-     * */
+     */
     public void parse(List<Token> tokens) throws Exception {
         Stack<Symbol> s = new Stack<>();
+        Stack<Symbol> aux = new Stack<>();
         s.push(Symbol.INPUT_END);
         s.push(grammar.getStartSymbol());
 
@@ -84,6 +89,8 @@ public class PredictiveParser {
             Symbol cur = tokenToSymbol(token);
 
             if (cur.equals(s.peek())) {
+                s.peek().addProperty("lex", token.getLexeme());
+                aux.push(s.peek());
                 s.pop();
                 ip++;
             } else if (s.peek().isTerminal()) {
@@ -91,6 +98,32 @@ public class PredictiveParser {
                 String foundStr = token.getLexeme().equals("$") ? "fim de arquivo" : "'" + token.getLexeme() + "'";
                 String message = String.format("Erro sintático. Esperava %s mas encontrou %s.", s.peek(), foundStr);
                 errors.add(new SyntacticError(message, token.getLine()));
+                s.pop();
+
+            } else if (s.peek().isAction()) {
+
+                for (String step : SemanticAnalyser.parseSteps(s.peek())) {
+                    Action action = SemanticAnalyser.extractAction(step);
+
+                    if (action.isNop()) continue;
+                    else if (action.isPop()) {
+                        int n = Integer.parseInt(action.getParams().get(0).getValue());
+                        while (!aux.empty() && n-- > 0) aux.pop();
+                    } else {
+                        for (Parameter param : action.getParams()) {
+                            if (param instanceof VariableParam) {
+                                VariableParam vp = VariableParam.class.cast(param);
+                                if (vp.isInAux()) {
+                                    vp.setSymbol(aux.get(aux.size() - 1 + vp.getOffset()));
+                                } else {
+                                    vp.setSymbol(s.get(s.size() - 1 + vp.getOffset()));
+                                }
+                            }
+                        }
+
+                        SemanticAnalyser.runAction(action, token);
+                    }
+                }
                 s.pop();
             } else if (table.get(s.peek()).get(cur) == null) {
                 // if table miss, read next token
@@ -108,25 +141,40 @@ public class PredictiveParser {
                 }
                 errors.add(new SyntacticError(message, token.getLine()));
                 while (!s.empty()
-                        && s.peek().isNonTerminal()
+                        && (s.peek().isNonTerminal() || s.peek().isAction())
                         && table.get(s.peek()).get(cur) != null
                         && table.get(s.peek()).get(cur).isSyncRule())
                     s.pop();
-            } else {
+            } else if (s.peek().isNonTerminal()) {
                 Rule rule = table.get(s.peek()).get(cur);
 
+                // add pop action
+                int counter = 0;
+                for (Symbol sy : rule.getSymbols()) {
+                    if (!sy.isEmptyString() && !sy.isAction()) counter++;
+                }
+                Symbol.Array arr = new Symbol.Array(rule.getSymbols());
+                arr.add(new Symbol(String.format("{pop(%d)}", counter)));
+
+                aux.push(s.peek());
                 s.pop();
 
-                for (int i = rule.getSymbols().size() - 1; i >= 0; i--) {
-                    if (!rule.getSymbols().get(i).isEmptyString())
-                        s.push(rule.getSymbols().get(i));
+                for (int i = arr.size() - 1; i >= 0; i--) {
+                    if (!arr.get(i).isEmptyString())
+                        s.push(arr.get(i));
                 }
+            } else {
+                throw new Exception(String.format("Fatal Error. Problem in grammar definition. Peek value: %s", s.peek()));
             }
         }
     }
 
     public List<SyntacticError> getErrors() {
         return errors;
+    }
+
+    public void clearErrors() {
+        errors.clear();
     }
 
     public Map<Symbol, Map<Symbol, Rule>> getTable() {

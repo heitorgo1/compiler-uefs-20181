@@ -1,0 +1,7 @@
+
+function int test_func () {
+    var {
+        int a,b;
+        float c,d;
+    }
+}

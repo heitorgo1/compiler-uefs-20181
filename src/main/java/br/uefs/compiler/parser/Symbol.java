@@ -1,9 +1,6 @@
 package br.uefs.compiler.parser;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A grammar symbol and it's data structures.
@@ -60,6 +57,15 @@ public class Symbol {
             return this.size() == 1;
         }
 
+        public Symbol.Array getSymbolsWithoutActions() {
+            Symbol.Array arr = new Symbol.Array();
+
+            for (Symbol sy : this) {
+                if (!sy.isAction()) arr.add(sy);
+            }
+            return arr;
+        }
+
         public Symbol getSingleSymbol() {
             assert hasSingleSymbol();
 
@@ -81,9 +87,19 @@ public class Symbol {
     }
 
     private String name;
+    private Map<String, String> properties;
 
     public Symbol(String name) {
         this.name = name;
+        properties = new Hashtable<>();
+    }
+
+    public void addProperty(String property, String value) {
+        properties.put(property, value);
+    }
+
+    public String getProperty(String property) {
+        return properties.get(property);
     }
 
     public String getName() {
@@ -99,7 +115,11 @@ public class Symbol {
     }
 
     public boolean isTerminal() {
-        return !isNonTerminal();
+        return !isNonTerminal() && !isAction();
+    }
+
+    public boolean isAction() {
+        return name.startsWith("{") && name.endsWith("}");
     }
 
     @Override
@@ -118,6 +138,6 @@ public class Symbol {
 
     @Override
     public String toString() {
-        return name;
+        return String.format("%s",name);
     }
 }

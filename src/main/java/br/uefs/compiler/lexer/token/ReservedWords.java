@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ReservedWords {
-    public static final List<String> WORDS = Arrays.asList(
+    public static final List<String> RESERVED_WORDS = Arrays.asList(
             "const",
             "var",
             "struct",
@@ -29,6 +29,6 @@ public class ReservedWords {
     );
 
     public static boolean isReserved(String word) {
-        return WORDS.contains(word);
+        return RESERVED_WORDS.contains(word);
     }
 }

@@ -974,6 +974,7 @@
 <OPERADORRELACIONAL, =, 203>
 <OPERADORLOGICO, !, 203>
 <NUMERO, 10, 203>
+<DELIMITADOR, ;, 203>
 <IDENTIFICADOR, a, 205>
 <OPERADORRELACIONAL, =, 205>
 <NUMERO,  10, 205>
@@ -1002,5 +1003,9 @@
 Erro na linha 12: Erro sintático próximo ao token 'const'.
 Erro na linha 12: Erro sintático. Esperava '}' mas encontrou 'const'.
 Erro na linha 20: Erro sintático. Token inesperado: '}'.
-Erro na linha 205: Erro sintático próximo ao token 'a'.
-Erro na linha 205: Erro sintático. Esperava ';' mas encontrou 'a'.
+Erro na linha 136: start já foi definido na linha 121
+Erro na linha 144: start já foi definido na linha 121
+Erro na linha 150: start já foi definido na linha 121
+Erro na linha 156: start já foi definido na linha 121
+Erro na linha 177: start já foi definido na linha 121
+Erro na linha 187: start já foi definido na linha 121
