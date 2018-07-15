@@ -1001,7 +1001,7 @@
 <END, $, 211>
 
 Erro na linha 12: Erro sintático próximo ao token 'const'.
-Erro na linha 12: Erro sintático. Esperava '}' mas encontrou 'const'.
+Erro na linha 12: Erro sintático. Esperava '}' -> {} mas encontrou 'const'.
 Erro na linha 20: Erro sintático. Token inesperado: '}'.
 Erro na linha 136: start já foi definido na linha 121
 Erro na linha 144: start já foi definido na linha 121

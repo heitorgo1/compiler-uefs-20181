@@ -98,8 +98,8 @@ public class PredictiveParser {
                 String foundStr = token.getLexeme().equals("$") ? "fim de arquivo" : "'" + token.getLexeme() + "'";
                 String message = String.format("Erro sintático. Esperava %s mas encontrou %s.", s.peek(), foundStr);
                 errors.add(new SyntacticError(message, token.getLine()));
+                aux.push(s.peek());
                 s.pop();
-
             } else if (s.peek().isAction()) {
 
                 for (String step : SemanticAnalyser.parseSteps(s.peek())) {
@@ -141,10 +141,12 @@ public class PredictiveParser {
                 }
                 errors.add(new SyntacticError(message, token.getLine()));
                 while (!s.empty()
-                        && (s.peek().isNonTerminal() || s.peek().isAction())
+                        && (s.peek().isNonTerminal())
                         && table.get(s.peek()).get(cur) != null
-                        && table.get(s.peek()).get(cur).isSyncRule())
+                        && table.get(s.peek()).get(cur).isSyncRule()) {
+                    aux.push(s.peek());
                     s.pop();
+                }
             } else if (s.peek().isNonTerminal()) {
                 Rule rule = table.get(s.peek()).get(cur);
 

@@ -36,6 +36,7 @@ public class SemanticFunctions {
             System.out.println("Variable already declared: " + first.getAttribute());
         } else {
             SemanticAnalyser.SYMBOL_TABLE.put(first.getAttribute(), second.getAttribute());
+            System.out.println(SemanticAnalyser.SYMBOL_TABLE);
         }
     }
 
@@ -58,4 +59,9 @@ public class SemanticFunctions {
         }
     }
 
+    public static void markAsArray(List<Parameter> parameters, Token token) {
+
+        System.out.println("MARKING AS ARRAY");
+        System.out.println(parameters);
+    }
 }

@@ -26,6 +26,7 @@ public class SemanticAnalyser {
                 put("insertSymbolType", SemanticFunctions::insertSymbolType);
                 put("incStart", SemanticFunctions::incStart);
                 put("hasOneStart", SemanticFunctions::hasOneStart);
+                put("markAsArray", SemanticFunctions::markAsArray);
             }};
 
     public static void reset() {
@@ -71,7 +72,6 @@ public class SemanticAnalyser {
     }
 
     public static void runAction(Action action, Token curToken) throws Exception {
-
         if (FUNCTION_MAP.containsKey(action.getFuncName())) {
             FUNCTION_MAP.get(action.getFuncName()).accept(action.getParams(), curToken);
         } else {
