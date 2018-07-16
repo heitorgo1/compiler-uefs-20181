@@ -14,7 +14,7 @@ public class SemanticAnalyser {
     public static int START_COUNTER = 0;
     public static long START_LINE = 0;
 
-    public static Map<String, Object> SYMBOL_TABLE = new Hashtable<>();
+    public static Map<String, Map<String, Object>> SYMBOL_TABLE = new Hashtable<>();
 
     private static Pattern ACTION_PATTERN = Pattern.compile("((\\w|\\d)+)\\((.*)\\)");
 
@@ -27,10 +27,13 @@ public class SemanticAnalyser {
                 put("incStart", SemanticFunctions::incStart);
                 put("hasOneStart", SemanticFunctions::hasOneStart);
                 put("markAsArray", SemanticFunctions::markAsArray);
+                put("insertCategory", SemanticFunctions::insertCategory);
+                put("concat", SemanticFunctions::concat);
+                put("insertParams", SemanticFunctions::insertParams);
             }};
 
     public static void reset() {
-        SYMBOL_TABLE = new Hashtable<>();
+        SYMBOL_TABLE.clear();
         ERRORS = new ArrayList<>();
         START_COUNTER = 0;
         START_LINE = 0;

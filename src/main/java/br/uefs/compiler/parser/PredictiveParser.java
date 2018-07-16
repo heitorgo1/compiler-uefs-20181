@@ -101,7 +101,6 @@ public class PredictiveParser {
                 aux.push(s.peek());
                 s.pop();
             } else if (s.peek().isAction()) {
-
                 for (String step : SemanticAnalyser.parseSteps(s.peek())) {
                     Action action = SemanticAnalyser.extractAction(step);
 
@@ -120,7 +119,6 @@ public class PredictiveParser {
                                 }
                             }
                         }
-
                         SemanticAnalyser.runAction(action, token);
                     }
                 }
@@ -163,7 +161,8 @@ public class PredictiveParser {
 
                 for (int i = arr.size() - 1; i >= 0; i--) {
                     if (!arr.get(i).isEmptyString())
-                        s.push(arr.get(i));
+                        // New symbol with same name, so it can reset properties
+                        s.push(new Symbol(arr.get(i).getName()));
                 }
             } else {
                 throw new Exception(String.format("Fatal Error. Problem in grammar definition. Peek value: %s", s.peek()));

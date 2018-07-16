@@ -20,43 +20,43 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("<Procedure Def>")));
         grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("<Typedef Def>")));
 
-        grammar.addRule(new Rule("<Function Def>", new Symbol.Array("'function'", "<Type>", "{assign(<Declarator>:Stack[-1].type, <Type>:Aux[0].type)}", "<Declarator>", "'('", "<Function Def lf>")));
-        grammar.addRule(new Rule("<Function Def lf>", new Symbol.Array("<Parameter List>", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
+        grammar.addRule(new Rule("<Function Def>", new Symbol.Array("'function'", "<Type>", "{assign(<Declarator>:Stack[-1].type, <Type>:Aux[0].type); assign(Stack[-1].cat, func)}", "<Declarator>", "'('", "{assign(Stack[-1].lex, Aux[-1].lex)}","<Function Def lf>")));
+        grammar.addRule(new Rule("<Function Def lf>", new Symbol.Array("{assign(Stack[-1].cat, param)}", "<Parameter List>", "{insertParams(Aux[-1].lex, Aux[0].params)}", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
         grammar.addRule(new Rule("<Function Def lf>", new Symbol.Array("')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
 
-        grammar.addRule(new Rule("<Procedure Def>", new Symbol.Array("'procedure'", "IDENTIFICADOR", "'('", "<Procedure Def lf>")));
-        grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("<Parameter List>", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
+        grammar.addRule(new Rule("<Procedure Def>", new Symbol.Array("'procedure'", "IDENTIFICADOR", "{insertCategory(Aux[0].lex, proc)}","'('", "{assign(Stack[-1].lex, Aux[-1].lex)}", "<Procedure Def lf>")));
+        grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("{assign(Stack[-1].cat, param)}", "<Parameter List>", "{insertParams(Aux[-1].lex, Aux[0].params)}", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
         grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
 
         grammar.addRule(new Rule("<Typedef Def>", new Symbol.Array("'typedef'", "<Typedef Def lf>")));
         grammar.addRule(new Rule("<Typedef Def lf>", new Symbol.Array("<Type>", "IDENTIFICADOR", "';'")));
         grammar.addRule(new Rule("<Typedef Def lf>", new Symbol.Array("<Struct Def>", "IDENTIFICADOR", "';'")));
 
-        grammar.addRule(new Rule("<Var Def>", new Symbol.Array("'var'", "'{'", "<Declaration List>", "'}'")));
+        grammar.addRule(new Rule("<Var Def>", new Symbol.Array("'var'", "'{'", "{assign(Stack[-1].cat, var)}", "<Declaration List>", "'}'")));
 
-        grammar.addRule(new Rule("<Const Def>", new Symbol.Array("'const'", "'{'", "<Declaration List>", "'}'")));
+        grammar.addRule(new Rule("<Const Def>", new Symbol.Array("'const'", "'{'", "{assign(Stack[-1].cat, const)}","<Declaration List>", "'}'")));
 
         grammar.addRule(new Rule("<Struct Def>", new Symbol.Array("'struct'", "IDENTIFICADOR", "<Struct Def lf>")));
-        grammar.addRule(new Rule("<Struct Def lf>", new Symbol.Array("'{'", "<Declaration List>", "'}'")));
-        grammar.addRule(new Rule("<Struct Def lf>", new Symbol.Array("'extends'", "IDENTIFICADOR", "'{'", "<Declaration List>", "'}'")));
+        grammar.addRule(new Rule("<Struct Def lf>", new Symbol.Array("'{'", "{assign(Stack[-1].cat, struct)}", "<Declaration List>", "'}'")));
+        grammar.addRule(new Rule("<Struct Def lf>", new Symbol.Array("'extends'", "IDENTIFICADOR", "'{'", "{assign(Stack[-1].cat, struct)}", "<Declaration List>", "'}'")));
 
-        grammar.addRule(new Rule("<Parameter List>", new Symbol.Array("<Parameter Declaration>", "<Parameter List 1>")));
-        grammar.addRule(new Rule("<Parameter List 1>", new Symbol.Array("','", "<Parameter Declaration>", "<Parameter List 1>")));
+        grammar.addRule(new Rule("<Parameter List>", new Symbol.Array("{assign(Stack[-1].cat, Aux[0].cat)}", "<Parameter Declaration>", "{concat(Stack[-1].params, Aux[0].lex); assign(Stack[-1].cat, Aux[0].cat)}", "<Parameter List 1>", "{assign(Aux[-2].params, Aux[0].params)}")));
+        grammar.addRule(new Rule("<Parameter List 1>", new Symbol.Array("','", "{assign(Stack[-1].cat, Aux[-1].cat)}", "<Parameter Declaration>",  "{assign(Stack[-1].params, Aux[-2].params); concat(Stack[-1].params, Aux[0].lex); assign(Stack[-1].cat, Aux[0].cat)}", "<Parameter List 1>", "{assign(Aux[-3].params, Aux[0].params)}")));
         grammar.addRule(new Rule("<Parameter List 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Parameter Declaration>", new Symbol.Array("<Type>", "{assign(<Declarator>:Stack[-1].type, <Type>:Aux[0].type)}", "<Declarator>")));
+        grammar.addRule(new Rule("<Parameter Declaration>", new Symbol.Array("<Type>", "{assign(Stack[-1].type, Aux[0].type); assign(Stack[-1].cat, Aux[-1].cat)}", "<Declarator>", "{assign(Aux[-2].lex, Aux[0].lex)}")));
 
-        grammar.addRule(new Rule("<Declaration List>", new Symbol.Array("<Declaration>", "<Declaration List 1>")));
-        grammar.addRule(new Rule("<Declaration List 1>", new Symbol.Array("<Declaration>", "<Declaration List 1>")));
+        grammar.addRule(new Rule("<Declaration List>", new Symbol.Array("{assign(Stack[-1].cat, Aux[0].cat)}", "<Declaration>", "{assign(Stack[-1].cat, Aux[0].cat)}","<Declaration List 1>")));
+        grammar.addRule(new Rule("<Declaration List 1>", new Symbol.Array("{assign(Stack[-1].cat, Aux[0].cat)}", "<Declaration>", "{assign(Stack[-1].cat, Aux[0].cat)}", "<Declaration List 1>")));
         grammar.addRule(new Rule("<Declaration List 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Declaration>", new Symbol.Array("<Type>", "{assign(<Init Declarator List>:Stack[-1].type, <Type>:Aux[0].type)}", "<Init Declarator List>", "';'")));
+        grammar.addRule(new Rule("<Declaration>", new Symbol.Array("<Type>", "{assign(Stack[-1].type, Aux[0].type); assign(Stack[-1].cat, Aux[-1].cat)}", "<Init Declarator List>", "';'")));
 
-        grammar.addRule(new Rule("<Init Declarator List>", new Symbol.Array("{assign(<Init Declarator>:Stack[-1].type, <Init Declarator List>:Aux[0].type); assign(<Init Declarator List 1>:Stack[-2].type, <Init Declarator List>:Aux[0].type)}", "<Init Declarator>", "<Init Declarator List 1>")));
-        grammar.addRule(new Rule("<Init Declarator List 1>", new Symbol.Array("','", "{assign(<Init Declarator>:Stack[-1].type, <Init Declarator List 1>:Aux[-1].type)}", "<Init Declarator>", "{assign(<Init Declarator List 1>:Stack[-1].type, <Init Declarator List 1>:Aux[-2].type)}","<Init Declarator List 1>")));
+        grammar.addRule(new Rule("<Init Declarator List>", new Symbol.Array("{assign(Stack[-1].type, Aux[0].type); assign(Stack[-2].type, Aux[0].type); assign(Stack[-1].cat, Aux[0].cat); assign(Stack[-2].cat, Aux[0].cat)}", "<Init Declarator>", "<Init Declarator List 1>")));
+        grammar.addRule(new Rule("<Init Declarator List 1>", new Symbol.Array("','", "{assign(Stack[-1].type, Aux[-1].type); assign(Stack[-1].cat, Aux[-1].cat)}", "<Init Declarator>", "{assign(Stack[-1].type, Aux[-2].type); assign(Stack[-1].cat, Aux[0].cat)}","<Init Declarator List 1>")));
         grammar.addRule(new Rule("<Init Declarator List 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Init Declarator>", new Symbol.Array("{assign(<Declarator>:Stack[-1].type, <Init Declarator>:Aux[0].type)}","<Declarator>", "<Init Declarator lf>")));
+        grammar.addRule(new Rule("<Init Declarator>", new Symbol.Array("{assign(Stack[-1].type, Aux[0].type); assign(Stack[-1].cat, Aux[0].cat)}","<Declarator>", "<Init Declarator lf>")));
         grammar.addRule(new Rule("<Init Declarator lf>", new Symbol.Array("'='", "<Initializer>")));
         grammar.addRule(new Rule("<Init Declarator lf>", new Symbol.Array("")));
 
@@ -69,7 +69,7 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Initializer List 1>", new Symbol.Array("','", "<Initializer>", "<Initializer List 1>")));
         grammar.addRule(new Rule("<Initializer List 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Declarator>", new Symbol.Array("IDENTIFICADOR", "<Declarator 1>", "{insertSymbolType(IDENTIFICADOR:Aux[-1].lex, <Declarator>:Aux[-2].type)}")));
+        grammar.addRule(new Rule("<Declarator>", new Symbol.Array("IDENTIFICADOR", "<Declarator 1>", "{insertSymbolType(Aux[-1].lex, Aux[-2].type); insertCategory(Aux[-1].lex, Aux[-2].cat); assign(Aux[-2].lex, Aux[-1].lex)}")));
         grammar.addRule(new Rule("<Declarator 1>", new Symbol.Array("'['", "<Declarator 1 lf>")));
         grammar.addRule(new Rule("<Declarator 1>", new Symbol.Array("")));
         grammar.addRule(new Rule("<Declarator 1 lf>", new Symbol.Array("<Cond Expr>", "']'", "<Declarator 1>")));
@@ -189,11 +189,11 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Argument List 1>", new Symbol.Array("','", "<Assign Expr>", "<Argument List 1>")));
         grammar.addRule(new Rule("<Argument List 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Type>", new Symbol.Array("'int'", "{assign(<Type>:Aux[-1].type, 'int')}")));
-        grammar.addRule(new Rule("<Type>", new Symbol.Array("'string'", "{assign(<Type>:Aux[-1].type, 'string')}")));
-        grammar.addRule(new Rule("<Type>", new Symbol.Array("'float'", "{assign(<Type>:Aux[-1].type, 'float')}")));
-        grammar.addRule(new Rule("<Type>", new Symbol.Array("'bool'", "{assign(<Type>:Aux[-1].type, 'bool')}")));
-        grammar.addRule(new Rule("<Type>", new Symbol.Array("IDENTIFICADOR")));
+        grammar.addRule(new Rule("<Type>", new Symbol.Array("'int'", "{assign(<Type>:Aux[-1].type, int)}")));
+        grammar.addRule(new Rule("<Type>", new Symbol.Array("'string'", "{assign(<Type>:Aux[-1].type, string)}")));
+        grammar.addRule(new Rule("<Type>", new Symbol.Array("'float'", "{assign(<Type>:Aux[-1].type, float)}")));
+        grammar.addRule(new Rule("<Type>", new Symbol.Array("'bool'", "{assign(<Type>:Aux[-1].type, bool)}")));
+        grammar.addRule(new Rule("<Type>", new Symbol.Array("IDENTIFICADOR", "{assign(<Type>:Aux[-1].type, id)}")));
 
         grammar.setStartSymbol(new Symbol("<S>"));
 

@@ -14,7 +14,7 @@ typedef struct ss {
     bool adf = true;
 } s;
 
-function int abc[] (int a, int b, string c) {
+function int abc[] (int e, int f) {
 
     if (2 < 3) then {
         return e;
@@ -22,7 +22,7 @@ function int abc[] (int a, int b, string c) {
     return "blabla";
 }
 
-procedure abc (int a, int b, string c) {
+procedure abcd (int q, int w, float te) {
     var {
         int e = 2;
         bool t = false;

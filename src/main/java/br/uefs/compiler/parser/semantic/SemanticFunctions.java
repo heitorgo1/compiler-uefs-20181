@@ -3,11 +3,11 @@ package br.uefs.compiler.parser.semantic;
 import br.uefs.compiler.lexer.token.ReservedWords;
 import br.uefs.compiler.lexer.token.Token;
 
+import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 public class SemanticFunctions {
-
-    static int starts = 0;
 
     public static void assign(List<Parameter> params, Token token) {
         assert params.size() == 2;
@@ -35,9 +35,28 @@ public class SemanticFunctions {
         } else if (SemanticAnalyser.SYMBOL_TABLE.containsKey(first.getAttribute())) {
             System.out.println("Variable already declared: " + first.getAttribute());
         } else {
-            SemanticAnalyser.SYMBOL_TABLE.put(first.getAttribute(), second.getAttribute());
+            SemanticAnalyser.SYMBOL_TABLE.putIfAbsent(first.getAttribute(), new Hashtable<>());
+            SemanticAnalyser.SYMBOL_TABLE.get(first.getAttribute()).put("type", second.getAttribute());
+            System.out.println("TYPE");
             System.out.println(SemanticAnalyser.SYMBOL_TABLE);
         }
+    }
+
+    public static void insertCategory(List<Parameter> params, Token token) {
+        assert params.size() == 2;
+
+        Parameter first = params.get(0);
+        Parameter second = params.get(1);
+
+        SemanticAnalyser.SYMBOL_TABLE.putIfAbsent(first.getAttribute(), new Hashtable<>());
+
+        if (second instanceof VariableParam) {
+            SemanticAnalyser.SYMBOL_TABLE.get(first.getAttribute()).put("category", second.getAttribute());
+        } else if (second instanceof ConstantParam) {
+            SemanticAnalyser.SYMBOL_TABLE.get(first.getAttribute()).put("category", second.getValue());
+        }
+        System.out.println("CATEGORY");
+        System.out.println(SemanticAnalyser.SYMBOL_TABLE);
     }
 
     public static void incStart(List<Parameter> params, Token token) {
@@ -63,5 +82,43 @@ public class SemanticFunctions {
 
         System.out.println("MARKING AS ARRAY");
         System.out.println(parameters);
+    }
+
+    public static void concat(List<Parameter> params, Token token) {
+        assert params.size() == 2;
+
+        Parameter first = params.get(0);
+        Parameter second = params.get(1);
+
+        VariableParam receiver = VariableParam.class.cast(first);
+
+        if (receiver.getAttribute() == null) {
+            receiver.setAttribute("");
+        }
+
+        String curVal = receiver.getAttribute();
+
+        if (second instanceof VariableParam) {
+            receiver.setAttribute(curVal + " "+second.getAttribute().trim());
+        } else if (second instanceof ConstantParam) {
+            receiver.setAttribute(curVal + " "+second.getValue().trim());
+        }
+    }
+
+    public static void insertParams(List<Parameter> params, Token token) {
+        assert params.size() == 2;
+
+        Parameter first = params.get(0);
+        Parameter second = params.get(1);
+
+        SemanticAnalyser.SYMBOL_TABLE.putIfAbsent(first.getAttribute(), new Hashtable<>());
+
+        if (second instanceof VariableParam) {
+            SemanticAnalyser.SYMBOL_TABLE.get(first.getAttribute()).put("params", Arrays.asList(second.getAttribute().trim().split("\\s+")));
+        } else if (second instanceof ConstantParam) {
+            SemanticAnalyser.SYMBOL_TABLE.get(first.getAttribute()).put("params", Arrays.asList(second.getValue().trim().split("\\s+")));
+        }
+        System.out.println("PARAMS");
+        System.out.println(SemanticAnalyser.SYMBOL_TABLE);
     }
 }
