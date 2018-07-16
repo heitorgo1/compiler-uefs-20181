@@ -11,10 +11,11 @@ import java.util.stream.Collectors;
 
 public class SemanticAnalyser {
 
+    public static int CUR_SCOPE = 0;
     public static int START_COUNTER = 0;
     public static long START_LINE = 0;
 
-    public static Map<String, Map<String, Object>> SYMBOL_TABLE = new Hashtable<>();
+    public static List<Map<String, Map<String, Object>>> SYMBOL_TABLE = new ArrayList<>();
 
     private static Pattern ACTION_PATTERN = Pattern.compile("((\\w|\\d)+)\\((.*)\\)");
 
@@ -30,9 +31,13 @@ public class SemanticAnalyser {
                 put("insertCategory", SemanticFunctions::insertCategory);
                 put("concat", SemanticFunctions::concat);
                 put("insertParams", SemanticFunctions::insertParams);
+                put("setScope", SemanticFunctions::setScope);
+                put("incScope", SemanticFunctions::incScope);
+                put("decScope", SemanticFunctions::decScope);
             }};
 
     public static void reset() {
+        CUR_SCOPE = 0;
         SYMBOL_TABLE.clear();
         ERRORS = new ArrayList<>();
         START_COUNTER = 0;

@@ -88,6 +88,7 @@ public class PredictiveParser {
             Token token = tokens.get(ip);
             Symbol cur = tokenToSymbol(token);
 
+
             if (cur.equals(s.peek())) {
                 s.peek().addProperty("lex", token.getLexeme());
                 aux.push(s.peek());

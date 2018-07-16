@@ -7,7 +7,7 @@ public class GrammarBuilder {
 
     public static Grammar build() {
         Grammar grammar = new Grammar();
-        grammar.addRule(new Rule("<S>", new Symbol.Array("<Global Declaration>", "<S 1>", "{hasOneStart()}")));
+        grammar.addRule(new Rule("<S>", new Symbol.Array("{setScope(0)}", "<Global Declaration>", "<S 1>", "{hasOneStart()}")));
 
         grammar.addRule(new Rule("<S 1>", new Symbol.Array("<Global Declaration>", "<S 1>")));
         grammar.addRule(new Rule("<S 1>", new Symbol.Array("")));
@@ -20,11 +20,11 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("<Procedure Def>")));
         grammar.addRule(new Rule("<Global Declaration>", new Symbol.Array("<Typedef Def>")));
 
-        grammar.addRule(new Rule("<Function Def>", new Symbol.Array("'function'", "<Type>", "{assign(<Declarator>:Stack[-1].type, <Type>:Aux[0].type); assign(Stack[-1].cat, func)}", "<Declarator>", "'('", "{assign(Stack[-1].lex, Aux[-1].lex)}","<Function Def lf>")));
+        grammar.addRule(new Rule("<Function Def>", new Symbol.Array("'function'", "<Type>", "{assign(<Declarator>:Stack[-1].type, <Type>:Aux[0].type); assign(Stack[-1].cat, func)}", "<Declarator>", "'('", "{assign(Stack[-1].lex, Aux[-1].lex); incScope()}","<Function Def lf>", "{decScope()}")));
         grammar.addRule(new Rule("<Function Def lf>", new Symbol.Array("{assign(Stack[-1].cat, param)}", "<Parameter List>", "{insertParams(Aux[-1].lex, Aux[0].params)}", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
         grammar.addRule(new Rule("<Function Def lf>", new Symbol.Array("')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
 
-        grammar.addRule(new Rule("<Procedure Def>", new Symbol.Array("'procedure'", "IDENTIFICADOR", "{insertCategory(Aux[0].lex, proc)}","'('", "{assign(Stack[-1].lex, Aux[-1].lex)}", "<Procedure Def lf>")));
+        grammar.addRule(new Rule("<Procedure Def>", new Symbol.Array("'procedure'", "IDENTIFICADOR", "{insertCategory(Aux[0].lex, proc)}","'('", "{assign(Stack[-1].lex, Aux[-1].lex); incScope()}", "<Procedure Def lf>", "{decScope()}")));
         grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("{assign(Stack[-1].cat, param)}", "<Parameter List>", "{insertParams(Aux[-1].lex, Aux[0].params)}", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
         grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
 
@@ -36,7 +36,7 @@ public class GrammarBuilder {
 
         grammar.addRule(new Rule("<Const Def>", new Symbol.Array("'const'", "'{'", "{assign(Stack[-1].cat, const)}","<Declaration List>", "'}'")));
 
-        grammar.addRule(new Rule("<Struct Def>", new Symbol.Array("'struct'", "IDENTIFICADOR", "<Struct Def lf>")));
+        grammar.addRule(new Rule("<Struct Def>", new Symbol.Array("'struct'", "IDENTIFICADOR", "{incScope()}","<Struct Def lf>", "{decScope()}")));
         grammar.addRule(new Rule("<Struct Def lf>", new Symbol.Array("'{'", "{assign(Stack[-1].cat, struct)}", "<Declaration List>", "'}'")));
         grammar.addRule(new Rule("<Struct Def lf>", new Symbol.Array("'extends'", "IDENTIFICADOR", "'{'", "{assign(Stack[-1].cat, struct)}", "<Declaration List>", "'}'")));
 
@@ -89,7 +89,7 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Stmt Or Declaration List 1>", new Symbol.Array("<Var Def>", "<Stmt Or Declaration List 1>")));
         grammar.addRule(new Rule("<Stmt Or Declaration List 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Start Def>", new Symbol.Array("'start'", "'('", "')'", "'{'", "<Stmt Or Declaration List>", "'}'")));
+        grammar.addRule(new Rule("<Start Def>", new Symbol.Array("'start'", "'('", "')'", "{incScope()}","'{'", "<Stmt Or Declaration List>", "'}'", "{decScope()}")));
 
         grammar.addRule(new Rule("<Print Stmt>", new Symbol.Array("'print'", "'('", "<Argument List>", "')'", "';'")));
 
@@ -103,7 +103,7 @@ public class GrammarBuilder {
 
         grammar.addRule(new Rule("<Return Stmt>", new Symbol.Array("'return'", "<Expr>", "';'")));
 
-        grammar.addRule(new Rule("<Compound Stmt>", new Symbol.Array("'{'", "<Compound Stmt lf>")));
+        grammar.addRule(new Rule("<Compound Stmt>", new Symbol.Array("{incScope()}","'{'", "<Compound Stmt lf>", "{decScope()}")));
         grammar.addRule(new Rule("<Compound Stmt lf>", new Symbol.Array("'}'")));
         grammar.addRule(new Rule("<Compound Stmt lf>", new Symbol.Array("<Stmt Or Declaration List>", "'}'")));
 

@@ -32,13 +32,12 @@ public class SemanticFunctions {
 
         if (ReservedWords.isReserved(first.getAttribute())) {
             System.out.println(first.getAttribute() + " is a reserved word.");
-        } else if (SemanticAnalyser.SYMBOL_TABLE.containsKey(first.getAttribute())) {
-            System.out.println("Variable already declared: " + first.getAttribute());
+        } else if (SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).containsKey(first.getAttribute())) {
+            System.out.println(token.getLexeme()+" "+token.getLine());
+            System.out.println("Variable already declared in scope " + SemanticAnalyser.CUR_SCOPE + ": " + first.getAttribute());
         } else {
-            SemanticAnalyser.SYMBOL_TABLE.putIfAbsent(first.getAttribute(), new Hashtable<>());
-            SemanticAnalyser.SYMBOL_TABLE.get(first.getAttribute()).put("type", second.getAttribute());
-            System.out.println("TYPE");
-            System.out.println(SemanticAnalyser.SYMBOL_TABLE);
+            SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).putIfAbsent(first.getAttribute(), new Hashtable<>());
+            SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).get(first.getAttribute()).put("type", second.getAttribute());
         }
     }
 
@@ -48,15 +47,13 @@ public class SemanticFunctions {
         Parameter first = params.get(0);
         Parameter second = params.get(1);
 
-        SemanticAnalyser.SYMBOL_TABLE.putIfAbsent(first.getAttribute(), new Hashtable<>());
+        SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).putIfAbsent(first.getAttribute(), new Hashtable<>());
 
         if (second instanceof VariableParam) {
-            SemanticAnalyser.SYMBOL_TABLE.get(first.getAttribute()).put("category", second.getAttribute());
+            SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).get(first.getAttribute()).put("category", second.getAttribute());
         } else if (second instanceof ConstantParam) {
-            SemanticAnalyser.SYMBOL_TABLE.get(first.getAttribute()).put("category", second.getValue());
+            SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).get(first.getAttribute()).put("category", second.getValue());
         }
-        System.out.println("CATEGORY");
-        System.out.println(SemanticAnalyser.SYMBOL_TABLE);
     }
 
     public static void incStart(List<Parameter> params, Token token) {
@@ -70,7 +67,7 @@ public class SemanticFunctions {
         }
     }
 
-    public static void hasOneStart (List<Parameter> params, Token token) {
+    public static void hasOneStart(List<Parameter> params, Token token) {
 
         if (SemanticAnalyser.START_COUNTER == 0) {
             SemanticError err = new SemanticError("Função start não encontrada.", token.getLine());
@@ -99,9 +96,9 @@ public class SemanticFunctions {
         String curVal = receiver.getAttribute();
 
         if (second instanceof VariableParam) {
-            receiver.setAttribute(curVal + " "+second.getAttribute().trim());
+            receiver.setAttribute(curVal + " " + second.getAttribute().trim());
         } else if (second instanceof ConstantParam) {
-            receiver.setAttribute(curVal + " "+second.getValue().trim());
+            receiver.setAttribute(curVal + " " + second.getValue().trim());
         }
     }
 
@@ -111,14 +108,43 @@ public class SemanticFunctions {
         Parameter first = params.get(0);
         Parameter second = params.get(1);
 
-        SemanticAnalyser.SYMBOL_TABLE.putIfAbsent(first.getAttribute(), new Hashtable<>());
+        SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).putIfAbsent(first.getAttribute(), new Hashtable<>());
 
         if (second instanceof VariableParam) {
-            SemanticAnalyser.SYMBOL_TABLE.get(first.getAttribute()).put("params", Arrays.asList(second.getAttribute().trim().split("\\s+")));
+            SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).get(first.getAttribute()).put("params", Arrays.asList(second.getAttribute().trim().split("\\s+")));
         } else if (second instanceof ConstantParam) {
-            SemanticAnalyser.SYMBOL_TABLE.get(first.getAttribute()).put("params", Arrays.asList(second.getValue().trim().split("\\s+")));
+            SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).get(first.getAttribute()).put("params", Arrays.asList(second.getValue().trim().split("\\s+")));
         }
-        System.out.println("PARAMS");
-        System.out.println(SemanticAnalyser.SYMBOL_TABLE);
+
+    }
+
+    public static void setScope(List<Parameter> params, Token token) {
+        assert params.size() == 1;
+
+        Parameter param = params.get(0);
+
+        SemanticAnalyser.CUR_SCOPE = Integer.parseInt(param.getValue());
+
+        while (SemanticAnalyser.SYMBOL_TABLE.size() < SemanticAnalyser.CUR_SCOPE + 1) {
+            SemanticAnalyser.SYMBOL_TABLE.add(new Hashtable<>());
+        }
+    }
+
+    public static void incScope(List<Parameter> params, Token token) {
+        assert params.size() == 0;
+
+        SemanticAnalyser.CUR_SCOPE++;
+
+        if (SemanticAnalyser.SYMBOL_TABLE.size() < SemanticAnalyser.CUR_SCOPE + 1) {
+            SemanticAnalyser.SYMBOL_TABLE.add(new Hashtable<>());
+        }
+    }
+
+    public static void decScope(List<Parameter> params, Token token) {
+        assert params.size() == 0;
+
+        SemanticAnalyser.SYMBOL_TABLE.remove(SemanticAnalyser.CUR_SCOPE);
+
+        SemanticAnalyser.CUR_SCOPE--;
     }
 }

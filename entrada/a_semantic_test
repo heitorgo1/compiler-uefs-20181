@@ -7,4 +7,15 @@ start() {
 
 start() {
     a = 1 + 1;
+    if true then {
+        if true then {
+            if true then {
+                if true then {
+                    if true then {
+
+                    }
+                }
+            }
+        }
+    }
 }
