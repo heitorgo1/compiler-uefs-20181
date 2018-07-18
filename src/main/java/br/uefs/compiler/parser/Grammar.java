@@ -1,5 +1,7 @@
 package br.uefs.compiler.parser;
 
+import br.uefs.compiler.parser.semantic.SemanticAnalyser;
+
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
@@ -16,7 +18,6 @@ public class Grammar extends Hashtable<Symbol, Rule.Array> {
 
     public Grammar() {
         super();
-
         startSymbol = null;
         followMap = new Hashtable<>();
         syncMap = new Hashtable<>();
@@ -32,6 +33,8 @@ public class Grammar extends Hashtable<Symbol, Rule.Array> {
 
     public Grammar addRule(Rule rule) {
         this.putIfAbsent(rule.getNonTerminal(), new Rule.Array());
+
+        rule.addSymbol(SemanticAnalyser.createPopActionSymbol(rule.getSymbols()));
 
         this.get(rule.getNonTerminal()).add(rule);
         return this;

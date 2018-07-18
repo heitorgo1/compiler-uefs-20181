@@ -42,6 +42,10 @@ public class Rule {
         return symbols;
     }
 
+    public void addSymbol(Symbol sy) {
+        symbols.add(sy);
+    }
+
     public boolean isSyncRule() {
         return syncRule;
     }

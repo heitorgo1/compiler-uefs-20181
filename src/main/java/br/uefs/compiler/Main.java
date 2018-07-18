@@ -3,18 +3,17 @@ package br.uefs.compiler;
 import br.uefs.compiler.lexer.Lexer;
 import br.uefs.compiler.lexer.token.Token;
 import br.uefs.compiler.lexer.token.TokenClass;
-import br.uefs.compiler.lexer.token.TokenError;
 import br.uefs.compiler.lexer.token.TokenRecognizerAutomataFactory;
+import br.uefs.compiler.parser.Grammar;
 import br.uefs.compiler.parser.GrammarBuilder;
-import br.uefs.compiler.parser.SyntacticError;
+import br.uefs.compiler.parser.ParsingTable;
+import br.uefs.compiler.parser.PredictiveParser;
 import br.uefs.compiler.parser.semantic.SemanticAnalyser;
 import br.uefs.compiler.util.automata.DFA;
 import br.uefs.compiler.util.cache.CacheHandler;
 import br.uefs.compiler.util.errors.CompilerError;
 import br.uefs.compiler.util.errors.ErrorFormatter;
 import br.uefs.compiler.util.errors.GalvaoPhraseGenerator;
-import br.uefs.compiler.parser.Grammar;
-import br.uefs.compiler.parser.PredictiveParser;
 
 import java.io.File;
 import java.io.FileReader;
@@ -25,8 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +31,7 @@ public class Main {
     private static final String INPUT_FOLDER = "./entrada";
     private static final String OUTPUT_FOLDER = "./saida";
 
+    private static Grammar grammar = GrammarBuilder.build();
     private static DFA dfa;
     private static ErrorFormatter errorFormatter = new ErrorFormatter(
             "Erro na linha {{line}}: {{errorMessage}}",
@@ -77,23 +75,15 @@ public class Main {
         }
     }
 
-    private static List<Token> readAndParseForEachInputFile(Lexer lexer, PredictiveParser parser) {
-        final List<Token> tokens = new ArrayList<>();
+    private static void readAndParseForEachInputFile() {
         try (Stream<Path> paths = Files.walk(Paths.get(INPUT_FOLDER))) {
             paths.filter(Files::isRegularFile).forEach((Path path) -> {
-                lexer.clearErrors();
-                parser.clearErrors();
-                tokens.clear();
-                SemanticAnalyser.reset();
+                try {
+                    Lexer lexer = new Lexer(dfa, new FileReader(path.toFile()));
+                    PredictiveParser parser = new PredictiveParser(ParsingTable.build(grammar));
+                    SemanticAnalyser.reset();
 
-                try {
-                    lexer.withReader(new FileReader(path.toFile()));
-                } catch (IOException e) {
-                    System.err.format("File not found or unavailable: %s\n", path.toString());
-                    return;
-                }
-                try {
-                    tokens.addAll(lexer.readAllTokens());
+                    List<Token> tokens = lexer.readAllTokens();
                     parser.parse(tokens);
 
                     List<CompilerError> errors = new ArrayList<>();
@@ -105,8 +95,11 @@ public class Main {
                     File outputFile = Paths.get(OUTPUT_FOLDER).resolve(outputFileName).toFile();
 
                     writeTokensAndErrorsToFile(tokens, errors, outputFile);
+                } catch (IOException e) {
+                    System.err.format("File not found or unavailable: %s\n", path.toString());
+                    return;
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    e.printStackTrace();
                     System.err.format("Error trying to read tokens from: %s\n", path.toString());
                     return;
                 }
@@ -114,19 +107,13 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return tokens;
     }
 
     public static void main(String[] args) throws Exception {
-        Lexer lexer;
-        PredictiveParser parser;
+
         makeSureInputAndOutputFoldersExist();
         tryToLoadAutomataFromCache();
 
-        lexer = new Lexer(dfa);
-        Grammar grammar = GrammarBuilder.build();
-        parser = new PredictiveParser(grammar);
-
-        readAndParseForEachInputFile(lexer, parser);
+        readAndParseForEachInputFile();
     }
 }

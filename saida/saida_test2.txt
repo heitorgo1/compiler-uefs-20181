@@ -2,6 +2,8 @@
 <DELIMITADOR, {, 2>
 <PALAVRARESERVADA, int, 3>
 <IDENTIFICADOR, max1, 3>
+<DELIMITADOR, [, 3>
+<DELIMITADOR, ], 3>
 <OPERADORRELACIONAL, =, 3>
 <NUMERO,  10, 3>
 <DELIMITADOR, ,, 3>
@@ -64,6 +66,7 @@
 <DELIMITADOR, ;, 17>
 <DELIMITADOR, }, 18>
 <PALAVRARESERVADA, return, 20>
+<IDENTIFICADOR, max1, 20>
 <DELIMITADOR, ;, 20>
 <DELIMITADOR, }, 21>
 <PALAVRARESERVADA, var, 23>
@@ -1002,11 +1005,6 @@
 <DELIMITADOR, }, 212>
 <END, $, 212>
 
-Erro na linha 12: Erro sintático próximo ao token 'const'.
-Erro na linha 12: Erro sintático. Esperava '}' -> {} mas encontrou 'const'.
-Erro na linha 20: Erro sintático. Token inesperado: 'return'.
-Erro na linha 20: Erro sintático. Token inesperado: ';'.
-Erro na linha 21: Erro sintático. Token inesperado: '}'.
 Erro na linha 137: start já foi definido na linha 122
 Erro na linha 145: start já foi definido na linha 122
 Erro na linha 151: start já foi definido na linha 122

@@ -9,15 +9,16 @@ import java.util.List;
  * its regex expression, that way it can be recognized using an AutomataSimulator.
  */
 public class TokenClass implements Comparable, Serializable {
-    public static final TokenClass INVALID_CLASS = new TokenClass(Integer.MAX_VALUE, "", "CLASSEINVALIDA");
+    public transient static final TokenClass INVALID_CLASS = new TokenClass(Integer.MAX_VALUE, "", "CLASSEINVALIDA");
+    public transient static final TokenClass END_CLASS = new TokenClass(-1, "", "END");
 
-    public static final TokenClass INVALID_CHARACTER_CLASS =
+    public transient static final TokenClass INVALID_CHARACTER_CLASS =
             new TokenClass(-1, "", "ERROR_CARACTEREINVALIDO");
 
     /**
      * Predefined classes
      */
-    public static final List<TokenClass> CLASSES = Arrays.asList(
+    public transient static final List<TokenClass> CLASSES = Arrays.asList(
             new TokenClass(256, "const", "PALAVRARESERVADA"),
             new TokenClass(257, "var", "PALAVRARESERVADA"),
             new TokenClass(258, "struct", "PALAVRARESERVADA"),

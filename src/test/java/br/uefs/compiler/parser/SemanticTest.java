@@ -38,7 +38,7 @@ public class SemanticTest {
 
         grammar = new Grammar();
 
-        grammar.addRule(new Rule("<D>", new Symbol.Array("<T>", "{assign(<L>:Stack[-1].type, <T>:Aux[0].type)}", "<L>", "';'")));
+        grammar.addRule(new Rule("<D>", new Symbol.Array("{setScope(0)}", "<T>", "{assign(<L>:Stack[-1].type, <T>:Aux[0].type)}", "<L>", "';'")));
         grammar.addRule(new Rule("<T>", new Symbol.Array("'int'", "{assign(<T>:Aux[-1].type, 'integer')}")));
         grammar.addRule(new Rule("<T>", new Symbol.Array("'float'", "{assign(<T>:Aux[-1].type, 'float')}")));
         grammar.addRule(new Rule("<L>", new Symbol.Array("IDENTIFICADOR", "{insertSymbolType(IDENTIFICADOR:Aux[0].lex, <L>:Aux[-1].type); assign(<R>:Stack[-1].type, <L>:Aux[-1].type)}", "<R>")));
@@ -62,7 +62,7 @@ public class SemanticTest {
 
         List<Token> tokens = lexer.readAllTokens();
 
-        PredictiveParser parser = new PredictiveParser(grammar);
+        PredictiveParser parser = new PredictiveParser(ParsingTable.build(grammar));
 
         System.out.println(tokens);
         parser.parse(tokens);

@@ -35,7 +35,7 @@ public class Symbol {
         }
     }
 
-    static class Array extends ArrayList<Symbol> {
+    public static class Array extends ArrayList<Symbol> {
 
         public Array() {
             super();
@@ -100,6 +100,10 @@ public class Symbol {
 
     public String getProperty(String property) {
         return properties.get(property);
+    }
+
+    public Symbol cloneWithoutProperties() {
+        return new Symbol(name);
     }
 
     public String getName() {

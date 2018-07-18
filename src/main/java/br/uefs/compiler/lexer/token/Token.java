@@ -1,5 +1,7 @@
 package br.uefs.compiler.lexer.token;
 
+import br.uefs.compiler.parser.Symbol;
+
 /**
  * Representation of Token. Every token has a class, a lexeme and
  * line number associated with it.
@@ -26,6 +28,18 @@ public class Token {
 
     public long getLine() {
         return line;
+    }
+
+    public Symbol toSymbol() {
+        if (tclass.getName().equals("PALAVRARESERVADA")
+                || tclass.getName().equals("DELIMITADOR")
+                || tclass.getName().equals("OPERADORLOGICO")
+                || tclass.getName().equals("OPERADORARITMETICO")
+                || tclass.getName().equals("OPERADORRELACIONAL")) {
+            return new Symbol(String.format("'%s'", lexeme));
+        } else if (tclass.getName().equals("END"))
+            return new Symbol(lexeme);
+        else return new Symbol(tclass.getName());
     }
 
     @Override

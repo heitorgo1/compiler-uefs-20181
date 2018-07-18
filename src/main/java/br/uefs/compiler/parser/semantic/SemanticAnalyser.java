@@ -1,8 +1,10 @@
 package br.uefs.compiler.parser.semantic;
 
 import br.uefs.compiler.lexer.token.Token;
+import br.uefs.compiler.parser.Rule;
 import br.uefs.compiler.parser.Symbol;
 
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
@@ -30,10 +32,13 @@ public class SemanticAnalyser {
                 put("markAsArray", SemanticFunctions::markAsArray);
                 put("insertCategory", SemanticFunctions::insertCategory);
                 put("concat", SemanticFunctions::concat);
-                put("insertParams", SemanticFunctions::insertParams);
+                put("getIdAndInsertParams", SemanticFunctions::getIdAndInsertParams);
                 put("setScope", SemanticFunctions::setScope);
                 put("incScope", SemanticFunctions::incScope);
                 put("decScope", SemanticFunctions::decScope);
+                put("getIdType", SemanticFunctions::getIdType);
+                put("getNumType", SemanticFunctions::getNumType);
+                put("typeMatch", SemanticFunctions::typeMatch);
             }};
 
     public static void reset() {
@@ -54,6 +59,15 @@ public class SemanticAnalyser {
         String[] steps = actionStr.split(";");
 
         return Arrays.asList(steps);
+    }
+
+    public static Symbol createPopActionSymbol(Symbol.Array symbols) {
+        int counter = 0;
+        for (Symbol sy : symbols) {
+            if (!sy.isEmptyString() && !sy.isAction()) counter++;
+        }
+        String actionName = String.format("{pop(%d)}", counter);
+        return new Symbol(actionName);
     }
 
     public static Action extractAction(String step) {

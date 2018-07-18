@@ -6,7 +6,7 @@ const {
 
 var {
     float f = 3.0;
-    int abc = 542;
+    int abcw = 542;
     string e = "asdwqe";
 }
 

@@ -37,7 +37,13 @@ public class SemanticFunctions {
             System.out.println("Variable already declared in scope " + SemanticAnalyser.CUR_SCOPE + ": " + first.getAttribute());
         } else {
             SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).putIfAbsent(first.getAttribute(), new Hashtable<>());
-            SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).get(first.getAttribute()).put("type", second.getAttribute());
+            if (second instanceof ConstantParam) {
+                SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).get(first.getAttribute()).put("type", second.getValue());
+            }
+            else {
+                SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).get(first.getAttribute()).put("type", second.getAttribute());
+            }
+            System.out.println(SemanticAnalyser.SYMBOL_TABLE);
         }
     }
 
@@ -93,27 +99,46 @@ public class SemanticFunctions {
             receiver.setAttribute("");
         }
 
-        String curVal = receiver.getAttribute();
+        String curVal = receiver.getAttribute().trim();
 
         if (second instanceof VariableParam) {
-            receiver.setAttribute(curVal + " " + second.getAttribute().trim());
+            if (second.getAttribute().trim().startsWith("[") && second.getAttribute().trim().endsWith("]")) {
+                String data = second.getAttribute().trim().substring(1, second.getAttribute().trim().length()-1);
+                System.out.println("CONCAT ARRAY VARI DATA");
+                System.out.println(data);
+                for (String str : data.split(",")) {
+                    curVal += " " + str.trim();
+                }
+            } else
+                curVal += " " + second.getAttribute().trim();
+
+            receiver.setAttribute(curVal.trim());
         } else if (second instanceof ConstantParam) {
-            receiver.setAttribute(curVal + " " + second.getValue().trim());
+            if (second.getValue().trim().startsWith("[") && second.getValue().trim().endsWith("]")) {
+                String data = second.getValue().trim().substring(1, second.getValue().trim().length()-1);
+                System.out.println("CONCAT ARRAY CONST DATA");
+                System.out.println(data);
+                for (String str : data.split(",")) {
+                    curVal += " " + str.trim();
+                }
+            } else
+                curVal += " " + second.getValue().trim();
+            receiver.setAttribute(curVal.trim());
         }
     }
 
-    public static void insertParams(List<Parameter> params, Token token) {
+    public static void getIdAndInsertParams(List<Parameter> params, Token token) {
         assert params.size() == 2;
 
         Parameter first = params.get(0);
         Parameter second = params.get(1);
 
-        SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).putIfAbsent(first.getAttribute(), new Hashtable<>());
+        SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE-1).putIfAbsent(first.getAttribute(), new Hashtable<>());
 
         if (second instanceof VariableParam) {
-            SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).get(first.getAttribute()).put("params", Arrays.asList(second.getAttribute().trim().split("\\s+")));
+            SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE-1).get(first.getAttribute()).put("params", Arrays.asList(second.getAttribute().trim().split("\\s+")));
         } else if (second instanceof ConstantParam) {
-            SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).get(first.getAttribute()).put("params", Arrays.asList(second.getValue().trim().split("\\s+")));
+            SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE-1).get(first.getAttribute()).put("params", Arrays.asList(second.getValue().trim().split("\\s+")));
         }
 
     }
@@ -146,5 +171,32 @@ public class SemanticFunctions {
         SemanticAnalyser.SYMBOL_TABLE.remove(SemanticAnalyser.CUR_SCOPE);
 
         SemanticAnalyser.CUR_SCOPE--;
+    }
+
+    public static void getNumType(List<Parameter> params, Token token) {
+        assert params.size() == 2;
+
+        params.get(0).setAttribute("NUM");
+    }
+
+    public static void getIdType(List<Parameter> params, Token token) {
+        assert params.size() == 2;
+
+        Parameter first = params.get(0);
+        Parameter second = params.get(1);
+
+        if (SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).containsKey(second.getAttribute())) {
+            first.setAttribute(SemanticAnalyser.SYMBOL_TABLE.get(SemanticAnalyser.CUR_SCOPE).get(second.getAttribute()).get("type").toString());
+        }
+        else
+            first.setAttribute("GID");
+    }
+
+    public static void typeMatch(List<Parameter> params, Token token) {
+        assert params.size() == 2;
+
+        System.out.println("TYPE MATCH: ");
+        System.out.println(params);
+
     }
 }

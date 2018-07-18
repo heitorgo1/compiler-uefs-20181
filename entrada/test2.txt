@@ -1,6 +1,6 @@
 
 const {
-    int max1 = 10, max2 = 20;
+    int max1[] = 10, max2 = 20;
     real pi = 3.1415;
     string msg = "mensagem teste";
     bool flag = true;
@@ -17,7 +17,7 @@ const {
     real taxa;
 }
 
-    return;
+    return max1;
 }
 
 var {

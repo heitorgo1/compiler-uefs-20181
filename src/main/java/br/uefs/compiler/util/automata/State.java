@@ -14,11 +14,11 @@ public class State implements Comparable, Serializable {
     /**
      * Global id counter to make each State unique
      */
-    public static long RUNNING_ID = 0;
+    public transient static long RUNNING_ID = 0;
     /**
      * Special rejection State
      */
-    public static final State REJECT_STATE = new State(-1);
+    public transient static final State REJECT_STATE = new State(-1);
 
     private long id;
     private boolean isFinal;
@@ -101,13 +101,6 @@ public class State implements Comparable, Serializable {
             ss.addAll(entry.getValue());
         }
         return ss;
-    }
-
-    public State removeTransaction(Character input, State next) {
-        if (transitions.containsKey(input)) {
-            transitions.get(input).remove(next);
-        }
-        return this;
     }
 
     public State addTransaction(Character input, State next) {

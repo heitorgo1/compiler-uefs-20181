@@ -42,7 +42,18 @@ public class CacheHandler {
     private static Object readObject(File file) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
-        Object obj = ois.readObject();
+        Object obj = null;
+        int retries = 5;
+        do {
+            try {
+                obj = ois.readObject();
+            } catch (StackOverflowError | EOFException e) {
+                System.out.println("Failed to read cache file. Trying again...");
+                ois.close();
+                fis  = new FileInputStream(file);
+                ois = new ObjectInputStream(fis);
+            }
+        } while (obj == null && retries-- > 0);
         ois.close();
         return obj;
     }

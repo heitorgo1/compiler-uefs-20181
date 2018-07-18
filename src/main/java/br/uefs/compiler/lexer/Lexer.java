@@ -44,6 +44,13 @@ public class Lexer {
         reader = null;
     }
 
+    public Lexer(Automata auto, Reader in) throws Exception {
+        simulator = new AutomataSimulator(auto);
+        errors = new ArrayList<>();
+        reader = new InputReader(in);
+    }
+
+
     public void clearErrors() {
         errors.clear();
     }
