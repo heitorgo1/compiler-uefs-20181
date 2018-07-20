@@ -5,16 +5,19 @@ import br.uefs.compiler.parser.semantic.Parameter;
 
 import java.util.function.BiConsumer;
 
-public class Assign implements BiConsumer<Context, Parameter.Array> {
+public class GetNumType implements BiConsumer<Context, Parameter.Array> {
     @Override
     public void accept(Context c, Parameter.Array params) {
         assert params.size() == 2;
 
-        Parameter receiver = params.get(0); // symbol
-        Parameter data = params.get(1); // const or symbol
+        Parameter first = params.get(0); // symbol
+        Parameter second = params.get(1); // symbol
+
+        String number = second.read().replaceAll("\\s+", "");
+        String type = number.contains(".") ? "float": "int";
 
         try {
-            receiver.assign(data);
+            first.write(type);
         } catch (Exception e) {
             e.printStackTrace();
         }

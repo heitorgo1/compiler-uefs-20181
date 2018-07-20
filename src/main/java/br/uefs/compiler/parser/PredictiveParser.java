@@ -2,10 +2,7 @@ package br.uefs.compiler.parser;
 
 import br.uefs.compiler.lexer.token.Token;
 import br.uefs.compiler.lexer.token.TokenClass;
-import br.uefs.compiler.parser.semantic.Action;
-import br.uefs.compiler.parser.semantic.Parameter;
-import br.uefs.compiler.parser.semantic.SemanticAnalyser;
-import br.uefs.compiler.parser.semantic.VariableParam;
+import br.uefs.compiler.parser.semantic.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,23 +17,26 @@ public class PredictiveParser {
     private List<SyntacticError> errors;
     private Stack<Symbol> stack;
     private Stack<Symbol> aux;
+    private Context context;
 
     public PredictiveParser(ParsingTable table) {
         this.table = table;
         reset();
     }
 
-    public void reset() {
+    private void reset() {
         this.errors = new ArrayList<>();
         this.stack = new Stack<>();
         this.aux = new Stack<>();
+        this.context = new Context(new SymbolTable.Array());
 
         stack.push(Symbol.INPUT_END);
         stack.push(table.getStartSymbol());
     }
 
     private void handleTerminal(Token token) {
-        stack.peek().addProperty("lex", token.getLexeme());
+        stack.peek().setProperty("lex", token.getLexeme());
+        stack.peek().setProperty("line", String.valueOf(token.getLine()));
         aux.push(stack.peek());
         stack.pop();
     }
@@ -49,27 +49,49 @@ public class PredictiveParser {
         stack.pop();
     }
 
+    private Symbol getSymbol(Stack<Symbol> st, int offset) {
+        assert !st.isEmpty();
 
-    private void handleSemanticAction(Token token) throws Exception {
-        for (String step : SemanticAnalyser.parseSteps(stack.peek())) {
-            Action action = SemanticAnalyser.extractAction(step);
+        return st.get(st.size() - 1 + offset);
+    }
+
+    private Stack<Symbol> chooseStack(boolean chooseAux) {
+        if (chooseAux) return aux;
+        return stack;
+    }
+
+    private Parameter.Array createParameterList(List<String> params) {
+        Parameter.Array arr = new Parameter.Array();
+        for (String param : params) {
+            if (SemanticHelperFunctions.isInAux(param)) {
+                int offset = SemanticHelperFunctions.extractOffset(param);
+                String attr = SemanticHelperFunctions.extractAttribute(param);
+                arr.add(new Parameter(getSymbol(chooseStack(true), offset), attr));
+            }
+            else if (SemanticHelperFunctions.isInStack(param)) {
+                int offset = SemanticHelperFunctions.extractOffset(param);
+                String attr = SemanticHelperFunctions.extractAttribute(param);
+                arr.add(new Parameter(getSymbol(chooseStack(false), offset), attr));
+            }
+            else arr.add(new Parameter(param.trim()));
+        }
+        return arr;
+    }
+
+
+    private void handleSemanticAction() throws Exception {
+        for (String step : SemanticHelperFunctions.parseSteps(stack.peek())) {
+            Action action = SemanticHelperFunctions.extractAction(step);
 
             if (action.isNop()) continue;
             else if (action.isPop()) {
-                int n = Integer.parseInt(action.getParams().get(0).getValue());
+                int n = Integer.parseInt(action.getParamsStr().get(0));
                 while (!aux.empty() && n-- > 0) aux.pop();
             } else {
-                for (Parameter param : action.getParams()) {
-                    if (param instanceof VariableParam) {
-                        VariableParam vp = VariableParam.class.cast(param);
-                        if (vp.isInAux()) {
-                            vp.setSymbol(aux.get(aux.size() - 1 + vp.getOffset()));
-                        } else {
-                            vp.setSymbol(stack.get(stack.size() - 1 + vp.getOffset()));
-                        }
-                    }
-                }
-                SemanticAnalyser.runAction(action, token);
+                Parameter.Array paramList = createParameterList(action.getParamsStr());
+                SemanticAction sAction = new SemanticAction(action.getFuncName(), paramList);
+
+                sAction.run(context);
             }
         }
         stack.pop();
@@ -126,6 +148,7 @@ public class PredictiveParser {
         while (!stack.peek().equals(Symbol.INPUT_END)) {
             Token token = tokens.get(ip);
             Symbol cur = token.toSymbol();
+            context.setCurrentToken(token);
 
             if (stack.peek().isTerminal()) {
                 if (cur.equals(stack.peek())) {
@@ -134,7 +157,7 @@ public class PredictiveParser {
                 } else handleTerminalMissError(token);
 
             } else if (stack.peek().isAction()) {
-                handleSemanticAction(token);
+                handleSemanticAction();
             } else if (stack.peek().isNonTerminal()) {
                 if (table.isMiss(stack.peek(), cur)) {
                     handleTableMissError(token);
@@ -147,8 +170,12 @@ public class PredictiveParser {
         }
     }
 
-    public List<SyntacticError> getErrors() {
+    public List<SyntacticError> getSyntaticErrors() {
         return errors;
+    }
+
+    public List<SemanticError> getSemanticErrors() {
+        return context.getErrors();
     }
 
     public void printTable() {

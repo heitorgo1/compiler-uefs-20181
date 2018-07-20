@@ -1005,9 +1005,355 @@
 <DELIMITADOR, }, 212>
 <END, $, 212>
 
-Erro na linha 137: start já foi definido na linha 122
-Erro na linha 145: start já foi definido na linha 122
-Erro na linha 151: start já foi definido na linha 122
-Erro na linha 157: start já foi definido na linha 122
-Erro na linha 178: start já foi definido na linha 122
-Erro na linha 188: start já foi definido na linha 122
+Erro na linha 3: 1 não é igual a 0.
+Erro na linha 4: Não existe um tipo chamado 'real'
+Erro na linha 4: Tipo inválido para operação. input: null target: float <DELIMITADOR, ;, 4>
+Erro na linha 7: Não existe um tipo chamado 'real'
+Erro na linha 8: Constante não inicializada.
+Erro na linha 14: Não existe um tipo chamado 'real'
+Erro na linha 14: Tipo inválido para operação. input: null target: float <DELIMITADOR, ;, 14>
+Erro na linha 17: Não existe um tipo chamado 'real'
+Erro na linha 18: Constante não inicializada.
+Erro na linha 20: Constantes não podem ser declaradas neste escopo.
+Erro na linha 25: Variável 'max1 max2' já foi declarada neste escopo.
+Erro na linha 25: Variável 'max1 max2' já foi declarada neste escopo.
+Erro na linha 25: Não existe um tipo chamado 'real'
+Erro na linha 25: Tipo inválido para operação. input: null target: float <DELIMITADOR, ;, 25>
+Erro na linha 26: Variável 'pi' já foi declarada neste escopo.
+Erro na linha 27: Variável 'msg' já foi declarada neste escopo.
+Erro na linha 28: Variável 'flag' já foi declarada neste escopo.
+Erro na linha 28: Não existe um tipo chamado 'real'
+Erro na linha 29: Variável 'taxa' já foi declarada neste escopo.
+Erro na linha 29: Não existe um tipo chamado 'aluno'
+Erro na linha 32: Variável 'imprimir' já foi declarada neste escopo.
+Erro na linha 36: Não existe um tipo chamado 'real'
+Erro na linha 36: Tipo inválido para operação. input: null target: float <DELIMITADOR, ;, 36>
+Erro na linha 39: Não existe um tipo chamado 'real'
+Erro na linha 46: Não existe um tipo chamado 'real'
+Erro na linha 46: 1 não é igual a 0.
+Erro na linha 46: Tipo inválido para operação. input: null target: float <DELIMITADOR, ;, 46>
+Erro na linha 47: Variável 'pi' já foi declarada neste escopo.
+Erro na linha 47: 2 não é igual a 0.
+Erro na linha 48: Variável 'max1 max2' já foi declarada neste escopo.
+Erro na linha 48: Variável 'max1 max2' já foi declarada neste escopo.
+Erro na linha 48: 1 não é igual a 0.
+Erro na linha 49: Variável 'msg' já foi declarada neste escopo.
+Erro na linha 49: 1 não é igual a 0.
+Erro na linha 50: Variável 'flag' já foi declarada neste escopo.
+Erro na linha 50: Não existe um tipo chamado 'real'
+Erro na linha 51: Variável 'taxa' já foi declarada neste escopo.
+Erro na linha 51: Não existe um tipo chamado 'aluno'
+Erro na linha 54: Variável 'imprimir' já foi declarada neste escopo.
+Erro na linha 57: Não existe um tipo chamado 'real'
+Erro na linha 57: 1 não é igual a 0.
+Erro na linha 57: Tipo inválido para operação. input: null target: float <DELIMITADOR, ;, 57>
+Erro na linha 58: 2 não é igual a 0.
+Erro na linha 59: 1 não é igual a 0.
+Erro na linha 60: 1 não é igual a 0.
+Erro na linha 61: Não existe um tipo chamado 'real'
+Erro na linha 62: Não existe um tipo chamado 'aluno'
+Erro na linha 70: Não existe um tipo chamado 'real'
+Erro na linha 76: Não existe um tipo chamado 'real'
+Erro na linha 78: Não existe um tipo chamado 'real'
+Erro na linha 79: Não existe um tipo chamado 'pessoa'
+Erro na linha 82: Não existe um tipo chamado 'aluno'
+Erro na linha 82: Tipo 'null' não existe.
+Erro na linha 89: Variável 'imprimir' já foi declarada neste escopo.
+Erro na linha 89: Não existe um tipo chamado 'Taluno'
+Erro na linha 96: Variável 'x' não declarada
+Erro na linha 96: Variável 'x' não declarada
+Erro na linha 96: Variável 'x' não declarada
+Erro na linha 96: Variável 'x' não declarada
+Erro na linha 96: Variável 'x' não declarada
+Erro na linha 96: Variável 'x' não declarada
+Erro na linha 96: Variável 'x' não declarada
+Erro na linha 96: Variável 'x' não declarada
+Erro na linha 96: Variável 'x' não declarada
+Erro na linha 102: Variável 'imprimir' já foi declarada neste escopo.
+Erro na linha 105: Variável não declarada 'x'
+Erro na linha 105: Variável 'x' não declarada
+Erro na linha 105: Variável não declarada 'x'
+Erro na linha 105: Variável 'x' não declarada
+Erro na linha 105: Variável não declarada 'x'
+Erro na linha 105: Variável 'x' não declarada
+Erro na linha 105: Variável não declarada 'x'
+Erro na linha 105: Variável 'x' não declarada
+Erro na linha 105: Variável não declarada 'x'
+Erro na linha 105: Variável 'x' não declarada
+Erro na linha 105: Variável não declarada 'x'
+Erro na linha 105: Variável 'x' não declarada
+Erro na linha 105: Variável não declarada 'x'
+Erro na linha 105: Variável 'x' não declarada
+Erro na linha 105: Variável não declarada 'x'
+Erro na linha 105: Variável 'x' não declarada
+Erro na linha 109: Não existe um tipo chamado 'real'
+Erro na linha 109: Não existe um tipo chamado 'real'
+Erro na linha 109: Não existe um tipo chamado 'real'
+Erro na linha 111: Não existe um tipo chamado 'real'
+Erro na linha 113: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 113>
+Erro na linha 113: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ;, 113>
+Erro na linha 117: Não existe um tipo chamado 'real'
+Erro na linha 117: Não existe um tipo chamado 'real'
+Erro na linha 119: Variável não declarada 'max'
+Erro na linha 119: Tipo inválido para operação. input: null target: [int float] <OPERADORARITMETICO, /, 119>
+Erro na linha 119: Tipo inválido para operação. input: float target: null <OPERADORARITMETICO, -, 119>
+Erro na linha 119: Tipo inválido para operação. input: null target: [int float] <OPERADORARITMETICO, -, 119>
+Erro na linha 119: Variável não declarada 'cont'
+Erro na linha 119: Tipo inválido para operação. input: null target: [int float] <OPERADORARITMETICO, -, 119>
+Erro na linha 119: Tipo inválido para operação. input: null target: [int float] <OPERADORARITMETICO, -, 119>
+Erro na linha 119: Variável não declarada 'vetor'
+Erro na linha 119: Dimensões não batem 1 0
+Erro na linha 119: Struct 'aluno' não possui atributo 'nota'
+Erro na linha 119: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 119>
+Erro na linha 119: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 119>
+Erro na linha 124: Variável não declarada 'i'
+Erro na linha 124: Variável não declarada 'j'
+Erro na linha 124: Tipo inválido para operação. input: null target: [int float string] <DELIMITADOR, ), 124>
+Erro na linha 131: Variável não declarada 'i'
+Erro na linha 131: Variável não declarada 'j'
+Erro na linha 131: Tipo inválido para operação. input: null target: [int float string] <DELIMITADOR, ), 131>
+Erro na linha 137: start já foi declarado na linha 122
+Erro na linha 139: Variável não declarada 'i'
+Erro na linha 139: Variável não declarada 'j'
+Erro na linha 139: Tipo inválido para operação. input: null target: [int float string] <DELIMITADOR, ), 139>
+Erro na linha 145: start já foi declarado na linha 122
+Erro na linha 147: Variável não declarada 'vetor'
+Erro na linha 147: Variável não declarada 'i'
+Erro na linha 147: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 147>
+Erro na linha 147: Dimensões não batem 1 0
+Erro na linha 147: Variável não declarada 'matriz'
+Erro na linha 147: Variável não declarada 'i'
+Erro na linha 147: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 147>
+Erro na linha 147: Dimensões não batem 1 0
+Erro na linha 147: Variável não declarada 'j'
+Erro na linha 147: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 147>
+Erro na linha 147: Dimensões não batem 2 0
+Erro na linha 148: Variável não declarada 'vetor'
+Erro na linha 148: Variável não declarada 'i'
+Erro na linha 148: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 148>
+Erro na linha 148: Dimensões não batem 1 0
+Erro na linha 148: Variável não declarada 'matriz'
+Erro na linha 148: Variável não declarada 'i'
+Erro na linha 148: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 148>
+Erro na linha 148: Dimensões não batem 1 0
+Erro na linha 148: Variável não declarada 'j'
+Erro na linha 148: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 148>
+Erro na linha 148: Dimensões não batem 2 0
+Erro na linha 148: Variável não declarada 'i'
+Erro na linha 148: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 148>
+Erro na linha 148: Dimensões não batem 1 0
+Erro na linha 148: 'alunos' não é uma struct.
+Erro na linha 148: Variável não declarada 'mais_alunos'
+Erro na linha 148: Variável não declarada 'i'
+Erro na linha 148: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 148>
+Erro na linha 148: Dimensões não batem 1 0
+Erro na linha 148: Variável não declarada 'j'
+Erro na linha 148: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 148>
+Erro na linha 148: Dimensões não batem 2 0
+Erro na linha 148: Variável não declarada 'k'
+Erro na linha 148: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 148>
+Erro na linha 148: Dimensões não batem 3 0
+Erro na linha 148: Variável 'mais_alunos' não declarada
+Erro na linha 151: start já foi declarado na linha 122
+Erro na linha 153: Variável não declarada 'vetor'
+Erro na linha 153: Variável não declarada 'i'
+Erro na linha 153: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 153>
+Erro na linha 153: Dimensões não batem 1 0
+Erro na linha 153: Variável não declarada 'matriz'
+Erro na linha 153: Variável não declarada 'i'
+Erro na linha 153: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 153>
+Erro na linha 153: Dimensões não batem 1 0
+Erro na linha 153: Variável não declarada 'j'
+Erro na linha 153: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 153>
+Erro na linha 153: Dimensões não batem 2 0
+Erro na linha 154: Variável não declarada 'vetor'
+Erro na linha 154: Variável não declarada 'i'
+Erro na linha 154: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 154>
+Erro na linha 154: Dimensões não batem 1 0
+Erro na linha 154: Variável não declarada 'matriz'
+Erro na linha 154: Variável não declarada 'i'
+Erro na linha 154: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 154>
+Erro na linha 154: Dimensões não batem 1 0
+Erro na linha 154: Variável não declarada 'j'
+Erro na linha 154: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 154>
+Erro na linha 154: Dimensões não batem 2 0
+Erro na linha 154: Variável não declarada 'i'
+Erro na linha 154: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 154>
+Erro na linha 154: Dimensões não batem 1 0
+Erro na linha 154: 'alunos' não é uma struct.
+Erro na linha 154: Variável não declarada 'mais_alunos'
+Erro na linha 154: Variável não declarada 'i'
+Erro na linha 154: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 154>
+Erro na linha 154: Dimensões não batem 1 0
+Erro na linha 154: Variável não declarada 'j'
+Erro na linha 154: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 154>
+Erro na linha 154: Dimensões não batem 2 0
+Erro na linha 154: Variável não declarada 'k'
+Erro na linha 154: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 154>
+Erro na linha 154: Dimensões não batem 3 0
+Erro na linha 154: Variável 'mais_alunos' não declarada
+Erro na linha 157: start já foi declarado na linha 122
+Erro na linha 160: Variável não declarada 'Max'
+Erro na linha 160: Esperava receber tipo 'float' e recebeu 'null'
+Erro na linha 161: Variável não declarada 'j'
+Erro na linha 161: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 161>
+Erro na linha 161: Dimensões não batem 1 0
+Erro na linha 161: Variável não declarada 'vetor'
+Erro na linha 161: Variável não declarada 'i'
+Erro na linha 161: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 161>
+Erro na linha 161: Dimensões não batem 1 0
+Erro na linha 161: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ;, 161>
+Erro na linha 161: Esperava receber tipo 'float' e recebeu 'null'
+Erro na linha 162: Variável não declarada 'i'
+Erro na linha 162: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 162>
+Erro na linha 162: Dimensões não batem 1 0
+Erro na linha 162: Variável não declarada 'j'
+Erro na linha 162: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 162>
+Erro na linha 162: Dimensões não batem 2 0
+Erro na linha 162: Variável não declarada 'k'
+Erro na linha 162: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 162>
+Erro na linha 162: Dimensões não batem 3 0
+Erro na linha 162: Variável não declarada 'matrizmatriz'
+Erro na linha 162: Dimensões não batem 1 0
+Erro na linha 162: Variável não declarada 'max'
+Erro na linha 162: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 162>
+Erro na linha 162: Dimensões não batem 2 0
+Erro na linha 162: Dimensões não batem 3 0
+Erro na linha 162: Esperava receber tipo 'float' e recebeu 'null'
+Erro na linha 164: 'soma' não é uma struct.
+Erro na linha 164: Struct 'aluno' não possui atributo 'nota'
+Erro na linha 165: Dimensões não batem 1 0
+Erro na linha 165: 'soma' não é uma struct.
+Erro na linha 165: Dimensões não batem 2 0
+Erro na linha 165: Dimensões não batem 1 0
+Erro na linha 165: Struct 'aluno' não possui atributo 'nota'
+Erro na linha 165: Dimensões não batem 2 0
+Erro na linha 167: Variável não declarada 'cont'
+Erro na linha 167: Variável não declarada 'cont'
+Erro na linha 167: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ;, 167>
+Erro na linha 172: Variável não declarada 'calculo'
+Erro na linha 172: Tentativa de chamar função inexistente.
+Erro na linha 172: Variável não declarada 'a'
+Erro na linha 172: Variável não declarada 'b'
+Erro na linha 172: Variável não declarada 'valores'
+Erro na linha 172: Variável não declarada 'k'
+Erro na linha 172: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 172>
+Erro na linha 172: Dimensões não batem 1 0
+Erro na linha 172: Variável não declarada 'matriz'
+Erro na linha 172: Dimensões não batem 1 0
+Erro na linha 172: Variável não declarada 'max'
+Erro na linha 172: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 172>
+Erro na linha 172: Dimensões não batem 2 0
+Erro na linha 172: Variável não declarada 'superior'
+Erro na linha 172: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 172>
+Erro na linha 172: Dimensões não batem 3 0
+Erro na linha 172: Cheque a quantidade de parâmetros passados à função/procedimento
+Erro na linha 172: Esperava receber tipo 'float' e recebeu 'null'
+Erro na linha 173: Variável não declarada 'Max'
+Erro na linha 173: Tentativa de chamar função inexistente.
+Erro na linha 173: Esperava receber tipo 'float' e recebeu 'null'
+Erro na linha 178: start já foi declarado na linha 122
+Erro na linha 180: Variável não declarada 'vetor'
+Erro na linha 180: Variável não declarada 'i'
+Erro na linha 180: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 180>
+Erro na linha 180: Dimensões não batem 1 0
+Erro na linha 180: Variável não declarada 'matriz'
+Erro na linha 180: Dimensões não batem 1 0
+Erro na linha 180: Variável não declarada 'max'
+Erro na linha 180: Tipo inválido para operação. input: null target: int <DELIMITADOR, ], 180>
+Erro na linha 180: Dimensões não batem 2 0
+Erro na linha 180: Dimensões não batem 3 0
+Erro na linha 180: Variável não declarada 'Max'
+Erro na linha 180: Tipo inválido para operação. input: null target: [int float] <OPERADORARITMETICO, /, 180>
+Erro na linha 180: Struct 'aluno' não possui atributo 'nota'
+Erro na linha 180: Tipo inválido para operação. input: int target: null <DELIMITADOR, ), 180>
+Erro na linha 180: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ;, 180>
+Erro na linha 180: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ;, 180>
+Erro na linha 180: Esperava receber tipo 'float' e recebeu 'null'
+Erro na linha 182: Variável não declarada 'resultado'
+Erro na linha 182: Variável não declarada 'calcular'
+Erro na linha 182: Tentativa de chamar função inexistente.
+Erro na linha 182: Variável não declarada 'a'
+Erro na linha 182: Variável não declarada 'b'
+Erro na linha 182: Cheque a quantidade de parâmetros passados à função/procedimento
+Erro na linha 182: Variável não declarada 'vetor'
+Erro na linha 182: Dimensões não batem 1 0
+Erro na linha 182: Variável 'vetor' não declarada
+Erro na linha 182: Tipo inválido para operação. input: null target: float <DELIMITADOR, ), 182>
+Erro na linha 182: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 182>
+Erro na linha 182: Tipo inválido para operação. input: float target: null <DELIMITADOR, ), 182>
+Erro na linha 182: Tipo inválido para operação. input: null target: float <OPERADORARITMETICO, /, 182>
+Erro na linha 182: Tipo inválido para operação. input: null target: [int float] <OPERADORARITMETICO, /, 182>
+Erro na linha 182: Variável não declarada 'max'
+Erro na linha 182: Tipo inválido para operação. input: int target: null <OPERADORARITMETICO, -, 182>
+Erro na linha 182: Tipo inválido para operação. input: null target: int <OPERADORARITMETICO, -, 182>
+Erro na linha 182: Tipo inválido para operação. input: null target: [int float] <OPERADORARITMETICO, -, 182>
+Erro na linha 182: Variável não declarada 'cont'
+Erro na linha 182: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 182>
+Erro na linha 182: Tipo inválido para operação. input: null target: int <DELIMITADOR, ), 182>
+Erro na linha 182: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 182>
+Erro na linha 182: Tipo inválido para operação. input: int target: float <DELIMITADOR, ;, 182>
+Erro na linha 182: Variável de tipo desconhecido recebendo 'float'
+Erro na linha 188: start já foi declarado na linha 122
+Erro na linha 190: Variável não declarada 'a'
+Erro na linha 190: Variável não declarada 'b'
+Erro na linha 190: Tipo inválido para operação. input: null target: [int float string] <DELIMITADOR, ), 190>
+Erro na linha 190: Variável não declarada 'c'
+Erro na linha 190: Variável não declarada 'd'
+Erro na linha 190: Tipo inválido para operação. input: null target: [int float string] <DELIMITADOR, ), 190>
+Erro na linha 192: Variável não declarada 'a'
+Erro na linha 192: Variável não declarada 'b'
+Erro na linha 192: Tipo inválido para operação. input: null target: [int float string] <OPERADORLOGICO, &&, 192>
+Erro na linha 192: Variável não declarada 'c'
+Erro na linha 192: Variável não declarada 'd'
+Erro na linha 192: Tipo inválido para operação. input: null target: [int float string] <OPERADORLOGICO, ||, 192>
+Erro na linha 192: Variável não declarada 'e'
+Erro na linha 192: Variável não declarada 'f'
+Erro na linha 192: Tipo inválido para operação. input: null target: [int float string] <OPERADORLOGICO, &&, 192>
+Erro na linha 192: Variável não declarada 'h'
+Erro na linha 192: Tipo inválido para operação. input: null target: bool <DELIMITADOR, ), 192>
+Erro na linha 192: Tipo inválido para operação. input: null target: bool <DELIMITADOR, ), 192>
+Erro na linha 192: Tipo inválido para operação. input: null target: bool <DELIMITADOR, ), 192>
+Erro na linha 194: Variável não declarada 'a'
+Erro na linha 194: Variável não declarada 'b'
+Erro na linha 194: Tipo inválido para operação. input: null target: [int float string] <DELIMITADOR, ), 194>
+Erro na linha 194: Variável não declarada 'c'
+Erro na linha 194: Variável não declarada 'd'
+Erro na linha 194: Tipo inválido para operação. input: null target: [int float string] <DELIMITADOR, ), 194>
+Erro na linha 196: Variável não declarada 'a'
+Erro na linha 196: Variável não declarada 'b'
+Erro na linha 196: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 196>
+Erro na linha 196: Variável não declarada 'c'
+Erro na linha 196: Variável não declarada 'd'
+Erro na linha 196: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 196>
+Erro na linha 196: Tipo inválido para operação. input: null target: [int float string] <DELIMITADOR, ), 196>
+Erro na linha 198: Variável não declarada 'a'
+Erro na linha 198: Variável não declarada 'b'
+Erro na linha 198: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 198>
+Erro na linha 198: Variável não declarada 'c'
+Erro na linha 198: Variável não declarada 'd'
+Erro na linha 198: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 198>
+Erro na linha 198: Tipo inválido para operação. input: null target: [int float string] <DELIMITADOR, ), 198>
+Erro na linha 200: Variável não declarada 'a'
+Erro na linha 200: Variável não declarada 'b'
+Erro na linha 200: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 200>
+Erro na linha 200: Tipo inválido para operação. input: null target: bool <PALAVRARESERVADA, then, 200>
+Erro na linha 202: Variável não declarada 'a'
+Erro na linha 202: Variável não declarada 'b'
+Erro na linha 202: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ), 202>
+Erro na linha 202: Tipo inválido para operação. input: null target: bool <DELIMITADOR, ), 202>
+Erro na linha 204: Variável não declarada 'a'
+Erro na linha 204: Tipo inválido para operação. input: int target: bool <DELIMITADOR, ;, 204>
+Erro na linha 204: Variável de tipo desconhecido recebendo 'int'
+Erro na linha 206: Variável não declarada 'a'
+Erro na linha 206: Tipo inválido para operação. input: int target: bool <DELIMITADOR, ;, 206>
+Erro na linha 206: Variável de tipo desconhecido recebendo 'bool'
+Erro na linha 208: Variável não declarada 'a'
+Erro na linha 208: Variável não declarada 'a'
+Erro na linha 208: Variável não declarada 'a'
+Erro na linha 208: Tipo inválido para operação. input: null target: bool <DELIMITADOR, ;, 208>
+Erro na linha 208: Variável de tipo desconhecido recebendo 'bool'
+Erro na linha 210: Variável não declarada 'a'
+Erro na linha 210: Tipo inválido para operação. input: int target: string <DELIMITADOR, ;, 210>
+Erro na linha 210: Tipo inválido para operação. input: int target: bool <DELIMITADOR, ;, 210>
+Erro na linha 210: Variável de tipo desconhecido recebendo 'bool'

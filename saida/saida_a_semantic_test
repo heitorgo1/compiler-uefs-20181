@@ -49,4 +49,6 @@
 <DELIMITADOR, }, 21>
 <END, $, 21>
 
-Erro na linha 8: start já foi definido na linha 2
+Erro na linha 8: start já foi declarado na linha 2
+Erro na linha 9: Variável não declarada 'a'
+Erro na linha 9: Variável de tipo desconhecido recebendo 'int'

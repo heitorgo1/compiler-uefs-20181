@@ -6,18 +6,11 @@ import java.util.List;
 public class Action {
 
     private String funcName;
-    private List<Parameter> parameters;
+    private List<String> parametersStr;
 
     public Action(String funcName, List<String> params) {
         this.funcName = funcName;
-        parameters = new ArrayList<>();
-        for (String param : params) {
-            if (!SemanticAnalyser.isVariableParam(param)) {
-                parameters.add(new ConstantParam(param));
-            } else {
-                parameters.add(new VariableParam(param));
-            }
-        }
+        parametersStr = params;
     }
 
     public boolean isNop() {
@@ -25,6 +18,8 @@ public class Action {
     }
 
     public boolean isPop() {
+        assert parametersStr.size() == 1;
+
         return funcName.equals("pop");
     }
 
@@ -32,13 +27,13 @@ public class Action {
         return funcName;
     }
 
-    public List<Parameter> getParams() {
-        return parameters;
+    public List<String> getParamsStr() {
+        return parametersStr;
     }
 
 
     @Override
     public String toString() {
-        return String.format("%s(%s)", funcName, parameters);
+        return String.format("%s(%s)", funcName, parametersStr);
     }
 }

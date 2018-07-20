@@ -65,4 +65,8 @@
 <DELIMITADOR, }, 17>
 <END, $, 17>
 
-Sucesso!
+Erro na linha 9: 1 não é igual a 0.
+Erro na linha 16: Variável não declarada 'b'
+Erro na linha 16: Tipo inválido para operação. input: null target: int <DELIMITADOR, ;, 16>
+Erro na linha 16: Tipo inválido para operação. input: null target: [int float] <DELIMITADOR, ;, 16>
+Erro na linha 16: Esperava receber tipo 'string' e recebeu 'int'

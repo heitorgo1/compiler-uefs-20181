@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * A grammar symbol and it's data structures.
  * Can be non terminal (between < and >) or a terminal.
- * */
+ */
 public class Symbol {
 
     public static Symbol EMPTY_STRING = new Symbol("");
@@ -94,7 +94,7 @@ public class Symbol {
         properties = new Hashtable<>();
     }
 
-    public void addProperty(String property, String value) {
+    public void setProperty(String property, String value) {
         properties.put(property, value);
     }
 
@@ -104,6 +104,14 @@ public class Symbol {
 
     public Symbol cloneWithoutProperties() {
         return new Symbol(name);
+    }
+
+    public void copyProperties(Map<String, String> properties) {
+        this.properties.putAll(properties);
+    }
+
+    public Map<String, String> getProperties() {
+        return properties;
     }
 
     public String getName() {
@@ -142,6 +150,6 @@ public class Symbol {
 
     @Override
     public String toString() {
-        return String.format("%s -> %s",name,properties);
+        return String.format("%s -> %s", name, properties);
     }
 }

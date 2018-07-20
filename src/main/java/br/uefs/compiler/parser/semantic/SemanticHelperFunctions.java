@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public class SemanticHelperFunctions {
 
     private static Pattern ACTION_PATTERN = Pattern.compile("((\\w|\\d)+)\\((.*)\\)");
+    private static Pattern STACK_PATTERN = Pattern.compile("(\\w+)\\[(.+)\\]");
 
     public static List<String> parseSteps(Symbol symbol) {
         assert symbol.isAction();
@@ -44,7 +45,8 @@ public class SemanticHelperFunctions {
             List<String> params;
             if (m.group(3).isEmpty()) params = Arrays.asList();
             else params = Arrays.asList(m.group(3).split(","))
-                    .stream().map(param -> param.trim())
+                    .stream()
+                    .map(param -> param.trim())
                     .collect(Collectors.toList());
 
             return new Action(funcName, params);
@@ -52,7 +54,38 @@ public class SemanticHelperFunctions {
         return new Action("nop", Arrays.asList());
     }
 
-    public static boolean isVariableParam(String param) {
-        return param.contains("[") && param.contains("]");
+    public static int extractOffset(String param) {
+        assert isInAux(param) || isInStack(param);
+
+        Matcher m = STACK_PATTERN.matcher(param);
+        int offset = 0;
+        if (m.find()) {
+            offset = Integer.parseInt(m.group(2));
+        }
+        return offset;
     }
+
+    public static String extractAttribute(String param) {
+        assert isInAux(param) || isInStack(param);
+
+        String[] attr = param.split("\\.");
+        if (attr.length == 1) return "";
+        return attr[1].trim();
+    }
+
+    public static String[] splitParam(String param) {
+        param = param.replaceAll("(^\\[)|(\\]$)", "");
+
+        return param.split("\\s+");
+    }
+
+    public static boolean isInAux(String param) {
+        return param.contains("Aux");
+    }
+
+    public static boolean isInStack(String param) {
+        return param.contains("Stack");
+    }
+
+
 }

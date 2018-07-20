@@ -1,0 +1,80 @@
+<PALAVRARESERVADA, function, 2>
+<PALAVRARESERVADA, int, 2>
+<IDENTIFICADOR, abc, 2>
+<DELIMITADOR, (, 2>
+<PALAVRARESERVADA, string, 2>
+<IDENTIFICADOR, a, 2>
+<DELIMITADOR, ,, 2>
+<PALAVRARESERVADA, int, 2>
+<IDENTIFICADOR, b, 2>
+<DELIMITADOR, ), 2>
+<DELIMITADOR, {, 2>
+<PALAVRARESERVADA, return, 4>
+<IDENTIFICADOR, a, 4>
+<OPERADORARITMETICO, +, 4>
+<IDENTIFICADOR, b, 4>
+<DELIMITADOR, ;, 4>
+<DELIMITADOR, }, 5>
+<PALAVRARESERVADA, start, 7>
+<DELIMITADOR, (, 7>
+<DELIMITADOR, ), 7>
+<DELIMITADOR, {, 7>
+<PALAVRARESERVADA, var, 9>
+<DELIMITADOR, {, 9>
+<PALAVRARESERVADA, int, 10>
+<IDENTIFICADOR, a, 10>
+<OPERADORRELACIONAL, =, 10>
+<IDENTIFICADOR, abc, 10>
+<DELIMITADOR, (, 10>
+<NUMERO, 1, 10>
+<DELIMITADOR, ,, 10>
+<NUMERO, 2, 10>
+<DELIMITADOR, ), 10>
+<DELIMITADOR, ;, 10>
+<PALAVRARESERVADA, float, 11>
+<IDENTIFICADOR, b, 11>
+<OPERADORRELACIONAL, =, 11>
+<IDENTIFICADOR, abc, 11>
+<DELIMITADOR, (, 11>
+<DELIMITADOR, ), 11>
+<DELIMITADOR, ;, 11>
+<PALAVRARESERVADA, string, 12>
+<IDENTIFICADOR, c, 12>
+<OPERADORRELACIONAL, =, 12>
+<IDENTIFICADOR, abc, 12>
+<DELIMITADOR, (, 12>
+<NUMERO, 1, 12>
+<DELIMITADOR, ), 12>
+<DELIMITADOR, ;, 12>
+<PALAVRARESERVADA, bool, 13>
+<IDENTIFICADOR, d, 13>
+<OPERADORRELACIONAL, =, 13>
+<IDENTIFICADOR, abc, 13>
+<DELIMITADOR, (, 13>
+<CADEIACARACTERES, "a", 13>
+<DELIMITADOR, ,, 13>
+<CADEIACARACTERES, "b", 13>
+<DELIMITADOR, ), 13>
+<DELIMITADOR, ;, 13>
+<PALAVRARESERVADA, int, 14>
+<IDENTIFICADOR, e, 14>
+<OPERADORRELACIONAL, =, 14>
+<IDENTIFICADOR, abc, 14>
+<DELIMITADOR, (, 14>
+<CADEIACARACTERES, "asad", 14>
+<DELIMITADOR, ,, 14>
+<NUMERO,  5, 14>
+<DELIMITADOR, ), 14>
+<DELIMITADOR, ;, 14>
+<DELIMITADOR, }, 15>
+<DELIMITADOR, }, 16>
+<END, $, 16>
+
+Erro na linha 4: Tipo inválido para operação. input: int target: string <DELIMITADOR, ;, 4>
+Erro na linha 10: Esperava parâmetros '[string, int]' e recebeu '[int, int]' em função/procedimento
+Erro na linha 11: Função ou Procedimento que deveria ser chamada sem parâmetros
+Erro na linha 11: Tipo inválido para operação. input: float target: int <DELIMITADOR, ;, 11>
+Erro na linha 12: Cheque a quantidade de parâmetros passados à função/procedimento
+Erro na linha 12: Tipo inválido para operação. input: string target: int <DELIMITADOR, ;, 12>
+Erro na linha 13: Esperava parâmetros '[string, int]' e recebeu '[string, string]' em função/procedimento
+Erro na linha 13: Tipo inválido para operação. input: bool target: int <DELIMITADOR, ;, 13>

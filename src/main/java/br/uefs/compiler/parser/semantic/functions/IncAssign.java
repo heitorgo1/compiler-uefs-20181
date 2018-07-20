@@ -5,7 +5,7 @@ import br.uefs.compiler.parser.semantic.Parameter;
 
 import java.util.function.BiConsumer;
 
-public class Assign implements BiConsumer<Context, Parameter.Array> {
+public class IncAssign implements BiConsumer<Context, Parameter.Array> {
     @Override
     public void accept(Context c, Parameter.Array params) {
         assert params.size() == 2;
@@ -14,7 +14,8 @@ public class Assign implements BiConsumer<Context, Parameter.Array> {
         Parameter data = params.get(1); // const or symbol
 
         try {
-            receiver.assign(data);
+            int val = Integer.parseInt(data.read()) + 1;
+            receiver.write(String.valueOf(val));
         } catch (Exception e) {
             e.printStackTrace();
         }

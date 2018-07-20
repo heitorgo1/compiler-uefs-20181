@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class SemanticFunctions {
+/*
 
     public static void assign(List<Parameter> params, Token token) {
         assert params.size() == 2;
@@ -199,4 +200,5 @@ public class SemanticFunctions {
         System.out.println(params);
 
     }
+*/
 }

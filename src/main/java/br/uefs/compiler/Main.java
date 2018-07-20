@@ -8,7 +8,6 @@ import br.uefs.compiler.parser.Grammar;
 import br.uefs.compiler.parser.GrammarBuilder;
 import br.uefs.compiler.parser.ParsingTable;
 import br.uefs.compiler.parser.PredictiveParser;
-import br.uefs.compiler.parser.semantic.SemanticAnalyser;
 import br.uefs.compiler.util.automata.DFA;
 import br.uefs.compiler.util.cache.CacheHandler;
 import br.uefs.compiler.util.errors.CompilerError;
@@ -81,15 +80,14 @@ public class Main {
                 try {
                     Lexer lexer = new Lexer(dfa, new FileReader(path.toFile()));
                     PredictiveParser parser = new PredictiveParser(ParsingTable.build(grammar));
-                    SemanticAnalyser.reset();
 
                     List<Token> tokens = lexer.readAllTokens();
                     parser.parse(tokens);
 
                     List<CompilerError> errors = new ArrayList<>();
                     errors.addAll(lexer.getErrors());
-                    errors.addAll(parser.getErrors());
-                    errors.addAll(SemanticAnalyser.ERRORS);
+                    errors.addAll(parser.getSyntaticErrors());
+                    errors.addAll(parser.getSemanticErrors());
 
                     String outputFileName = String.format("saida_%s", path.getFileName());
                     File outputFile = Paths.get(OUTPUT_FOLDER).resolve(outputFileName).toFile();

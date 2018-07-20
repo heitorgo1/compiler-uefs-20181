@@ -186,4 +186,8 @@
 <DELIMITADOR, }, 58>
 <END, $, 58>
 
-Sucesso!
+Erro na linha 40: Tipo inválido para operação. input: bool target: int <PALAVRARESERVADA, then, 40>
+Erro na linha 43: Variável não declarada 't'
+Erro na linha 43: Tipo inválido para operação. input: int target: null <DELIMITADOR, ), 43>
+Erro na linha 51: Dimensões não batem 1 0
+Erro na linha 57: Variável não declarada 'asd'
