@@ -31,15 +31,15 @@
 <PALAVRARESERVADA, float, 12>
 <IDENTIFICADOR, d, 12>
 <OPERADORRELACIONAL, =, 12>
-<NUMERO, 4, 12>
+<NUMERO, 4.0, 12>
 <DELIMITADOR, ,, 12>
 <IDENTIFICADOR, e, 12>
 <OPERADORRELACIONAL, =, 12>
-<NUMERO, 5, 12>
+<NUMERO, 5.0, 12>
 <DELIMITADOR, ,, 12>
 <IDENTIFICADOR, f, 12>
 <OPERADORRELACIONAL, =, 12>
-<NUMERO, 6, 12>
+<NUMERO, 6.0, 12>
 <DELIMITADOR, ;, 12>
 <DELIMITADOR, }, 13>
 <IDENTIFICADOR, a, 15>
@@ -59,6 +59,6 @@
 
 Erro na linha 5: Constante não inicializada.
 Erro na linha 11: Constantes não podem ser declaradas neste escopo.
-Erro na linha 12: Operação esperava tipo 'float' e encontrou 'int' .
-Erro na linha 12: Operação esperava tipo 'float' e encontrou 'int' .
-Erro na linha 12: Operação esperava tipo 'float' e encontrou 'int' .
+Erro na linha 15: Não se pode atribuir valor a uma constante.
+Erro na linha 16: Não se pode atribuir valor a uma constante.
+Erro na linha 17: Não se pode atribuir valor a uma constante.

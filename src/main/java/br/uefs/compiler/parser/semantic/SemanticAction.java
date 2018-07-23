@@ -25,6 +25,7 @@ public class SemanticAction {
                 put("assignedTypeMatch", new AssignedTypeMatch());
                 put("concat", new Concat());
                 put("checkStructDefined", new CheckStructDefined());
+                put("checkAttribution", new CheckAttribution());
                 put("decScope", new DecScope());
                 put("extendStruct", new ExtendStruct());
                 put("getDefinedType", new GetDefinedType());

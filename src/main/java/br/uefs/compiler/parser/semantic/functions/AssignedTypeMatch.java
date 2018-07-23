@@ -15,7 +15,7 @@ public class AssignedTypeMatch implements BiConsumer<Context, Parameter.Array> {
         Parameter receiving = params.get(1);
 
         if (!target.read().equals(receiving.read())) {
-            if (target.read().equals("null"))
+            if (target.read().equals("undefined") || target.read().equals("null"))
                 c.addError(new SemanticError(String.format("Variável de tipo desconhecido recebendo '%s'", receiving.read()), c.getCurrentToken().getLine()));
             else
                 c.addError(new SemanticError(String.format("Esperava receber tipo '%s' e recebeu '%s'", target.read(), receiving.read()), c.getCurrentToken().getLine()));

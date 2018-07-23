@@ -112,41 +112,41 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Expr 1>", new Symbol.Array("','", "<Assign Expr>", "{assign(Stack[-1].type, Aux[0].type)}", "<Expr 1>", "{assign(Aux[-3].type, Aux[0].type)}")));
         grammar.addRule(new Rule("<Expr 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Assign Expr>", new Symbol.Array("<Cond Expr>", "{assign(Stack[-1].type, Aux[0].type)}", "<Assign Expr 1>", "{assign(Aux[-2].type, Aux[0].type)}")));
-        grammar.addRule(new Rule("<Assign Expr 1>", new Symbol.Array("'='", "<Cond Expr>", "{assignedTypeMatch(Aux[-2].type, Aux[0].type); assign(Stack[-1].type, Aux[0].type)}", "<Assign Expr 1>", "{assign(Aux[-3].type, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Assign Expr>", new Symbol.Array("<Cond Expr>", "{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Assign Expr 1>", "{assign(Aux[-2].type, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Assign Expr 1>", new Symbol.Array("{checkAttribution(Aux[0].cat)}", "'='", "<Cond Expr>", "{assignedTypeMatch(Aux[-2].type, Aux[0].type); assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Assign Expr 1>", "{assign(Aux[-3].type, Aux[0].type)}")));
         grammar.addRule(new Rule("<Assign Expr 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Cond Expr>", new Symbol.Array("<Logical Or Expr>", "{assign(Aux[-1].type, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Cond Expr>", new Symbol.Array("<Logical Or Expr>", "{assign(Aux[-1].type!cat, Aux[0].type!cat)}")));
 
-        grammar.addRule(new Rule("<Logical Or Expr>", new Symbol.Array("<Logical And Expr>", "{assign(Stack[-1].type, Aux[0].type)}", "<Logical Or Expr 1>", "{assign(Aux[-2].type, Aux[0].type)}")));
-        grammar.addRule(new Rule("<Logical Or Expr 1>", new Symbol.Array("'||'", "<Logical And Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(bool, Aux[0].type); assign(Stack[-1].type, bool)}", "<Logical Or Expr 1>", "{assign(Aux[-3].type, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Logical Or Expr>", new Symbol.Array("<Logical And Expr>", "{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Logical Or Expr 1>", "{assign(Aux[-2].type!cat, Aux[0].type!cat)}")));
+        grammar.addRule(new Rule("<Logical Or Expr 1>", new Symbol.Array("'||'", "<Logical And Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(bool, Aux[0].type); assign(Stack[-1].type, bool);  assign(Stack[-1].cat, Aux[-2].cat)}", "<Logical Or Expr 1>", "{assign(Aux[-3].type!cat, Aux[0].type!cat)}")));
         grammar.addRule(new Rule("<Logical Or Expr 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Logical And Expr>", new Symbol.Array("<Equal Expr>", "{assign(Stack[-1].type, Aux[0].type)}", "<Logical And Expr 1>", "{assign(Aux[-2].type, Aux[0].type)}")));
-        grammar.addRule(new Rule("<Logical And Expr 1>", new Symbol.Array("'&&'", "<Equal Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(bool, Aux[0].type); assign(Stack[-1].type, bool)}", "<Logical And Expr 1>", "{assign(Aux[-3].type, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Logical And Expr>", new Symbol.Array("<Equal Expr>", "{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Logical And Expr 1>", "{assign(Aux[-2].type!cat, Aux[0].type!cat)}")));
+        grammar.addRule(new Rule("<Logical And Expr 1>", new Symbol.Array("'&&'", "<Equal Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(bool, Aux[0].type); assign(Stack[-1].type, bool); assign(Stack[-1].cat, Aux[-2].cat)}", "<Logical And Expr 1>", "{assign(Aux[-3].type!cat, Aux[0].type!cat)}")));
         grammar.addRule(new Rule("<Logical And Expr 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Equal Expr>", new Symbol.Array("<Relational Expr>", "{assign(Stack[-1].type, Aux[0].type)}", "<Equal Expr 1>", "{assign(Aux[-2].type, Aux[0].type)}")));
-        grammar.addRule(new Rule("<Equal Expr 1>", new Symbol.Array("{assign(Stack[-1].type, Aux[0].type)}", "<Equal Op>", "<Relational Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(Aux[-1].musttypes, Aux[0].type); assign(Stack[-1].type, Aux[-1].returntype)}", "<Equal Expr 1>", "{assign(Aux[-3].type, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Equal Expr>", new Symbol.Array("<Relational Expr>", "{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Equal Expr 1>", "{assign(Aux[-2].type!cat, Aux[0].type!cat)}")));
+        grammar.addRule(new Rule("<Equal Expr 1>", new Symbol.Array("{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Equal Op>", "<Relational Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(Aux[-1].musttypes, Aux[0].type); assign(Stack[-1].type!cat, Aux[-1].returntype!cat)}", "<Equal Expr 1>", "{assign(Aux[-3].type!cat, Aux[0].type!cat)}")));
         grammar.addRule(new Rule("<Equal Expr 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Relational Expr>", new Symbol.Array("<Additive Expr>", "{assign(Stack[-1].type, Aux[0].type)}", "<Relational Expr 1>", "{assign(Aux[-2].type, Aux[0].type)}")));
-        grammar.addRule(new Rule("<Relational Expr 1>", new Symbol.Array("{assign(Stack[-1].type, Aux[0].type)}", "<Relational Op>", "<Additive Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(Aux[-1].musttypes, Aux[0].type); assign(Stack[-1].type, Aux[-1].returntype)}", "<Relational Expr 1>", "{assign(Aux[-3].type, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Relational Expr>", new Symbol.Array("<Additive Expr>", "{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Relational Expr 1>", "{assign(Aux[-2].type!cat, Aux[0].type!cat)}")));
+        grammar.addRule(new Rule("<Relational Expr 1>", new Symbol.Array("{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Relational Op>", "<Additive Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(Aux[-1].musttypes, Aux[0].type); assign(Stack[-1].type!cat, Aux[-1].returntype!cat)}", "<Relational Expr 1>", "{assign(Aux[-3].type!cat, Aux[0].type!cat)}")));
         grammar.addRule(new Rule("<Relational Expr 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Additive Expr>", new Symbol.Array("<Mult Expr>", "{assign(Stack[-1].type, Aux[0].type)}", "<Additive Expr 1>", "{assign(Aux[-2].type, Aux[0].type)}")));
-        grammar.addRule(new Rule("<Additive Expr 1>", new Symbol.Array("{assign(Stack[-1].type, Aux[0].type)}", "<Additive Op>", "<Mult Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(Aux[-1].musttypes, Aux[0].type); assign(Stack[-1].type, Aux[-1].returntype)}", "<Additive Expr 1>", "{assign(Aux[-3].type, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Additive Expr>", new Symbol.Array("<Mult Expr>", "{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Additive Expr 1>", "{assign(Aux[-2].type!cat, Aux[0].type!cat)}")));
+        grammar.addRule(new Rule("<Additive Expr 1>", new Symbol.Array("{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Additive Op>", "<Mult Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(Aux[-1].musttypes, Aux[0].type); assign(Stack[-1].type!cat, Aux[-1].returntype!cat)}", "<Additive Expr 1>", "{assign(Aux[-3].type!cat, Aux[0].type!cat)}")));
         grammar.addRule(new Rule("<Additive Expr 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Mult Expr>", new Symbol.Array("<Unary Expr>", "{assign(Stack[-1].type, Aux[0].type)}", "<Mult Expr 1>", "{assign(Aux[-2].type, Aux[0].type)}")));
-        grammar.addRule(new Rule("<Mult Expr 1>", new Symbol.Array("{assign(Stack[-1].type, Aux[0].type)}", "<Mult Op>", "<Unary Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(Aux[-1].musttypes, Aux[0].type); assign(Stack[-1].type, Aux[-1].returntype)}", "<Mult Expr 1>", "{assign(Aux[-3].type, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Mult Expr>", new Symbol.Array("<Unary Expr>", "{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Mult Expr 1>", "{assign(Aux[-2].type!cat, Aux[0].type!cat)}")));
+        grammar.addRule(new Rule("<Mult Expr 1>", new Symbol.Array("{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Mult Op>", "<Unary Expr>", "{typeMatch(Aux[-2].type, Aux[0].type); typeMatch(Aux[-1].musttypes, Aux[0].type); assign(Stack[-1].type!cat, Aux[-1].returntype!cat)}", "<Mult Expr 1>", "{assign(Aux[-3].type!cat, Aux[0].type!cat)}")));
         grammar.addRule(new Rule("<Mult Expr 1>", new Symbol.Array("")));
 
-        grammar.addRule(new Rule("<Unary Expr>", new Symbol.Array("<Postfix Expr>", "{assign(Aux[-1].type, Aux[0].type)}")));
-        grammar.addRule(new Rule("<Unary Expr>", new Symbol.Array("<Unary Op>", "<Unary Expr>", "{typeMatch(Aux[-1].musttypes, Aux[0].type); assign(Aux[-2].type, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Unary Expr>", new Symbol.Array("<Postfix Expr>", "{assign(Aux[-1].type!cat, Aux[0].type!cat)}")));
+        grammar.addRule(new Rule("<Unary Expr>", new Symbol.Array("<Unary Op>", "<Unary Expr>", "{typeMatch(Aux[-1].musttypes, Aux[0].type); assign(Aux[-2].type!cat, Aux[0].type!cat)}")));
 
-        grammar.addRule(new Rule("<Postfix Expr>", new Symbol.Array("<Primary Expr>", "{assign(Stack[-1].lex!type!cat, Aux[0].lex!type!cat)}", "<Postfix Expr 1>", "{assign(Aux[-2].type, Aux[0].type)}")));
-        grammar.addRule(new Rule("<Postfix Expr 1>", new Symbol.Array("{assign(Stack[-1].lex!type!cat, Aux[0].lex!type!cat)}", "<Postfix Op>", "{assign(Stack[-1].lex!cat, Aux[0].lex!cat); assign(Stack[-1].type, Aux[0].returntype)}", "<Postfix Expr 1>", "{assign(Aux[-2].type, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Postfix Expr>", new Symbol.Array("<Primary Expr>", "{assign(Stack[-1].lex!type!cat, Aux[0].lex!type!cat)}", "<Postfix Expr 1>", "{assign(Aux[-2].type!cat, Aux[0].type!cat)}")));
+        grammar.addRule(new Rule("<Postfix Expr 1>", new Symbol.Array("{assign(Stack[-1].lex!type!cat, Aux[0].lex!type!cat)}", "<Postfix Op>", "{assign(Stack[-1].lex!cat, Aux[0].lex!cat); assign(Stack[-1].type, Aux[0].returntype)}", "<Postfix Expr 1>", "{assign(Aux[-2].type!cat, Aux[0].type!cat)}")));
         grammar.addRule(new Rule("<Postfix Expr 1>", new Symbol.Array("")));
 
         // sy: lex line type cat
