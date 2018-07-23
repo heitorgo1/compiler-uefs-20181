@@ -86,19 +86,26 @@ public class Symbol {
         }
     }
 
+    public static class Properties extends Hashtable<String, Object> {
+
+        public Properties() {
+            super();
+        }
+    }
+
     private String name;
-    private Map<String, String> properties;
+    private Properties properties;
 
     public Symbol(String name) {
         this.name = name;
-        properties = new Hashtable<>();
+        properties = new Properties();
     }
 
-    public void setProperty(String property, String value) {
+    public void setProperty(String property, Object value) {
         properties.put(property, value);
     }
 
-    public String getProperty(String property) {
+    public Object getProperty(String property) {
         return properties.get(property);
     }
 
@@ -106,11 +113,11 @@ public class Symbol {
         return new Symbol(name);
     }
 
-    public void copyProperties(Map<String, String> properties) {
+    public void copyProperties(Properties properties) {
         this.properties.putAll(properties);
     }
 
-    public Map<String, String> getProperties() {
+    public Properties getProperties() {
         return properties;
     }
 

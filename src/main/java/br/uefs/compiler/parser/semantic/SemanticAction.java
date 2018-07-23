@@ -14,35 +14,36 @@ public class SemanticAction {
     private static Map<String, BiConsumer<Context, Parameter.Array>> SEMANTIC_FUNCTIONS_MAP =
             new Hashtable<String, BiConsumer<Context, Parameter.Array>>() {{
                 put("assign", new Assign());
-                put("insertSymbol", new InsertSymbol());
-                put("insertSymbolList", new InsertSymbolList());
-                put("setScope", new SetScope());
-                put("incScope", new IncScope());
-                put("decScope", new DecScope());
-                put("incStart", new IncStart());
-                put("hasOneStart", new HasOneStart());
-                put("concat", new Concat());
-                put("insertFuncParams", new InsertFuncParams());
-                put("typedef", new Typedef());
-                put("attachStructVars", new AttachStructVars());
-                put("checkDeclaration", new CheckDeclaration());
-                put("extendStruct", new ExtendStruct());
-                put("incAssign", new IncAssign());
+                put("append", new Append());
                 put("assertEqual", new AssertEqual());
+                put("attachStructVars", new AttachStructVars());
                 put("assertInitConst", new AssertInitConst());
-                put("invalidConst", new InvalidConst());
-                put("getDefinedType", new GetDefinedType());
-                put("getIdentifier", new GetIdentifier());
                 put("arrayDimMatch", new ArrayDimMatch());
-                put("structVarMatch", new StructVarMatch());
-                put("getStructVarType", new GetStructVarType());
+                put("assertParams", new AssertParams());
                 put("assertNoParams", new AssertNoParams());
                 put("assertNotConst", new AssertNotConst());
-                put("assertParams", new AssertParams());
                 put("assignedTypeMatch", new AssignedTypeMatch());
+                put("concat", new Concat());
+                put("checkStructDefined", new CheckStructDefined());
+                put("decScope", new DecScope());
+                put("extendStruct", new ExtendStruct());
+                put("getDefinedType", new GetDefinedType());
+                put("getIdentifier", new GetIdentifier());
+                put("getStructVarType", new GetStructVarType());
                 put("getNumType", new GetNumType());
-                put("typeMatch", new TypeMatch());
                 put("getParams", new GetParams());
+                put("hasOneStart", new HasOneStart());
+                put("insertSymbol", new InsertSymbol());
+                put("incScope", new IncScope());
+                put("incStart", new IncStart());
+                put("insertFuncParams", new InsertFuncParams());
+                put("incAssign", new IncAssign());
+                put("invalidConst", new InvalidConst());
+                put("initializeParams", new InitializeParams());
+                put("popArray", new PopArray());
+                put("setScope", new SetScope());
+                put("typedef", new Typedef());
+                put("typeMatch", new TypeMatch());
             }};
 
     public SemanticAction(String name, Parameter.Array paramList) {

@@ -38,11 +38,11 @@ public class SemanticTest {
 
         grammar = new Grammar();
 
-        grammar.addRule(new Rule("<D>", new Symbol.Array("{SetScope(0)}", "<T>", "{assign(<L>:Stack[-1].type, <T>:Aux[0].type)}", "<L>", "';'")));
-        grammar.addRule(new Rule("<T>", new Symbol.Array("'int'", "{assign(<T>:Aux[-1].type, 'integer')}")));
-        grammar.addRule(new Rule("<T>", new Symbol.Array("'float'", "{assign(<T>:Aux[-1].type, 'float')}")));
-        grammar.addRule(new Rule("<L>", new Symbol.Array("IDENTIFICADOR", "{insertSymbolType(IDENTIFICADOR:Aux[0].lex, <L>:Aux[-1].type); assign(<R>:Stack[-1].type, <L>:Aux[-1].type)}", "<R>")));
-        grammar.addRule(new Rule("<R>", new Symbol.Array("','", "{assign(<L>:Stack[-1].type, <R>:Aux[-1].type)}", "<L>")));
+        grammar.addRule(new Rule("<D>", new Symbol.Array("<T>", "{assign(Stack[-1].type, Aux[0].type)}", "<L>", "';'")));
+        grammar.addRule(new Rule("<T>", new Symbol.Array("'int'", "{assign(Aux[-1].type, integer)}")));
+        grammar.addRule(new Rule("<T>", new Symbol.Array("'float'", "{assign(Aux[-1].type, float)}")));
+        grammar.addRule(new Rule("<L>", new Symbol.Array("IDENTIFICADOR", "{insertSymbol(Aux[0].lex, Aux[-1].type); assign(Stack[-1].type, Aux[-1].type)}", "<R>")));
+        grammar.addRule(new Rule("<R>", new Symbol.Array("','", "{assign(Stack[-1].type, Aux[-1].type)}", "<L>")));
         grammar.addRule(new Rule("<R>", new Symbol.Array("")));
         grammar.setStartSymbol(new Symbol("<D>"));
     }
@@ -67,7 +67,7 @@ public class SemanticTest {
         System.out.println(tokens);
         parser.parse(tokens);
 
-        for (CompilerError error : parser.getErrors()) {
+        for (CompilerError error : parser.getSemanticErrors()) {
             System.out.println(error.getMessage());
         }
     }

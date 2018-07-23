@@ -15,14 +15,14 @@ public class TypeMatch implements BiConsumer<Context, Parameter.Array> {
         Parameter first = params.get(0); // const or symbol
         Parameter second = params.get(1); // const or symbol
 
-        for (String input : SemanticHelperFunctions.splitParam(second.read())) {
-            for (String target : SemanticHelperFunctions.splitParam(first.read())) {
+        for (String input : SemanticHelperFunctions.splitParam(second.read().toString())) {
+            for (String target : SemanticHelperFunctions.splitParam(first.read().toString())) {
                 if (input.equals(target)) {
                     return;
                 }
             }
         }
-        String message = String.format("Tipo inválido para operação. input: %s target: %s %s",second.read(), first.read(), c.getCurrentToken());
+        String message = String.format("Operação esperava tipo '%s' e encontrou '%s' .",first.read(), second.read());
         c.addError(new SemanticError(message, c.getCurrentToken().getLine()));
     }
 }

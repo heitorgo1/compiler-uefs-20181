@@ -1,0 +1,35 @@
+// rule 4.4
+
+struct struct_a {
+    int a, b, c;
+    bool d, e, f = false;
+}
+
+struct struct_b extends struct_a {
+    float a, b; // err
+    bool d; // err
+    string i, j = "abc";
+}
+
+struct struct_c extends struct_b {
+    bool c; // err
+    int i; // err
+    int x = 5;
+}
+
+start () {
+
+    var {
+        struct struct_a g, h;
+        struct struct_b o, p;
+        struct struct_c z, v;
+    }
+
+    g.a = 1;
+    h.e = true;
+    o.i = "def";
+    z.x = 6;
+
+    print(g.a, h.e);
+    print(o.i, z.x);
+}

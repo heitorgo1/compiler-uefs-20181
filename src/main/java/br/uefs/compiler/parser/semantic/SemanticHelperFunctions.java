@@ -2,6 +2,7 @@ package br.uefs.compiler.parser.semantic;
 
 import br.uefs.compiler.parser.Symbol;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -65,12 +66,12 @@ public class SemanticHelperFunctions {
         return offset;
     }
 
-    public static String extractAttribute(String param) {
+    public static List<String> extractAttributes(String param) {
         assert isInAux(param) || isInStack(param);
 
         String[] attr = param.split("\\.");
-        if (attr.length == 1) return "";
-        return attr[1].trim();
+        if (attr.length == 1) return new ArrayList<>();
+        return Arrays.asList(attr[1].split("!"));
     }
 
     public static String[] splitParam(String param) {

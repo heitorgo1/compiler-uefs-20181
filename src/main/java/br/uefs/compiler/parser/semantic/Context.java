@@ -13,7 +13,7 @@ public class Context {
     private int startCounter = 0;
     private long startLine = 0;
     private SymbolTable.Array symbolTableList;
-    private Map<String, String> typeMap;
+    private Map<String, Map<String, Object>> typeMap;
     private Token currentToken;
     private List<SemanticError> errors;
 
@@ -39,7 +39,7 @@ public class Context {
         startCounter++;
     }
 
-    public Map<String, String> getTypeMap() {
+    public Map<String, Map<String, Object>> getTypeMap() {
         return typeMap;
     }
 

@@ -14,8 +14,8 @@ public class ArrayDimMatch implements BiConsumer<Context, Parameter.Array> {
         Parameter first = params.get(0);
         Parameter second = params.get(1);
 
-        int v1 = Integer.parseInt(first.read());
-        int v2 = Integer.parseInt(second.read());
+        int v1 = Integer.parseInt(first.read().toString());
+        int v2 = Integer.parseInt(second.read().toString());
 
         if (v1 != v2) {
             c.addError(new SemanticError(String.format("Dimensões não batem %s %s", first.read(), second.read()), c.getCurrentToken().getLine()));

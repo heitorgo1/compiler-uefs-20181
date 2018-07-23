@@ -1,0 +1,21 @@
+// rule 4.6
+
+start() {
+    var {
+        int a;
+    }
+}
+
+start () {
+    var {
+        string b;
+    }
+}
+
+start () {
+    var {
+        bool c;
+    }
+}
+
+// err 3 start definitions

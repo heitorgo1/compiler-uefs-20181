@@ -11,7 +11,7 @@ import java.util.Set;
  * Operators:
  *  * X* - Star - X, zero or more times
  *  * X|Y - Union - selects either X or Y
- *  * X.Y - Concat - X followed by Y
+ *  * X.Y - Append - X followed by Y
  *  * X?  - Question - X, once or not at all
  *  * (exp) - Parenthesized expression - are evaluated before the others, deepest first
  */
@@ -41,9 +41,9 @@ public class Operator implements RegexElement {
      * Check if an operator has precedence over some other operator.
      *
      * Parenthesis have no precedence over other operators.
-     * Unary operators (* and ?) have precendence over Concat and Union.
+     * Unary operators (* and ?) have precendence over Append and Union.
      * If the current operator is equal to the other, it has precedence.
-     * Concat operator has precence over Union.
+     * Append operator has precence over Union.
      *
      * @param other The operator that is being compared with this one.
      * @return true if this operator has precedence over other, false otherwise

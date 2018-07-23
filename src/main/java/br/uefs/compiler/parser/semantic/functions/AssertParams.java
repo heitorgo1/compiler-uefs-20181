@@ -3,12 +3,16 @@ package br.uefs.compiler.parser.semantic.functions;
 import br.uefs.compiler.parser.semantic.Context;
 import br.uefs.compiler.parser.semantic.Parameter;
 import br.uefs.compiler.parser.semantic.SemanticError;
-import br.uefs.compiler.parser.semantic.SemanticHelperFunctions;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiConsumer;
 
 public class AssertParams implements BiConsumer<Context, Parameter.Array> {
+
+    private static boolean match(List<String> v1, List<String> v2) {
+        return v1.equals(v2);
+    }
+
     @Override
     public void accept(Context c, Parameter.Array params) {
         assert params.size() == 2;
@@ -17,22 +21,15 @@ public class AssertParams implements BiConsumer<Context, Parameter.Array> {
         Parameter paramsList2 = params.get(1);
 
         if (paramsList1.read() != null && paramsList2.read() != null) {
-            String[] v1 = SemanticHelperFunctions.splitParam(paramsList1.read());
-            String[] v2 = SemanticHelperFunctions.splitParam(paramsList2.read());
+            List<List<String>> possibleParams = List.class.cast(paramsList1.read());
+            for (List<String> v1 : possibleParams) {
+                List<String> v2 = List.class.cast(paramsList2.read());
 
-            if (v1.length != v2.length) {
-                c.addError(new SemanticError("Cheque a quantidade de parâmetros passados à função/procedimento", c.getCurrentToken().getLine()));
-                return;
-            } else {
-                for (int i = 0; i < v1.length; i++) {
-                    if (!v1[i].equals(v2[i])) {
-                        c.addError(new SemanticError(
-                                String.format("Esperava parâmetros '%s' e recebeu '%s' em função/procedimento", Arrays.asList(v1), Arrays.asList(v2)),
-                                c.getCurrentToken().getLine()));
-                        return;
-                    }
-                }
+                if (match(v1, v2)) return;
             }
+            c.addError(new SemanticError(
+                    String.format("Esperava alguma das listas de parâmetros '%s' e recebeu '%s' em Função/Procedimento", possibleParams, paramsList2.read()),
+                    c.getCurrentToken().getLine()));
         }
     }
 }

@@ -1,0 +1,62 @@
+// rule 4.2
+
+const {
+    int a = 2;
+    string b = "abc";
+}
+
+var {
+    float a = 3.0; // err
+    bool b = false; // err
+}
+
+procedure proc_a () {
+
+    var {
+        int c = a;
+        bool d = true;
+    }
+
+    if d == true then {
+        var {
+            string b = "def";
+            int c = 10;
+        }
+
+        var { string b = "ghi"; } // err
+
+        while (c < 3) {
+            print(b);
+            c++;
+            var {
+                int e = c;
+            }
+        }
+
+        print (e); // err
+    }
+
+    print(e); // err
+}
+
+function int func_a (int a, int b) {
+    print(a+b);
+    var {
+        float a = 1, b = 2; // err
+    }
+    return a + b;
+}
+
+start () {
+
+    var {
+        int a = 1, b = 2;
+        int t1;
+    }
+
+    var {
+        int a = 3, b = 5; // err
+    }
+
+    t1 = func_a(a,b);
+}

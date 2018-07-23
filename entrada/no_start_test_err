@@ -1,0 +1,11 @@
+// rule 4.6
+
+const {
+    float e = 2.0;
+}
+
+procedure test (int a) {
+    var { int b; }
+}
+
+// err no start

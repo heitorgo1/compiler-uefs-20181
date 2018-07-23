@@ -1,0 +1,48 @@
+// rule 4.1
+
+function int func_a(int a, float b) {
+    return a + b; // err
+}
+
+function int func_b(int a, int b) {
+    return a + b;
+}
+
+start () {
+    var {
+        int a = 1, b = 2;
+        float c = 3.0, d = 4.0;
+        string e = "a", f = "b";
+        bool g = true, h = false;
+
+        int aa = 3.0; // err
+        float bb = "asbd"; // err
+        string cc = 1; // err
+        bool dd = 5; // err
+    }
+
+    var {
+        int t1;
+        float t2;
+        string t3;
+        bool t4;
+        int t5;
+    }
+
+    // errs
+    t1 = a + c;
+    t1 = d;
+    t1 = e;
+    t1 = g;
+    t2 = a + b;
+    t2 = a * b + c;
+    t2 = a * c - b;
+    t3 = h || g;
+    t3 = a + e;
+    t4 = c * d;
+    t4 = g - a;
+
+    t5 = z + x;
+    t5 = a - p;
+    t5 = func_b(a, c);
+}

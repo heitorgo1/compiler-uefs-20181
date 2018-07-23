@@ -14,7 +14,7 @@ public class IncAssign implements BiConsumer<Context, Parameter.Array> {
         Parameter data = params.get(1); // const or symbol
 
         try {
-            int val = Integer.parseInt(data.read()) + 1;
+            int val = Integer.parseInt(data.read().toString()) + 1;
             receiver.write(String.valueOf(val));
         } catch (Exception e) {
             e.printStackTrace();

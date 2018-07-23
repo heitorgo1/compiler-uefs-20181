@@ -225,7 +225,7 @@ public class NFA extends Automata {
     }
 
     /**
-     * Instantiates a NFA for a Regex Concat (.) Operator
+     * Instantiates a NFA for a Regex Append (.) Operator
      * <p>
      * target1.q0 ---> (target1.q1 & target2.q0) ---> target2.q1*
      *

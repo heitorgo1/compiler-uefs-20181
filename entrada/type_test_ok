@@ -1,0 +1,51 @@
+function int func_b(int a, int b) {
+    return a + b;
+}
+
+start () {
+    var {
+        int a = 1, b = 2;
+        float c = 3.0, d = 4.0;
+        string e = "a", f = "b";
+        bool g = true, h = false;
+        int aa[] = {1, 2, 3};
+        float bb[][] = {{1.0},{2.0},{3.0}};
+    }
+
+    var {
+        int t1;
+        float t2;
+        string t3;
+        bool t4;
+    }
+
+    t1 = a + b;
+    t1 = a - b;
+    t1 = a * (a - b);
+    t1 = (a * b) / b;
+    t1 = func_b(a, b);
+    t1 = aa[0] + aa[1];
+    a++;
+    b--;
+
+    t2 = c + d;
+    t2 = c - d;
+    t2 = c * d + c - d;
+    t2 = c / d;
+    t2 = bb[0][0] + bb[1][0] * bb[2][0];
+    c++;
+    d--;
+
+    t3 = e + f;
+
+    t4 = g || h;
+    t4 = g && h;
+    t4 = !g && !h;
+    t4 = a < b;
+    t4 = c > d;
+    t4 = e == f;
+    t4 = e != f;
+    t4 = b <= a;
+    t4 = a >= b;
+
+}

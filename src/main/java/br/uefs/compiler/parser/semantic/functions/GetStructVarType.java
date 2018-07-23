@@ -26,39 +26,51 @@ public class GetStructVarType implements BiConsumer<Context, Parameter.Array> {
         Parameter struct = params.get(1);
         Parameter var = params.get(2);
 
-        SymbolTable globalTable = c.getSymbolTable(0);
+        Map<String, Map<String, Object>> typeMap = c.getTypeMap();
+        Map<String, Object> structSymbol = null;
 
         // Default value
         try {
-            receiver.write("null");
+            receiver.write("undefined");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        for (int i = c.getScope(); i >= 0; i--) {
+            SymbolTable table = c.getSymbolTable(i);
 
-        if (globalTable.containsKey(struct.read())) {
-
-            if (!globalTable.get(struct.read()).get("type").toString().equals("struct")) {
-                c.addError(new SemanticError(String.format("'%s' não é uma struct.", struct.read()), c.getCurrentToken().getLine()));
-                return;
+            if (table.containsKey(struct.read().toString())) {
+                structSymbol = table.get(struct.read().toString());
+                break;
             }
+        }
 
-            List<Map.Entry<String, Map<String, Object>>> structVars = List.class.cast(globalTable.get(struct.read()).get("struct_vars"));
+        if (structSymbol == null) {
+            c.addError(new SemanticError(String.format("Identificador '%s' não foi declarado.", struct.read().toString()), c.getCurrentToken().getLine()));
+            return;
+        }
 
-            try {
-                if (!inEntryList(var.read(), structVars)) {
-                    c.addError(new SemanticError(String.format("Struct '%s' não possui atributo '%s'", struct.read(), var.read()), c.getCurrentToken().getLine()));
-                } else {
-                    for (Map.Entry<String, Map<String, Object>> structVar : structVars)
-                        if (structVar.getKey().equals(var.read())) {
-                            receiver.write(structVar.getValue().get("type").toString());
-                        }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+
+        if (!typeMap.get(structSymbol.get("type").toString()).containsKey("struct_vars")) {
+            c.addError(new SemanticError(String.format("'%s' não é uma struct.", struct.read()), c.getCurrentToken().getLine()));
+            return;
+        }
+
+        List<Map.Entry<String, Map<String, Object>>> structVars = List.class.cast(typeMap.get(structSymbol.get("type").toString()).get("struct_vars"));
+
+        try {
+            if (!inEntryList(var.read().toString(), structVars)) {
+                c.addError(new SemanticError(String.format("Struct '%s' não possui atributo '%s'", struct.read(), var.read()), c.getCurrentToken().getLine()));
+            } else {
+                for (Map.Entry<String, Map<String, Object>> structVar : structVars)
+                    if (structVar.getKey().equals(var.read())) {
+                        receiver.write(structVar.getValue().get("type").toString());
+                        return;
+                    }
             }
-        } else {
-            c.addError(new SemanticError(String.format("Variável '%s' não declarada", struct.read()), c.getCurrentToken().getLine()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
+

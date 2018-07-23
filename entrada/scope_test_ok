@@ -1,0 +1,36 @@
+
+
+const {
+    int a = 2;
+    string b = "abc";
+}
+
+procedure proc_a () {
+
+    var {
+        int c = a;
+        bool d = true;
+    }
+
+    if d == true then {
+        while (c < 3) {
+            print(b);
+            c++;
+        }
+    }
+}
+
+function int func_a (int a, int b) {
+    print(a+b);
+    return a + b;
+}
+
+start () {
+
+    var {
+        int a = 1, b = 2;
+        int t1;
+    }
+
+    t1 = func_a(a,b);
+}

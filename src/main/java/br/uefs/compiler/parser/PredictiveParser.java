@@ -65,13 +65,13 @@ public class PredictiveParser {
         for (String param : params) {
             if (SemanticHelperFunctions.isInAux(param)) {
                 int offset = SemanticHelperFunctions.extractOffset(param);
-                String attr = SemanticHelperFunctions.extractAttribute(param);
-                arr.add(new Parameter(getSymbol(chooseStack(true), offset), attr));
+                List<String> attrs = SemanticHelperFunctions.extractAttributes(param);
+                arr.add(new Parameter(getSymbol(chooseStack(true), offset), attrs));
             }
             else if (SemanticHelperFunctions.isInStack(param)) {
                 int offset = SemanticHelperFunctions.extractOffset(param);
-                String attr = SemanticHelperFunctions.extractAttribute(param);
-                arr.add(new Parameter(getSymbol(chooseStack(false), offset), attr));
+                List<String> attrs = SemanticHelperFunctions.extractAttributes(param);
+                arr.add(new Parameter(getSymbol(chooseStack(false), offset), attrs));
             }
             else arr.add(new Parameter(param.trim()));
         }

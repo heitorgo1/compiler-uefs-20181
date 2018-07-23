@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,33 +75,43 @@ public class Main {
         }
     }
 
+    private static void runForFilePath(Path path) {
+        try {
+            Lexer lexer = new Lexer(dfa, new FileReader(path.toFile()));
+            PredictiveParser parser = new PredictiveParser(ParsingTable.build(grammar));
+
+            List<Token> tokens = lexer.readAllTokens();
+            parser.parse(tokens);
+
+            List<CompilerError> errors = new ArrayList<>();
+            errors.addAll(lexer.getErrors());
+            errors.addAll(parser.getSyntaticErrors());
+            errors.addAll(parser.getSemanticErrors());
+
+            String outputFileName = String.format("saida_%s", path.getFileName());
+            File outputFile = Paths.get(OUTPUT_FOLDER).resolve(outputFileName).toFile();
+
+            writeTokensAndErrorsToFile(tokens, errors, outputFile);
+        } catch (IOException e) {
+            System.err.format("File not found or unavailable: %s\n", path.toString());
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.format("Error trying to read tokens from: %s\n", path.toString());
+            return;
+        }
+    }
+
+    private static void readAndParseForInputFilenames(String[] filenames) {
+        for (String filename : filenames) {
+            runForFilePath(Paths.get(INPUT_FOLDER, filename));
+        }
+    }
+
     private static void readAndParseForEachInputFile() {
         try (Stream<Path> paths = Files.walk(Paths.get(INPUT_FOLDER))) {
             paths.filter(Files::isRegularFile).forEach((Path path) -> {
-                try {
-                    Lexer lexer = new Lexer(dfa, new FileReader(path.toFile()));
-                    PredictiveParser parser = new PredictiveParser(ParsingTable.build(grammar));
-
-                    List<Token> tokens = lexer.readAllTokens();
-                    parser.parse(tokens);
-
-                    List<CompilerError> errors = new ArrayList<>();
-                    errors.addAll(lexer.getErrors());
-                    errors.addAll(parser.getSyntaticErrors());
-                    errors.addAll(parser.getSemanticErrors());
-
-                    String outputFileName = String.format("saida_%s", path.getFileName());
-                    File outputFile = Paths.get(OUTPUT_FOLDER).resolve(outputFileName).toFile();
-
-                    writeTokensAndErrorsToFile(tokens, errors, outputFile);
-                } catch (IOException e) {
-                    System.err.format("File not found or unavailable: %s\n", path.toString());
-                    return;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.err.format("Error trying to read tokens from: %s\n", path.toString());
-                    return;
-                }
+                runForFilePath(path);
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -112,6 +123,9 @@ public class Main {
         makeSureInputAndOutputFoldersExist();
         tryToLoadAutomataFromCache();
 
-        readAndParseForEachInputFile();
+        if (args.length > 0)
+            readAndParseForInputFilenames(args);
+        else
+            readAndParseForEachInputFile();
     }
 }

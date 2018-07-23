@@ -1,0 +1,64 @@
+<PALAVRARESERVADA, const, 3>
+<DELIMITADOR, {, 3>
+<PALAVRARESERVADA, int, 4>
+<IDENTIFICADOR, a, 4>
+<OPERADORRELACIONAL, =, 4>
+<NUMERO, 1, 4>
+<DELIMITADOR, ,, 4>
+<IDENTIFICADOR, b, 4>
+<OPERADORRELACIONAL, =, 4>
+<NUMERO, 2, 4>
+<DELIMITADOR, ,, 4>
+<IDENTIFICADOR, c, 4>
+<OPERADORRELACIONAL, =, 4>
+<NUMERO, 3, 4>
+<DELIMITADOR, ;, 4>
+<PALAVRARESERVADA, float, 5>
+<IDENTIFICADOR, h, 5>
+<DELIMITADOR, ;, 5>
+<PALAVRARESERVADA, string, 6>
+<IDENTIFICADOR, g, 6>
+<OPERADORRELACIONAL, =, 6>
+<CADEIACARACTERES, "abc", 6>
+<DELIMITADOR, ;, 6>
+<DELIMITADOR, }, 7>
+<PALAVRARESERVADA, start, 9>
+<DELIMITADOR, (, 9>
+<DELIMITADOR, ), 9>
+<DELIMITADOR, {, 9>
+<PALAVRARESERVADA, const, 11>
+<DELIMITADOR, {, 11>
+<PALAVRARESERVADA, float, 12>
+<IDENTIFICADOR, d, 12>
+<OPERADORRELACIONAL, =, 12>
+<NUMERO, 4, 12>
+<DELIMITADOR, ,, 12>
+<IDENTIFICADOR, e, 12>
+<OPERADORRELACIONAL, =, 12>
+<NUMERO, 5, 12>
+<DELIMITADOR, ,, 12>
+<IDENTIFICADOR, f, 12>
+<OPERADORRELACIONAL, =, 12>
+<NUMERO, 6, 12>
+<DELIMITADOR, ;, 12>
+<DELIMITADOR, }, 13>
+<IDENTIFICADOR, a, 15>
+<OPERADORRELACIONAL, =, 15>
+<NUMERO,  7, 15>
+<DELIMITADOR, ;, 15>
+<IDENTIFICADOR, g, 16>
+<OPERADORRELACIONAL, =, 16>
+<CADEIACARACTERES, "a", 16>
+<DELIMITADOR, ;, 16>
+<IDENTIFICADOR, c, 17>
+<OPERADORRELACIONAL, =, 17>
+<NUMERO,  10, 17>
+<DELIMITADOR, ;, 17>
+<DELIMITADOR, }, 18>
+<END, $, 18>
+
+Erro na linha 5: Constante não inicializada.
+Erro na linha 11: Constantes não podem ser declaradas neste escopo.
+Erro na linha 12: Operação esperava tipo 'float' e encontrou 'int' .
+Erro na linha 12: Operação esperava tipo 'float' e encontrou 'int' .
+Erro na linha 12: Operação esperava tipo 'float' e encontrou 'int' .

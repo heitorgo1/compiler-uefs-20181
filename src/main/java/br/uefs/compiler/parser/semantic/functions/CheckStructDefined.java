@@ -11,22 +11,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class CheckDeclaration implements BiConsumer<Context, Parameter.Array> {
+public class CheckStructDefined implements BiConsumer<Context, Parameter.Array> {
     @Override
     public void accept(Context c, Parameter.Array params) {
         assert params.size() == 1;
 
         Parameter id = params.get(0); // struct Id
 
-        SymbolTable globalScope = c.getSymbolTable(0);
+        String idStr = id.read().toString();
 
-        for (int i = c.getScope(); i >= 0; i--) {
-            SymbolTable table = c.getSymbolTable(i);
+        Map<String, Map<String, Object>> typeMap = c.getTypeMap();
 
-            if (table.containsKey(id.read())) return;
-        }
+        if (typeMap.containsKey(idStr) && typeMap.get(idStr).get("ref").equals(idStr) && typeMap.get(idStr).containsKey("struct_vars"))
+            return;
 
-        c.addError(new SemanticError(String.format("Identificador '%s' não declarado.", id.read()), c.getCurrentToken().getLine()));
-
+        c.addError(new SemanticError(String.format("Struct '%s' não foi declarada.", id.read()), c.getCurrentToken().getLine()));
     }
 }

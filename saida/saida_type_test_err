@@ -1,0 +1,230 @@
+<PALAVRARESERVADA, function, 3>
+<PALAVRARESERVADA, int, 3>
+<IDENTIFICADOR, func_a, 3>
+<DELIMITADOR, (, 3>
+<PALAVRARESERVADA, int, 3>
+<IDENTIFICADOR, a, 3>
+<DELIMITADOR, ,, 3>
+<PALAVRARESERVADA, float, 3>
+<IDENTIFICADOR, b, 3>
+<DELIMITADOR, ), 3>
+<DELIMITADOR, {, 3>
+<PALAVRARESERVADA, return, 4>
+<IDENTIFICADOR, a, 4>
+<OPERADORARITMETICO, +, 4>
+<IDENTIFICADOR, b, 4>
+<DELIMITADOR, ;, 4>
+<DELIMITADOR, }, 5>
+<PALAVRARESERVADA, function, 7>
+<PALAVRARESERVADA, int, 7>
+<IDENTIFICADOR, func_b, 7>
+<DELIMITADOR, (, 7>
+<PALAVRARESERVADA, int, 7>
+<IDENTIFICADOR, a, 7>
+<DELIMITADOR, ,, 7>
+<PALAVRARESERVADA, int, 7>
+<IDENTIFICADOR, b, 7>
+<DELIMITADOR, ), 7>
+<DELIMITADOR, {, 7>
+<PALAVRARESERVADA, return, 8>
+<IDENTIFICADOR, a, 8>
+<OPERADORARITMETICO, +, 8>
+<IDENTIFICADOR, b, 8>
+<DELIMITADOR, ;, 8>
+<DELIMITADOR, }, 9>
+<PALAVRARESERVADA, start, 11>
+<DELIMITADOR, (, 11>
+<DELIMITADOR, ), 11>
+<DELIMITADOR, {, 11>
+<PALAVRARESERVADA, var, 12>
+<DELIMITADOR, {, 12>
+<PALAVRARESERVADA, int, 13>
+<IDENTIFICADOR, a, 13>
+<OPERADORRELACIONAL, =, 13>
+<NUMERO,  1, 13>
+<DELIMITADOR, ,, 13>
+<IDENTIFICADOR, b, 13>
+<OPERADORRELACIONAL, =, 13>
+<NUMERO,  2, 13>
+<DELIMITADOR, ;, 13>
+<PALAVRARESERVADA, float, 14>
+<IDENTIFICADOR, c, 14>
+<OPERADORRELACIONAL, =, 14>
+<NUMERO,  3.0, 14>
+<DELIMITADOR, ,, 14>
+<IDENTIFICADOR, d, 14>
+<OPERADORRELACIONAL, =, 14>
+<NUMERO,  4.0, 14>
+<DELIMITADOR, ;, 14>
+<PALAVRARESERVADA, string, 15>
+<IDENTIFICADOR, e, 15>
+<OPERADORRELACIONAL, =, 15>
+<CADEIACARACTERES, "a", 15>
+<DELIMITADOR, ,, 15>
+<IDENTIFICADOR, f, 15>
+<OPERADORRELACIONAL, =, 15>
+<CADEIACARACTERES, "b", 15>
+<DELIMITADOR, ;, 15>
+<PALAVRARESERVADA, bool, 16>
+<IDENTIFICADOR, g, 16>
+<OPERADORRELACIONAL, =, 16>
+<PALAVRARESERVADA, true, 16>
+<DELIMITADOR, ,, 16>
+<IDENTIFICADOR, h, 16>
+<OPERADORRELACIONAL, =, 16>
+<PALAVRARESERVADA, false, 16>
+<DELIMITADOR, ;, 16>
+<PALAVRARESERVADA, int, 18>
+<IDENTIFICADOR, aa, 18>
+<OPERADORRELACIONAL, =, 18>
+<NUMERO,  3.0, 18>
+<DELIMITADOR, ;, 18>
+<PALAVRARESERVADA, float, 19>
+<IDENTIFICADOR, bb, 19>
+<OPERADORRELACIONAL, =, 19>
+<CADEIACARACTERES, "asbd", 19>
+<DELIMITADOR, ;, 19>
+<PALAVRARESERVADA, string, 20>
+<IDENTIFICADOR, cc, 20>
+<OPERADORRELACIONAL, =, 20>
+<NUMERO,  1, 20>
+<DELIMITADOR, ;, 20>
+<PALAVRARESERVADA, bool, 21>
+<IDENTIFICADOR, dd, 21>
+<OPERADORRELACIONAL, =, 21>
+<NUMERO,  5, 21>
+<DELIMITADOR, ;, 21>
+<DELIMITADOR, }, 22>
+<PALAVRARESERVADA, var, 24>
+<DELIMITADOR, {, 24>
+<PALAVRARESERVADA, int, 25>
+<IDENTIFICADOR, t1, 25>
+<DELIMITADOR, ;, 25>
+<PALAVRARESERVADA, float, 26>
+<IDENTIFICADOR, t2, 26>
+<DELIMITADOR, ;, 26>
+<PALAVRARESERVADA, string, 27>
+<IDENTIFICADOR, t3, 27>
+<DELIMITADOR, ;, 27>
+<PALAVRARESERVADA, bool, 28>
+<IDENTIFICADOR, t4, 28>
+<DELIMITADOR, ;, 28>
+<PALAVRARESERVADA, int, 29>
+<IDENTIFICADOR, t5, 29>
+<DELIMITADOR, ;, 29>
+<DELIMITADOR, }, 30>
+<IDENTIFICADOR, t1, 33>
+<OPERADORRELACIONAL, =, 33>
+<IDENTIFICADOR, a, 33>
+<OPERADORARITMETICO, +, 33>
+<IDENTIFICADOR, c, 33>
+<DELIMITADOR, ;, 33>
+<IDENTIFICADOR, t1, 34>
+<OPERADORRELACIONAL, =, 34>
+<IDENTIFICADOR, d, 34>
+<DELIMITADOR, ;, 34>
+<IDENTIFICADOR, t1, 35>
+<OPERADORRELACIONAL, =, 35>
+<IDENTIFICADOR, e, 35>
+<DELIMITADOR, ;, 35>
+<IDENTIFICADOR, t1, 36>
+<OPERADORRELACIONAL, =, 36>
+<IDENTIFICADOR, g, 36>
+<DELIMITADOR, ;, 36>
+<IDENTIFICADOR, t2, 37>
+<OPERADORRELACIONAL, =, 37>
+<IDENTIFICADOR, a, 37>
+<OPERADORARITMETICO, +, 37>
+<IDENTIFICADOR, b, 37>
+<DELIMITADOR, ;, 37>
+<IDENTIFICADOR, t2, 38>
+<OPERADORRELACIONAL, =, 38>
+<IDENTIFICADOR, a, 38>
+<OPERADORARITMETICO, *, 38>
+<IDENTIFICADOR, b, 38>
+<OPERADORARITMETICO, +, 38>
+<IDENTIFICADOR, c, 38>
+<DELIMITADOR, ;, 38>
+<IDENTIFICADOR, t2, 39>
+<OPERADORRELACIONAL, =, 39>
+<IDENTIFICADOR, a, 39>
+<OPERADORARITMETICO, *, 39>
+<IDENTIFICADOR, c, 39>
+<OPERADORARITMETICO, -, 39>
+<IDENTIFICADOR, b, 39>
+<DELIMITADOR, ;, 39>
+<IDENTIFICADOR, t3, 40>
+<OPERADORRELACIONAL, =, 40>
+<IDENTIFICADOR, h, 40>
+<OPERADORLOGICO, ||, 40>
+<IDENTIFICADOR, g, 40>
+<DELIMITADOR, ;, 40>
+<IDENTIFICADOR, t3, 41>
+<OPERADORRELACIONAL, =, 41>
+<IDENTIFICADOR, a, 41>
+<OPERADORARITMETICO, +, 41>
+<IDENTIFICADOR, e, 41>
+<DELIMITADOR, ;, 41>
+<IDENTIFICADOR, t4, 42>
+<OPERADORRELACIONAL, =, 42>
+<IDENTIFICADOR, c, 42>
+<OPERADORARITMETICO, *, 42>
+<IDENTIFICADOR, d, 42>
+<DELIMITADOR, ;, 42>
+<IDENTIFICADOR, t4, 43>
+<OPERADORRELACIONAL, =, 43>
+<IDENTIFICADOR, g, 43>
+<OPERADORARITMETICO, -, 43>
+<IDENTIFICADOR, a, 43>
+<DELIMITADOR, ;, 43>
+<IDENTIFICADOR, t5, 45>
+<OPERADORRELACIONAL, =, 45>
+<IDENTIFICADOR, z, 45>
+<OPERADORARITMETICO, +, 45>
+<IDENTIFICADOR, x, 45>
+<DELIMITADOR, ;, 45>
+<IDENTIFICADOR, t5, 46>
+<OPERADORRELACIONAL, =, 46>
+<IDENTIFICADOR, a, 46>
+<OPERADORARITMETICO, -, 46>
+<IDENTIFICADOR, p, 46>
+<DELIMITADOR, ;, 46>
+<IDENTIFICADOR, t5, 47>
+<OPERADORRELACIONAL, =, 47>
+<IDENTIFICADOR, func_b, 47>
+<DELIMITADOR, (, 47>
+<IDENTIFICADOR, a, 47>
+<DELIMITADOR, ,, 47>
+<IDENTIFICADOR, c, 47>
+<DELIMITADOR, ), 47>
+<DELIMITADOR, ;, 47>
+<DELIMITADOR, }, 48>
+<END, $, 48>
+
+Erro na linha 4: Operação esperava tipo 'int' e encontrou 'float' .
+Erro na linha 18: Operação esperava tipo 'int' e encontrou 'float' .
+Erro na linha 19: Operação esperava tipo 'float' e encontrou 'string' .
+Erro na linha 20: Operação esperava tipo 'string' e encontrou 'int' .
+Erro na linha 21: Operação esperava tipo 'bool' e encontrou 'int' .
+Erro na linha 33: Operação esperava tipo 'int' e encontrou 'float' .
+Erro na linha 34: Esperava receber tipo 'int' e recebeu 'float'
+Erro na linha 35: Esperava receber tipo 'int' e recebeu 'string'
+Erro na linha 36: Esperava receber tipo 'int' e recebeu 'bool'
+Erro na linha 37: Esperava receber tipo 'float' e recebeu 'int'
+Erro na linha 38: Operação esperava tipo 'int' e encontrou 'float' .
+Erro na linha 38: Esperava receber tipo 'float' e recebeu 'int'
+Erro na linha 39: Operação esperava tipo 'int' e encontrou 'float' .
+Erro na linha 39: Esperava receber tipo 'float' e recebeu 'int'
+Erro na linha 40: Esperava receber tipo 'string' e recebeu 'bool'
+Erro na linha 41: Operação esperava tipo 'int' e encontrou 'string' .
+Erro na linha 41: Esperava receber tipo 'string' e recebeu 'int'
+Erro na linha 42: Esperava receber tipo 'bool' e recebeu 'float'
+Erro na linha 43: Operação esperava tipo 'bool' e encontrou 'int' .
+Erro na linha 45: Variável não declarada 'z'
+Erro na linha 45: Variável não declarada 'x'
+Erro na linha 45: Operação esperava tipo '[int float string]' e encontrou 'undefined' .
+Erro na linha 45: Esperava receber tipo 'int' e recebeu 'undefined'
+Erro na linha 46: Variável não declarada 'p'
+Erro na linha 46: Operação esperava tipo 'int' e encontrou 'undefined' .
+Erro na linha 46: Operação esperava tipo '[int float]' e encontrou 'undefined' .
+Erro na linha 47: Esperava alguma das listas de parâmetros '[[int, int]]' e recebeu '[int, float]' em Função/Procedimento

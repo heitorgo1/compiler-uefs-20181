@@ -15,15 +15,17 @@ public class GetDefinedType implements BiConsumer<Context, Parameter.Array> {
         Parameter receiver = params.get(0);
         Parameter id = params.get(1);
 
-        Map<String, String> typeMap = c.getTypeMap();
+        String idStr = id.read().toString();
+
+        Map<String, Map<String, Object>> typeMap = c.getTypeMap();
 
         try {
-            if (!typeMap.containsKey(id.read())) {
+            if (!typeMap.containsKey(idStr)) {
                 c.addError(new SemanticError(String.format("Não existe um tipo chamado '%s'",id.read()), c.getCurrentToken().getLine()));
-                receiver.write("null");
+                receiver.write("undefined");
             }
             else {
-                receiver.write(typeMap.get(id.read()));
+                receiver.write(typeMap.get(idStr).get("ref"));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -13,7 +13,7 @@ public class GetNumType implements BiConsumer<Context, Parameter.Array> {
         Parameter first = params.get(0); // symbol
         Parameter second = params.get(1); // symbol
 
-        String number = second.read().replaceAll("\\s+", "");
+        String number = second.read().toString().replaceAll("\\s+", "");
         String type = number.contains(".") ? "float": "int";
 
         try {

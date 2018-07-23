@@ -12,6 +12,6 @@ public class SetScope implements BiConsumer<Context, Parameter.Array> {
 
         Parameter first = params.get(0); // Int
 
-        c.setCurrentScope(Integer.parseInt(first.read()));
+        c.setCurrentScope(Integer.parseInt(first.read().toString()));
     }
 }

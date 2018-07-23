@@ -1,0 +1,18 @@
+// rule 2.5 and 4.3
+
+const {
+    int a =1, b =2, c=3;
+    float h; // err
+    string g = "abc";
+}
+
+start () {
+
+    const { // err
+        float d=4, e=5, f=6;
+    }
+
+    a = 7; // err
+    g = "a"; // err
+    c = 10; // err
+}
