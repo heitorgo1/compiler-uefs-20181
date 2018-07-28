@@ -15,6 +15,7 @@ public class SemanticAction {
             new Hashtable<String, BiConsumer<Context, Parameter.Array>>() {{
                 put("assign", new Assign());
                 put("append", new Append());
+                put("and", new And());
                 put("assertEqual", new AssertEqual());
                 put("attachStructVars", new AttachStructVars());
                 put("assertInitConst", new AssertInitConst());
@@ -26,6 +27,7 @@ public class SemanticAction {
                 put("concat", new Concat());
                 put("checkStructDefined", new CheckStructDefined());
                 put("checkAttribution", new CheckAttribution());
+                put("checkHasReturn", new CheckHasReturn());
                 put("decScope", new DecScope());
                 put("extendStruct", new ExtendStruct());
                 put("getDefinedType", new GetDefinedType());
@@ -41,8 +43,11 @@ public class SemanticAction {
                 put("incAssign", new IncAssign());
                 put("invalidConst", new InvalidConst());
                 put("initializeParams", new InitializeParams());
+                put("initializeIfNull", new InitializeIfNull());
+                put("matchFuncType", new MatchFuncType());
                 put("popArray", new PopArray());
                 put("setScope", new SetScope());
+                put("or", new Or());
                 put("typedef", new Typedef());
                 put("typeMatch", new TypeMatch());
             }};

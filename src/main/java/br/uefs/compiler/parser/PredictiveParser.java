@@ -67,13 +67,11 @@ public class PredictiveParser {
                 int offset = SemanticHelperFunctions.extractOffset(param);
                 List<String> attrs = SemanticHelperFunctions.extractAttributes(param);
                 arr.add(new Parameter(getSymbol(chooseStack(true), offset), attrs));
-            }
-            else if (SemanticHelperFunctions.isInStack(param)) {
+            } else if (SemanticHelperFunctions.isInStack(param)) {
                 int offset = SemanticHelperFunctions.extractOffset(param);
                 List<String> attrs = SemanticHelperFunctions.extractAttributes(param);
                 arr.add(new Parameter(getSymbol(chooseStack(false), offset), attrs));
-            }
-            else arr.add(new Parameter(param.trim()));
+            } else arr.add(new Parameter(param.trim()));
         }
         return arr;
     }
@@ -98,6 +96,7 @@ public class PredictiveParser {
     }
 
     private void handleTableMissError(Token token) {
+        context.setSupressErrors(false);
         String foundStr = token.getLexeme().equals("$") ? "fim de arquivo" : "'" + token.getLexeme() + "'";
         String message = String.format("Erro sintático. Token inesperado: %s.", foundStr);
         errors.add(new SyntacticError(message, token.getLine()));
@@ -108,7 +107,10 @@ public class PredictiveParser {
                 "Erro sintático próximo ao fim do arquivo."
                 : String.format("Erro sintático próximo ao token '%s'.", token.getLexeme());
 
-        errors.add(new SyntacticError(message, token.getLine()));
+        if (!context.isSupressingErrors())
+            errors.add(new SyntacticError(message, token.getLine()));
+
+        context.setSupressErrors(true);
 
         while (!stack.empty()
                 && stack.peek().isNonTerminal()
@@ -121,6 +123,8 @@ public class PredictiveParser {
 
     private void handleNonTerminal(Symbol cur) {
         Rule rule = table.getRule(stack.peek(), cur);
+
+        context.setSupressErrors(false);
 
         aux.push(stack.peek());
         stack.pop();
@@ -159,6 +163,7 @@ public class PredictiveParser {
             } else if (stack.peek().isAction()) {
                 handleSemanticAction();
             } else if (stack.peek().isNonTerminal()) {
+
                 if (table.isMiss(stack.peek(), cur)) {
                     handleTableMissError(token);
                     ip++;

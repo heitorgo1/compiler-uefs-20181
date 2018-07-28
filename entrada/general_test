@@ -1,0 +1,73 @@
+
+var {
+    int a, b, c = 10;
+    float d, e, f = 1.523;
+    string g, h = "abc";
+    bool j = true;
+}
+
+const {
+    int aa[] = {1, 2, 3, 4};
+    float bb[][] = {{1.0,2.0}, {3.0,4.0}, {5.0,6.0}};
+    string ss[3] = {"a", "b", "c"};
+    bool cc[2] = {true, false};
+}
+
+procedure proc_a(int a[], string s) {
+    scan (a, s);
+}
+
+procedure proc_b(float a, string s) {
+    scan (a, s);
+
+    return 1+1;
+}
+
+function string func_a(string a, bool b) {
+    if (b) then {
+        return a;
+    }
+    return "";
+}
+
+function string func_a(string a, int b, bool c) {
+    if (b > 1 && (c == true) ) then {
+        return a;
+    }
+    else {
+        return "";
+    }
+}
+
+function float func_b (float a, float b) {
+    return 1.0;
+}
+
+struct struct_a {
+    int a, b, c;
+}
+
+struct struct_b extends struct_a {
+    float d, e, f[] = {1.2, 5.6};
+}
+
+typedef int integer;
+typedef float real;
+typedef struct struct_b st_b;
+
+start() {
+    var {
+        integer x = 1, y = 2;
+        real t, l;
+        st_b val;
+    }
+
+    scan(t, l);
+
+    print(t + l);
+
+    val.a = 1 + 1;
+    val.d = 5.0 / 2.5;
+    val.f[4] = 6.2;
+
+}

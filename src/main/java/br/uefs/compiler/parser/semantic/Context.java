@@ -12,6 +12,7 @@ public class Context {
     private int scope = 0;
     private int startCounter = 0;
     private long startLine = 0;
+    private boolean supressErrors = false;
     private SymbolTable.Array symbolTableList;
     private Map<String, Map<String, Object>> typeMap;
     private Token currentToken;
@@ -91,8 +92,17 @@ public class Context {
         return currentToken;
     }
 
+    public void setSupressErrors(boolean value) {
+        this.supressErrors = value;
+    }
+
+    public boolean isSupressingErrors() {
+        return supressErrors;
+    }
+
     public void addError(SemanticError err) {
-        errors.add(err);
+        if (!supressErrors)
+            errors.add(err);
     }
 
     public List<SemanticError> getErrors() {

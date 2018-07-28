@@ -36,7 +36,6 @@ public class InsertFuncParams implements BiConsumer<Context, Parameter.Array> {
                                 funcParamsTypes.read().toString().replaceAll("^\\[|\\]$", "")),
                                 c.getCurrentToken().getLine()));
                     }
-                    System.out.println(c.getSymbolTableList());
                 }
             }
             else {

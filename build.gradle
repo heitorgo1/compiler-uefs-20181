@@ -43,6 +43,10 @@ jar {
     }
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.6' // version required
+}
+
 run {
     if (project.hasProperty('args')) {
         args project.args.split('\\s');

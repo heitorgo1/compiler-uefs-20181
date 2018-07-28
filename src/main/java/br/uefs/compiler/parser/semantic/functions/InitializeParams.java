@@ -34,7 +34,6 @@ public class InitializeParams implements BiConsumer<Context, Parameter.Array> {
                                 new ArrayList<>().toString().replaceAll("^\\[|\\]$", "")),
                                 c.getCurrentToken().getLine()));
                     }
-                    System.out.println(c.getSymbolTableList());
                 }
             }
             else {

@@ -16,6 +16,9 @@ public class CheckAttribution implements BiConsumer<Context, Parameter.Array> {
 
         String categoryStr = category.read().toString();
 
+        if (categoryStr.equals("expr")) {
+            c.addError(new SemanticError(String.format("Não se pode atribuir valor a uma expressão."), c.getCurrentToken().getLine()));
+        }
         if (categoryStr.equals("const")) {
             c.addError(new SemanticError(String.format("Não se pode atribuir valor a uma constante."), c.getCurrentToken().getLine()));
         }

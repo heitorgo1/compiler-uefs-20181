@@ -15,6 +15,12 @@ public class TypeMatch implements BiConsumer<Context, Parameter.Array> {
         Parameter first = params.get(0); // const or symbol
         Parameter second = params.get(1); // const or symbol
 
+        if (second.read() == null) {
+            String message = String.format("Esperava expressão tipo '%s' mas encontrou nada.", first.read());
+            c.addError(new SemanticError(message, c.getCurrentToken().getLine()));
+            return;
+        }
+
         for (String input : SemanticHelperFunctions.splitParam(second.read().toString())) {
             for (String target : SemanticHelperFunctions.splitParam(first.read().toString())) {
                 if (input.equals(target)) {
@@ -22,7 +28,16 @@ public class TypeMatch implements BiConsumer<Context, Parameter.Array> {
                 }
             }
         }
-        String message = String.format("Operação esperava tipo '%s' e encontrou '%s' .",first.read(), second.read());
+        String message = "";
+        if (SemanticHelperFunctions.splitParam(first.read().toString()).length > 1) {
+            message = "Operação esperava um dos tipos: ";
+            for (String type : SemanticHelperFunctions.splitParam(first.read().toString())) {
+                message += String.format("'%s', ", type);
+            }
+            message += String.format("e controu '%s'.",second.read());
+        } else {
+            message = String.format("Operação esperava tipo '%s' e encontrou '%s' .", first.read(), second.read());
+        }
         c.addError(new SemanticError(message, c.getCurrentToken().getLine()));
     }
 }

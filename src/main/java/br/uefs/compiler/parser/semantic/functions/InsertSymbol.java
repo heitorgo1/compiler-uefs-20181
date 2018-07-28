@@ -43,7 +43,6 @@ public class InsertSymbol implements BiConsumer<Context, Parameter.Array> {
                 c.getInCurrentScope(id.read().toString()).put("paramtypes", new ArrayList<>());
                 c.getInCurrentScope(id.read().toString()).put("addparams", true);
             }
-            System.out.println(c.getSymbolTableList());
         }
     }
 }

@@ -222,9 +222,9 @@ Erro na linha 42: Esperava receber tipo 'bool' e recebeu 'float'
 Erro na linha 43: Operação esperava tipo 'bool' e encontrou 'int' .
 Erro na linha 45: Variável não declarada 'z'
 Erro na linha 45: Variável não declarada 'x'
-Erro na linha 45: Operação esperava tipo '[int float string]' e encontrou 'undefined' .
+Erro na linha 45: Operação esperava um dos tipos: 'int', 'float', 'string', e controu 'undefined'.
 Erro na linha 45: Esperava receber tipo 'int' e recebeu 'undefined'
 Erro na linha 46: Variável não declarada 'p'
 Erro na linha 46: Operação esperava tipo 'int' e encontrou 'undefined' .
-Erro na linha 46: Operação esperava tipo '[int float]' e encontrou 'undefined' .
+Erro na linha 46: Operação esperava um dos tipos: 'int', 'float', e controu 'undefined'.
 Erro na linha 47: Esperava alguma das listas de parâmetros '[[int, int]]' e recebeu '[int, float]' em Função/Procedimento

@@ -19,7 +19,7 @@ procedure proc_a () {
 
     if d == true then {
         var {
-            string b = "def";
+            int b = 1234;
             int c = 10;
         }
 
