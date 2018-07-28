@@ -8,7 +8,7 @@ Problems to be solved and their deadlines.
 1. [x] Lexical Analyzer - 22/04/2018
 2. [x] [Context Free Grammar](https://docs.google.com/document/d/1bHU1Tl3i42zqa6bDExDx2aRCMPcjzEm15IVa4rdEDZg/edit) - 20/05/2018
 3. [x] Syntax Analyzer - 03/07/2018
-4. [ ] Semantic Analyzer - 29/07/2018
+4. [ ] Semantic Analyzer - 31/07/2018
 
 ### Lexical Analyzer
 
