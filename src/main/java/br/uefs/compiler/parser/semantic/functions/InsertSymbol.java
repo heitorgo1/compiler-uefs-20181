@@ -28,11 +28,11 @@ public class InsertSymbol implements BiConsumer<Context, Parameter.Array> {
                 symbol.put("addparams", true);
             }
             else {
-                String message = String.format("Identificador '%s' já foi declarada neste escopo.", id.read());
+                String message = String.format("Identificador '%s' já foi declarado neste escopo.", id.read());
                 c.addError(new SemanticError(message, c.getCurrentToken().getLine()));
             }
         } else if (c.getTypeMap().containsKey(id.read().toString())) {
-            String message = String.format("Identificador '%s' já foi declarada como um tipo.", id.read());
+            String message = String.format("Identificador '%s' já foi declarado como um tipo.", id.read());
             c.addError(new SemanticError(message, c.getCurrentToken().getLine()));
         } else {
             c.getInCurrentScope(id.read().toString()).put("line", line.read());

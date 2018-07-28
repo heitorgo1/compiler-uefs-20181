@@ -34,10 +34,14 @@ public class TypeMatch implements BiConsumer<Context, Parameter.Array> {
             for (String type : SemanticHelperFunctions.splitParam(first.read().toString())) {
                 message += String.format("'%s', ", type);
             }
-            message += String.format("e controu '%s'.",second.read());
+            message += String.format("e encontrou '%s'.",second.read());
+            c.addError(new SemanticError(message, c.getCurrentToken().getLine()));
         } else {
-            message = String.format("Operação esperava tipo '%s' e encontrou '%s' .", first.read(), second.read());
+            if (!first.read().toString().contains("undefined")) {
+                message = String.format("Operação esperava tipo '%s' e encontrou '%s' .", first.read(), second.read());
+                c.addError(new SemanticError(message, c.getCurrentToken().getLine()));
+            }
+
         }
-        c.addError(new SemanticError(message, c.getCurrentToken().getLine()));
     }
 }

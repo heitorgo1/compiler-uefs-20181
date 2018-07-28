@@ -25,8 +25,8 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Function Def lf>", new Symbol.Array("{initializeParams(Aux[0].lex)}", "')'", "{assign(Stack[-1].functype, Aux[-1].functype)}","<Compound Stmt>", "{checkHasReturn(Aux[0].hasreturn, Aux[-2].line)}")));
 
         grammar.addRule(new Rule("<Procedure Def>", new Symbol.Array("'procedure'", "IDENTIFICADOR", "{insertSymbol(Aux[0].lex, Aux[0].line, null, proc)}", "'('", "{assign(Stack[-1].lex, Aux[-1].lex); incScope()}", "<Procedure Def lf>", "{decScope()}")));
-        grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("<Parameter List>", "{insertFuncParams(Aux[-1].lex, Aux[0].paramtypes)}", "')'", "{assign(Stack[-1].functype, undefined)}", "<Compound Stmt>")));
-        grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("{initializeParams(Aux[0].lex)}", "')'",  "{assign(Stack[-1].functype, undefined)}", "<Compound Stmt>")));
+        grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("<Parameter List>", "{insertFuncParams(Aux[-1].lex, Aux[0].paramtypes)}", "')'", "{assign(Stack[-1].functype, null)}", "<Compound Stmt>")));
+        grammar.addRule(new Rule("<Procedure Def lf>", new Symbol.Array("{initializeParams(Aux[0].lex)}", "')'",  "{assign(Stack[-1].functype, null)}", "<Compound Stmt>")));
 
         grammar.addRule(new Rule("<Typedef Def>", new Symbol.Array("'typedef'", "<Type>", "IDENTIFICADOR", "{typedef(Aux[0].lex, Aux[0].line, Aux[-1].type)}", "';'")));
 
@@ -50,8 +50,8 @@ public class GrammarBuilder {
         // sy: | inh: cat
         grammar.addRule(new Rule("<Declaration>", new Symbol.Array("<Type>", "{assign(Stack[-1].type, Aux[0].type); assign(Stack[-1].cat, Aux[-1].cat)}", "<Init Declarator List>", "';'")));
         // sy: | inh: type cat
-        grammar.addRule(new Rule("<Init Declarator List>", new Symbol.Array("{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Init Declarator>", "{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Init Declarator List 1>"))); // Declaration type
-        grammar.addRule(new Rule("<Init Declarator List 1>", new Symbol.Array("','", "{assign(Stack[-1].type!cat, Aux[-1].type!cat)}", "<Init Declarator>", "{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Init Declarator List 1>")));
+        grammar.addRule(new Rule("<Init Declarator List>", new Symbol.Array("{assign(Stack[-1].type!cat, Aux[0].type!cat)}", "<Init Declarator>", "{assign(Stack[-1].type!cat, Aux[-1].type!cat)}", "<Init Declarator List 1>"))); // Declaration type
+        grammar.addRule(new Rule("<Init Declarator List 1>", new Symbol.Array("','", "{assign(Stack[-1].type!cat, Aux[-1].type!cat)}", "<Init Declarator>", "{assign(Stack[-1].type!cat, Aux[-2].type!cat)}", "<Init Declarator List 1>")));
         grammar.addRule(new Rule("<Init Declarator List 1>", new Symbol.Array("")));
         // sy: lex line dim init |  inh: type cat
         grammar.addRule(new Rule("<Init Declarator>", new Symbol.Array("<Declarator>", "{concat(Aux[-1].type, Aux[0].dim); insertSymbol(Aux[0].lex, Aux[0].line, Aux[-1].type, Aux[-1].cat); assign(Stack[-1].ltype, Aux[-1].type); assign(Stack[-1].init, false)}", "<Init Declarator lf>", "{assertInitConst(Aux[0].init, Aux[-2].cat)}"))); // Init Declarator List or Init Declarator List 1 type
@@ -87,7 +87,7 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Stmt Or Declaration List 1>", new Symbol.Array("{assign(Stack[-2].functype, Aux[0].functype); invalidConst()}", "<Const Def>", "<Stmt Or Declaration List 1>", "{or(Aux[-2].hasreturn, Aux[0].hasreturn, false)}")));
         grammar.addRule(new Rule("<Stmt Or Declaration List 1>", new Symbol.Array( "{assign(Aux[0].hasreturn, false)}", "")));
 
-        grammar.addRule(new Rule("<Start Def>", new Symbol.Array("'start'", "'('", "')'", "{assign(Stack[-1].functype, undefined); incScope()}", "<Compound Stmt>", "{decScope()}")));
+        grammar.addRule(new Rule("<Start Def>", new Symbol.Array("'start'", "'('", "')'", "{assign(Stack[-1].functype, null); incScope()}", "<Compound Stmt>", "{decScope()}")));
 
         grammar.addRule(new Rule("<Print Stmt>", new Symbol.Array("'print'", "'('", "<Argument List>", "')'", "';'")));
 
@@ -181,7 +181,7 @@ public class GrammarBuilder {
         grammar.addRule(new Rule("<Postfix Op>", new Symbol.Array("'--'", "{typeMatch([int float], Aux[-1].type); assertNotConst(Aux[-1].cat); assign(Aux[-1].returntype, Aux[-1].type); assign(Aux[-1].cat, expr)}")));
         grammar.addRule(new Rule("<Postfix Op>", new Symbol.Array("'['", "{popArray(Aux[-1].type)}", "<Expr>", "{typeMatch(int, Aux[0].type)}", "']'", "{assign(Aux[-3].returntype, Aux[-3].type)}"))); // fix array match
         grammar.addRule(new Rule("<Postfix Op>", new Symbol.Array("'('", "{getParams(Stack[-1].paramtypes, Aux[-1].lex)}", "<Postfix Op lf>", "{assign(Aux[-2].returntype, Aux[-2].type); assign(Aux[-1].cat, func)}")));
-        grammar.addRule(new Rule("<Postfix Op>", new Symbol.Array("'.'", "IDENTIFICADOR", "{getStructVarType(Aux[0].type, Aux[-2].lex, Aux[0].lex); assign(Aux[-2].returntype, Aux[0].type)}")));
+        grammar.addRule(new Rule("<Postfix Op>", new Symbol.Array("'.'", "IDENTIFICADOR", "{getStructVarType(Aux[0].type, Aux[-2].lex, Aux[0].lex, Aux[-2].type); assign(Aux[-2].returntype, Aux[0].type)}")));
         grammar.addRule(new Rule("<Postfix Op lf>", new Symbol.Array("')'", "{assertNoParams(Aux[-1].paramtypes)}")));
         grammar.addRule(new Rule("<Postfix Op lf>", new Symbol.Array("<Argument List>", "{assertParams(Aux[-1].paramtypes, Aux[0].paramtypes)}", "')'")));
 

@@ -19,8 +19,8 @@ public class MatchFuncType implements BiConsumer<Context, Parameter.Array> {
             return;
         }
 
-        if (expected.read().equals("undefined")) {
-            String message = String.format("Start ou Procedimento não devem ter retorno.");
+        if (expected.read().equals("null")) {
+            String message = String.format("Start ou Procedimento não deve ter retorno.");
             c.addError(new SemanticError(message, c.getCurrentToken().getLine()));
             return;
         }
