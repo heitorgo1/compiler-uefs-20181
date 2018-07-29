@@ -19,6 +19,10 @@ public class InsertSymbol implements BiConsumer<Context, Parameter.Array> {
         Parameter type = params.get(2); // type
         Parameter category = params.get(3); // category
 
+        if (id.read() == null) {
+            return;
+        }
+
         if (ReservedWords.isReserved(id.read().toString())) {
             String message = String.format("'%s' não pode ser usado como nome de variável", id.read());
             c.addError(new SemanticError(message, c.getCurrentToken().getLine()));

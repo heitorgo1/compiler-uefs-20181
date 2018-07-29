@@ -102,6 +102,9 @@ public class Symbol {
     }
 
     public void setProperty(String property, Object value) {
+        if (value == null) {
+            value = "";
+        }
         properties.put(property, value);
     }
 

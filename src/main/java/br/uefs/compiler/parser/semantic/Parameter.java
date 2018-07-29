@@ -56,6 +56,9 @@ public class Parameter {
         }
 
         Object current = readFromAttribute(attribute);
+        if (value == null) {
+            value = "";
+        }
         writeToAttribute(attribute, current.toString().trim() + value.toString().trim());
     }
 

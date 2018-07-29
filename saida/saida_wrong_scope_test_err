@@ -184,14 +184,14 @@
 <DELIMITADOR, }, 62>
 <END, $, 62>
 
-Erro na linha 9: Identificador 'a' já foi declarada neste escopo.
-Erro na linha 10: Identificador 'b' já foi declarada neste escopo.
-Erro na linha 26: Identificador 'b' já foi declarada neste escopo.
+Erro na linha 9: Identificador 'a' já foi declarado neste escopo.
+Erro na linha 10: Identificador 'b' já foi declarado neste escopo.
+Erro na linha 26: Identificador 'b' já foi declarado neste escopo.
 Erro na linha 36: Variável não declarada 'e'
 Erro na linha 39: Variável não declarada 'e'
-Erro na linha 45: Identificador 'a' já foi declarada neste escopo.
+Erro na linha 45: Identificador 'a' já foi declarado neste escopo.
 Erro na linha 45: Operação esperava tipo 'float' e encontrou 'int' .
-Erro na linha 45: Identificador 'b' já foi declarada neste escopo.
+Erro na linha 45: Identificador 'b' já foi declarado neste escopo.
 Erro na linha 45: Operação esperava tipo 'float' e encontrou 'int' .
-Erro na linha 58: Identificador 'a' já foi declarada neste escopo.
-Erro na linha 58: Identificador 'b' já foi declarada neste escopo.
+Erro na linha 58: Identificador 'a' já foi declarado neste escopo.
+Erro na linha 58: Identificador 'b' já foi declarado neste escopo.

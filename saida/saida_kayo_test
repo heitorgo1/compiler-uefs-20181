@@ -1,0 +1,32 @@
+<PALAVRARESERVADA, const, 3>
+<DELIMITADOR, {, 3>
+<PALAVRARESERVADA, float, 4>
+<IDENTIFICADOR, e, 4>
+<OPERADORRELACIONAL, =, 4>
+<NUMERO,  2.0, 4>
+<DELIMITADOR, ;, 4>
+<DELIMITADOR, }, 5>
+<PALAVRARESERVADA, procedure, 7>
+<IDENTIFICADOR, test, 7>
+<DELIMITADOR, (, 7>
+<PALAVRARESERVADA, int, 7>
+<IDENTIFICADOR, a, 7>
+<DELIMITADOR, ), 7>
+<DELIMITADOR, {, 7>
+<PALAVRARESERVADA, var, 8>
+<DELIMITADOR, {, 8>
+<PALAVRARESERVADA, int, 8>
+<IDENTIFICADOR, b, 8>
+<DELIMITADOR, ;, 8>
+<DELIMITADOR, }, 8>
+<DELIMITADOR, }, 9>
+<PALAVRARESERVADA, function, 11>
+<PALAVRARESERVADA, start, 11>
+<DELIMITADOR, (, 11>
+<DELIMITADOR, ), 11>
+<DELIMITADOR, {, 11>
+<DELIMITADOR, }, 13>
+<END, $, 13>
+
+Erro na linha 11: Erro sintático próximo ao token 'start'.
+Erro na linha 11: Erro sintático. Esperava '(' mas encontrou 'start'.
